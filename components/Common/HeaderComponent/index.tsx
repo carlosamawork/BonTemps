@@ -22,7 +22,7 @@ export default function HeaderComponent({data}: HeaderProps) {
       animate={{opacity: 1}}
       transition={{duration: 0.3, delay: 0.5}}
     >
-      <h4>AMA Header</h4>
+      <h4>MGTZM Header</h4>
     </motion.header>
   )
 }

@@ -13,8 +13,14 @@ export default defineField({
     defineField({
       name: 'headerMenu',
       title: 'Header Links',
-      type: 'menuLinks'
+      type: 'menuLinks',
     }),
-
+    // Instagram
+    defineField({
+      name: 'instagramUrl',
+      title: 'Instagram URL',
+      type: 'url',
+      validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
+    }),
   ],
 })

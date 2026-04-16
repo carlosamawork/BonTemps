@@ -20,11 +20,11 @@ export default defineField({
     },
   ],
   fields: [
-    // Hero
+    // Claim
     defineField({
-      name: 'hero',
-      title: 'Hero',
-      type: 'hero.home',
+      name: 'claim',
+      title: 'Claim',
+      type: 'string',
       group: 'editorial',
     }),
     // SEO

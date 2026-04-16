@@ -7,8 +7,7 @@ export default function WelcomeComponent() {
 
   return (
     <div className={s.welcome}>
-      <h1>AMA</h1>
-      <h2><a href="mailto:info@ama.work">info[at]ama.work</a></h2>
+      <h1>MGTZM STUDIO</h1>
       {/* <PortableText
         value={project.credits}
         components={portableBlockComponentsCredits()}
