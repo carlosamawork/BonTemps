@@ -1,0 +1,8 @@
+import {StructureBuilder} from 'sanity/structure'
+
+export default function homeStructure(S: StructureBuilder) {
+  return S.listItem()
+    .title('Home')
+    .schemaType('home')
+    .child(S.editor().title('Home').schemaType('home').documentId('home'))
+}
