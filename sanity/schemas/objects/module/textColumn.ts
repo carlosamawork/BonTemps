@@ -87,10 +87,11 @@ export default defineType({
       columns: 'columns',
       span: 'span',
       columnStart: 'columnStart',
+      firstBlock: 'body.0.children.0.text',
     },
-    prepare({ columns, span, columnStart }) {
+    prepare({ columns, span, columnStart, firstBlock }) {
       return {
-        title: 'Text Column',
+        title: firstBlock || 'Text Column',
         subtitle: `Grid ${columns} · Span ${span ?? 1} · Start ${columnStart ?? 1}`,
       }
     },
