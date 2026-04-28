@@ -2,30 +2,33 @@ import Link from 'next/link'
 import type {HeaderData} from '@/sanity/types'
 import HeaderClient from './HeaderClient'
 import ContactButton from './ContactButton'
+import DateBlock from './DateBlock'
 import MobileMenu from './MobileMenu'
 import styles from './HeaderComponent.module.scss'
 
 type Props = {data?: HeaderData}
 
-// The nav items are not editorial copy — they're tied to specific routes
-// and the bubble layoutId, so they live in code rather than Sanity.
-const NAV_ITEMS = [
+// Bubble keys are limited to actual routes; Contact triggers a copy action
+// rather than a navigation, so it lives inside the nav visually but never
+// becomes the bubble target.
+const NAV_ROUTES = [
   {href: '/', label: 'Work', key: 'work'},
   {href: '/information', label: 'Information', key: 'information'},
 ] as const
 
 export default function HeaderComponent({data}: Props) {
   const contactEmail = data?.contactEmail ?? 'info@bontemps.agency'
+  const instagramUrl = data?.instagramUrl
 
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <Link href="/" className={`${styles.logo} t-sans-title`} aria-label="Bon Temps — home">
-          BTA
+        <Link href="/" className={`${styles.logo} t-serif-detail`} aria-label="Bon Temps — home">
+          BonTemps<sup className={styles.trademark}>®</sup>
         </Link>
 
-        <HeaderClient items={NAV_ITEMS}>
-          {NAV_ITEMS.map((item) => (
+        <HeaderClient items={NAV_ROUTES}>
+          {NAV_ROUTES.map((item) => (
             <Link
               key={item.key}
               href={item.href}
@@ -35,10 +38,24 @@ export default function HeaderComponent({data}: Props) {
               <span>{item.label}</span>
             </Link>
           ))}
+          <ContactButton email={contactEmail} className={styles.navItem} />
         </HeaderClient>
 
-        <ContactButton email={contactEmail} />
-        <MobileMenu items={NAV_ITEMS} contactEmail={contactEmail} />
+        <div className={styles.meta}>
+          <DateBlock className="t-serif-detail" />
+          {instagramUrl && (
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="t-serif-detail"
+            >
+              Instagram
+            </a>
+          )}
+        </div>
+
+        <MobileMenu items={NAV_ROUTES} contactEmail={contactEmail} />
       </div>
     </header>
   )

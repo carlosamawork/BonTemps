@@ -14,29 +14,41 @@
   -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
 }
 
+// Three-column layout per Figma: logo (left), nav (centre), meta (right).
+// Mobile collapses to logo + burger; the nav and meta hide and the menu
+// surfaces them in the overlay.
 .inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
   padding: 16px var(--margin-x);
   gap: 12px;
 
-  @include desktop {
+  @include tablet-up {
     padding: 20px var(--margin-x);
+    grid-template-columns: 1fr auto 1fr;
   }
 }
 
 .logo {
-  // Clickable home / intro replay trigger.
   text-decoration: none;
   color: var(--color-fg);
   z-index: 2;
+  white-space: nowrap;
+}
+
+.trademark {
+  font-size: 0.55em;
+  vertical-align: top;
+  margin-left: 1px;
 }
 
 .nav {
   position: relative;
   display: none;
+  align-items: center;
   gap: 4px;
+  justify-self: center;
 
   @include tablet-up {
     display: flex;
@@ -64,13 +76,22 @@
 }
 
 .contact {
-  display: none;
-  padding: 8px 14px;
   cursor: pointer;
   user-select: none;
+}
+
+// Right-side meta block. Date stacks above Instagram on desktop; collapses
+// out of view on mobile (the burger menu carries Instagram if needed).
+.meta {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 2px;
+  justify-self: end;
 
   @include tablet-up {
-    display: inline-flex;
+    display: flex;
   }
 }
 
@@ -83,6 +104,7 @@
   border-radius: 8px;
   font-size: 18px;
   line-height: 1;
+  justify-self: end;
 
   @include tablet-up {
     display: none;
