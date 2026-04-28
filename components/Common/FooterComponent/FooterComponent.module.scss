@@ -1,37 +1,72 @@
 @use "../../../styles/breakpoints" as *;
 
+// Footer follows the same column system as the work grid: 1 / 2 / 4 / 5.
+// The claim spans most columns and the contact stack takes the last column,
+// so the footer aligns visually with the cards above (the column lines run
+// straight through the page).
 .footer {
   padding: 80px var(--margin-x) var(--margin-bottom);
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
   background: var(--color-bg);
   color: var(--color-fg);
-}
-
-// Top half: claim on the left, contact columns on the right.
-.top {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
+  column-gap: var(--grid-gap-x);
+  row-gap: 48px;
 
   @include tablet-up {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    gap: var(--grid-gap-x);
-    align-items: start;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop-only {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include desktop-xl {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
 .claim {
-  max-width: 60ch;
+  // Mobile: full row.
+  grid-column: 1 / -1;
+  max-width: 100%;
+  margin: 0;
+
+  @include tablet-up {
+    // Tablet (2 cols): claim spans col 1.
+    grid-column: 1 / span 1;
+  }
+
+  @include desktop-only {
+    // Desktop (4 cols): claim spans cols 1-3.
+    grid-column: 1 / span 3;
+  }
+
+  @include desktop-xl {
+    // Desktop XL (5 cols): claim spans cols 1-4.
+    grid-column: 1 / span 4;
+  }
 }
 
-// Contact column: labels above values, each "group" is a label + one or
-// more values. Stacks vertically on every breakpoint.
+// Contacts stack into the last column.
 .contacts {
+  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  align-self: start;
+
+  @include tablet-up {
+    grid-column: 2 / span 1;
+  }
+
+  @include desktop-only {
+    grid-column: 4 / span 1;
+  }
+
+  @include desktop-xl {
+    grid-column: 5 / span 1;
+  }
 }
 
 .contactGroup {
@@ -44,12 +79,15 @@
   color: var(--color-grey);
 }
 
-// Bottom row: BTA monogram bottom-left, copyright bottom-right.
+// Bottom row spans the full width: monogram in the first column, copyright
+// pinned to the right edge.
 .bottom {
+  grid-column: 1 / -1;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 40px;
+  gap: 16px;
 }
 
 // Brand SVG mark. Intrinsic ratio 86 / 82. Height drives the visual weight.

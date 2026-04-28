@@ -21,8 +21,6 @@
 }
 
 .claim {
-  display: inline-flex;
-  align-items: center;
   margin: 0;
   font-family: var(--font-serif);
   color: #fff;
@@ -31,15 +29,6 @@
     display: inline-block;
     will-change: transform, opacity;
   }
-}
-
-// Red accent square next to the closing period (per Figma).
-.dot {
-  display: inline-block;
-  width: 0.45em;
-  height: 0.45em;
-  margin-left: 0.45em;
-  background: #ff0000;
 }
 
 .monogramWrap {
