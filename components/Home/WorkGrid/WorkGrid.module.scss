@@ -10,18 +10,53 @@
   grid-template-columns: 1fr;
   column-gap: var(--grid-gap-x);
   row-gap: 48px;
-  padding: 60px var(--margin-x) var(--margin-bottom);
+  padding: 100px var(--margin-x) var(--margin-bottom);
 
   @include tablet-up {
     grid-template-columns: repeat(2, 1fr);
   }
 
   @include desktop-only {
+    padding-top: 140px;
     grid-template-columns: repeat(4, 1fr);
   }
 
   @include desktop-xl {
+    padding-top: 140px;
     grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+// Claim row: spans every column on row 1 so the work cards naturally start
+// at row 2. The visible <p> inside is constrained to the requested column
+// span (2 cols on desktop+, 1 col on tablet, full on mobile) — we compute
+// the max-width from the same column / gap math that lays out the grid.
+.claimRow {
+  grid-column: 1 / -1;
+  margin-bottom: 32px;
+
+  @include desktop {
+    margin-bottom: 48px;
+  }
+}
+
+.claimContent {
+  max-width: 100%;
+  margin: 0;
+
+  // 1 of 2 cols = (container − gap) / 2.
+  @include tablet {
+    max-width: calc((100% - var(--grid-gap-x)) / 2);
+  }
+
+  // 2 of 4 cols + 1 gap = (container − gap) / 2.
+  @include desktop-only {
+    max-width: calc((100% - var(--grid-gap-x)) / 2);
+  }
+
+  // 2 of 5 cols + 1 gap = (2 × container − 3 × gap) / 5.
+  @include desktop-xl {
+    max-width: calc((2 * 100% - 3 * var(--grid-gap-x)) / 5);
   }
 }
 
