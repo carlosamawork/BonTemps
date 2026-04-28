@@ -15,6 +15,14 @@ export default defineField({
       title: 'Header Links',
       type: 'menuLinks',
     }),
+    // Contact email
+    defineField({
+      name: 'contactEmail',
+      title: 'Contact email',
+      type: 'string',
+      description: 'Single source for the Contact button (header). Tap = copy to clipboard.',
+      validation: (Rule) => Rule.required().email(),
+    }),
     // Instagram
     defineField({
       name: 'instagramUrl',
