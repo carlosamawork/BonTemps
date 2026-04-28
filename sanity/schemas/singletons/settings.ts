@@ -41,14 +41,6 @@ export default defineType({
       type: 'footerSettings',
       group: 'footer',
     }),
-    // // Not found page
-    // defineField({
-    //   name: 'notFoundPage',
-    //   title: '404 page',
-    //   type: 'notFoundPage',
-    //   group: 'notFoundPage',
-    //   hidden: true
-    // }),
     // SEO
     defineField({
       name: 'seo',
