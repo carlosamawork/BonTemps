@@ -4,41 +4,59 @@
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: var(--color-bg);
+  background: #000;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
+// Vertical stack: claim line on top, monogram below. Centered on both axes.
 .stage {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  // Spacing between BTA mark and the claim — varies per breakpoint per spec.
-  gap: 17px;
-
-  @include tablet-up {
-    gap: 27px;
-  }
-
-  @include desktop-xl {
-    gap: 29px;
-  }
-}
-
-.bta {
-  font-family: var(--font-sans);
-  font-size: 32px;
-  letter-spacing: -0.01em;
+  gap: 20px;
 }
 
 .claim {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  color: #fff;
 
   span {
     display: inline-block;
     will-change: transform, opacity;
+  }
+}
+
+// Red accent square next to the closing period (per Figma).
+.dot {
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin-left: 0.45em;
+  background: #ff0000;
+}
+
+.monogramWrap {
+  display: block;
+}
+
+.monogram {
+  display: block;
+  width: auto;
+  height: 80px;
+  color: #fff;
+
+  @include tablet-up {
+    height: 96px;
+  }
+
+  @include desktop-xl {
+    height: 110px;
   }
 }
