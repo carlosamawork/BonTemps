@@ -1,28 +1,56 @@
-'use client'
-
-import React, {useRef} from 'react'
-import s from './FooterComponent.module.scss'
-import {motion} from 'framer-motion'
 import type {FooterData} from '@/sanity/types'
+import BodyBonTempsRenderer from '@/components/PortableText/BodyBonTempsRenderer'
+import styles from './FooterComponent.module.scss'
 
-type FooterProps = {
-  data?: FooterData
-}
+type Props = {data?: FooterData}
 
-export default function FooterComponent({data}: FooterProps) {
-  const footerRef = useRef<HTMLElement>(null)
-
+export default function FooterComponent({data}: Props) {
   if (!data) return null
 
+  const copyright =
+    data.copyright || `© ${new Date().getFullYear()} Bon Temps. All rights reserved.`
+
   return (
-    <motion.footer
-      className={s.footer}
-      ref={footerRef}
-      initial={{opacity: 0}}
-      animate={{opacity: 1}}
-      transition={{duration: 0.3, delay: 0.5}}
-    >
-      <h4>MGTZM Footer</h4>
-    </motion.footer>
+    <footer className={styles.footer}>
+      {data.claim && (
+        <div className={styles.claim}>
+          <BodyBonTempsRenderer value={data.claim} />
+        </div>
+      )}
+
+      <div className={styles.bottom}>
+        {data.emails && data.emails.length > 0 && (
+          <ul className={styles.emails}>
+            {data.emails.map((entry) => (
+              <li key={entry.email}>
+                <span className={`${styles.emailTitle} t-sans-small`}>{entry.title}</span>
+                <a href={`mailto:${entry.email}`} className="t-serif-detail">
+                  {entry.email}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {data.socials && data.socials.length > 0 && (
+          <ul className={styles.socials}>
+            {data.socials.map((social, i) => (
+              <li key={social._key ?? `${social.title}-${i}`}>
+                <a
+                  href={social.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="t-serif-detail"
+                >
+                  {social.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <p className={`t-rights-reserved ${styles.copy}`}>{copyright}</p>
+      </div>
+    </footer>
   )
 }

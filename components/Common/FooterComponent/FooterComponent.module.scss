@@ -1,18 +1,58 @@
-@use "./styles/common/variables.scss" as *;
-@use "./styles/mixins/breakpoints.scss" as *;
+@use "../../../styles/breakpoints" as *;
 
 .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+  padding: 80px var(--margin-x) var(--margin-bottom);
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
 
-    background-color: $body-bg;
+.claim {
+  max-width: 1100px;
+}
 
-    text-align: center;
-    border-top: 1px solid $secondary;
-    h4 {
-        margin: 1em;
-        @include media-breakpoint-up(md) {
-        }
-    }
+.bottom {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: end;
+
+  @include tablet-up {
+    grid-template-columns: 2fr 1fr;
+    align-items: end;
+  }
+
+  @include desktop {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+.emails {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.emailTitle {
+  color: var(--color-grey);
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-self: end;
+}
+
+.copy {
+  align-self: end;
+  color: var(--color-grey);
 }
