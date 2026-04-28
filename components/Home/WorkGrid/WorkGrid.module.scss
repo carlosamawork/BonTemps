@@ -1,0 +1,75 @@
+@use "../../../styles/breakpoints" as *;
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px var(--grid-gap-x);
+  padding: 100px var(--margin-x) var(--margin-bottom);
+
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  display: block;
+  color: var(--color-fg);
+}
+
+.media {
+  position: relative;
+  overflow: hidden;
+  // Default 5x4 ratio as per Figma project asset spec; can be relaxed later
+  // by setting the wrapper via CSS once we lock final aspect choices.
+  aspect-ratio: 5 / 4;
+  background: var(--color-bg);
+}
+
+.hoverLayer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+  // Stretch the inner <video> so it fills the card frame.
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Hover-grey out the *other* cards' text. Achieved with a sibling class on
+// the grid; we use :hover on the card to fade in the overlay, and :has() on
+// the grid to fade siblings if available. Falls back gracefully without :has().
+.card:hover .hoverLayer {
+  opacity: 1;
+}
+
+.title {
+  margin-top: 12px;
+  transition: color 200ms ease;
+}
+
+.desc {
+  margin-top: 4px;
+  color: var(--color-fg);
+  transition: color 200ms ease;
+}
+
+.grid:has(.card:hover) .card:not(:hover) {
+  .title,
+  .desc {
+    color: var(--color-grey);
+  }
+}
+
+.empty {
+  padding: 100px var(--margin-x);
+  text-align: center;
+  color: var(--color-grey);
+}
