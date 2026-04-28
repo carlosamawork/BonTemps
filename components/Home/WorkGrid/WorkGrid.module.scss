@@ -34,6 +34,7 @@
 .claimRow {
   grid-column: 1 / -1;
   margin-bottom: 32px;
+  
 
   @include desktop {
     margin-bottom: 48px;
@@ -43,6 +44,7 @@
 .claimContent {
   max-width: 100%;
   margin: 0;
+  padding-right: 3vw;
 
   // 1 of 2 cols = (container − gap) / 2.
   @include tablet {

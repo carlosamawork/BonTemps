@@ -29,7 +29,7 @@
 }
 .t-rights-reserved {
   font-family: var(--font-sans);
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: -0.01em;
 }
 
@@ -47,6 +47,7 @@
   font-size: 18px;
   line-height: 1.05;
   letter-spacing: -0.02em;
+  margin-top: 0;
   @include mobile { font-size: 14px; }
 }
 .t-project-desc {
