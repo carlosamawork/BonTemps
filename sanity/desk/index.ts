@@ -1,6 +1,7 @@
 import {StructureBuilder, StructureResolver} from 'sanity/structure'
 
 import home from './homeStructure'
+import information from './informationStructure'
 import listWork from './listWorkStructure'
 import pages from './pageStructure'
 import projects from './projectStructure'
@@ -11,7 +12,7 @@ const hiddenDocTypes = (listItem: {getId?: () => string | undefined}) => {
   const id = listItem.getId?.()
   if (!id) return false
 
-  return !['home', 'listWork', 'page', 'project', 'service', 'settings', 'media.tag'].includes(id)
+  return !['home', 'information', 'listWork', 'page', 'project', 'service', 'settings', 'media.tag'].includes(id)
 }
 
 export const structure: StructureResolver = (S: StructureBuilder, context) =>
@@ -20,6 +21,7 @@ export const structure: StructureResolver = (S: StructureBuilder, context) =>
     .items([
       home(S),
       listWork(S),
+      information(S),
       S.divider(),
       projects(S, context),
       services(S),
