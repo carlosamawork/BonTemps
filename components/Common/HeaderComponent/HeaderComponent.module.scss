@@ -31,16 +31,23 @@
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   color: var(--color-fg);
   z-index: 2;
-  white-space: nowrap;
 }
 
-.trademark {
-  font-size: 0.55em;
-  vertical-align: top;
-  margin-left: 1px;
+// Intrinsic SVG aspect ratio is 137 / 24. Height drives the visual weight
+// — sized to sit comfortably alongside the 16px nav text.
+.logoSvg {
+  display: block;
+  width: auto;
+  height: 18px;
+
+  @include desktop {
+    height: 20px;
+  }
 }
 
 .nav {

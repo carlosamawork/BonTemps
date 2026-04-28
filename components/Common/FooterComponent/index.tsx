@@ -1,5 +1,6 @@
 import type {FooterData} from '@/sanity/types'
 import BodyBonTempsRenderer from '@/components/PortableText/BodyBonTempsRenderer'
+import MonogramBTA from '@/components/Common/Logo/MonogramBTA'
 import styles from './FooterComponent.module.scss'
 
 type Props = {data?: FooterData}
@@ -54,9 +55,7 @@ export default function FooterComponent({data}: Props) {
       </div>
 
       <div className={styles.bottom}>
-        <span aria-hidden className={styles.monogram}>
-          BTA
-        </span>
+        <MonogramBTA className={styles.monogram} />
         <p className={`t-rights-reserved ${styles.copy}`}>{copyright}</p>
       </div>
     </footer>

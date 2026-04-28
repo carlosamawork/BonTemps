@@ -52,21 +52,19 @@
   margin-top: 40px;
 }
 
-// Placeholder text monogram. Replace with an SVG once the brand mark is
-// finalised — keeping it as a stylable element until then.
+// Brand SVG mark. Intrinsic ratio 86 / 82. Height drives the visual weight.
 .monogram {
-  font-family: var(--font-serif);
-  font-size: 80px;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  display: block;
+  width: auto;
+  height: 80px;
   color: var(--color-fg);
 
   @include tablet-up {
-    font-size: 120px;
+    height: 110px;
   }
 
   @include desktop {
-    font-size: 160px;
+    height: 140px;
   }
 }
 
