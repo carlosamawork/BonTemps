@@ -1,18 +1,111 @@
-@use "./styles/common/variables.scss" as *;
-@use "./styles/mixins/breakpoints.scss" as *;
+@use "../../../styles/breakpoints" as *;
 
 .header {
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  background: rgba(255, 255, 255, 0.55);
+  // Soft fade-out at the bottom edge per spec.
+  mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
+}
 
-  background-color: $body-bg;
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px var(--margin-x);
+  gap: 12px;
 
-  text-align: center;
-  border-bottom: 1px solid $secondary;
-  h4 {
-    margin: 1em;
-    @include media-breakpoint-up(md) {
-    }
+  @include desktop {
+    padding: 20px var(--margin-x);
   }
+}
+
+.logo {
+  // Clickable home / intro replay trigger.
+  text-decoration: none;
+  color: var(--color-fg);
+  z-index: 2;
+}
+
+.nav {
+  position: relative;
+  display: none;
+  gap: 4px;
+
+  @include tablet-up {
+    display: flex;
+  }
+}
+
+.navItem {
+  position: relative;
+  padding: 8px 14px;
+  color: var(--color-fg);
+  transition: color 180ms ease;
+  z-index: 1;
+}
+
+.nav:hover .navItem:not(:hover) {
+  color: var(--color-grey);
+}
+
+.bubble {
+  position: absolute;
+  background: var(--color-bubble);
+  border-radius: 999px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contact {
+  display: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  user-select: none;
+
+  @include tablet-up {
+    display: inline-flex;
+  }
+}
+
+.burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1;
+
+  @include tablet-up {
+    display: none;
+  }
+}
+
+.mobilePanel {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.96);
+  z-index: 60;
+  padding: 80px var(--margin-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+:global(body.menu-open) {
+  overflow: hidden;
 }

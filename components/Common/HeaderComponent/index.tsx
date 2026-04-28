@@ -1,28 +1,45 @@
-'use client'
-
-import s from './HeaderComponent.module.scss'
-import {useRef} from 'react'
-import {motion} from 'framer-motion'
+import Link from 'next/link'
 import type {HeaderData} from '@/sanity/types'
+import HeaderClient from './HeaderClient'
+import ContactButton from './ContactButton'
+import MobileMenu from './MobileMenu'
+import styles from './HeaderComponent.module.scss'
 
-type HeaderProps = {
-  data?: HeaderData
-}
+type Props = {data?: HeaderData}
 
-export default function HeaderComponent({data}: HeaderProps) {
-  const headerRef = useRef<HTMLElement>(null)
+// The nav items are not editorial copy — they're tied to specific routes
+// and the bubble layoutId, so they live in code rather than Sanity.
+const NAV_ITEMS = [
+  {href: '/', label: 'Work', key: 'work'},
+  {href: '/information', label: 'Information', key: 'information'},
+] as const
 
-  if (!data) return null
+export default function HeaderComponent({data}: Props) {
+  const contactEmail = data?.contactEmail ?? 'info@bontemps.agency'
 
   return (
-    <motion.header
-      className={s.header}
-      ref={headerRef}
-      initial={{opacity: 0}}
-      animate={{opacity: 1}}
-      transition={{duration: 0.3, delay: 0.5}}
-    >
-      <h4>MGTZM Header</h4>
-    </motion.header>
+    <header className={styles.header}>
+      <div className={styles.inner}>
+        <Link href="/" className={`${styles.logo} t-sans-title`} aria-label="Bon Temps — home">
+          BTA
+        </Link>
+
+        <HeaderClient items={NAV_ITEMS}>
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.key}
+              href={item.href}
+              className={`${styles.navItem} t-sans-title`}
+              data-key={item.key}
+            >
+              <span>{item.label}</span>
+            </Link>
+          ))}
+        </HeaderClient>
+
+        <ContactButton email={contactEmail} />
+        <MobileMenu items={NAV_ITEMS} contactEmail={contactEmail} />
+      </div>
+    </header>
   )
 }
