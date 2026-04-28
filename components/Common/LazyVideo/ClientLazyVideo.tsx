@@ -1,5 +1,5 @@
 'use client'
-import {useEffect, useRef, useState} from 'react'
+import {useCallback, useEffect, useRef} from 'react'
 import styles from './LazyVideo.module.scss'
 
 type Mode = 'hover' | 'in-view' | 'always'
@@ -28,7 +28,7 @@ export default function ClientLazyVideo({
   // Idempotent: attach once per video element. Safari plays HLS natively,
   // everywhere else we lazy-load hls.js so the bundle stays light when no
   // video ever needs to play (eg. when JS hovers never trigger).
-  const attach = async () => {
+  const attach = useCallback(async () => {
     const video = ref.current
     if (!video || attachedRef.current) return
     if (video.canPlayType('application/vnd.apple.mpegurl')) {
@@ -43,14 +43,14 @@ export default function ClientLazyVideo({
     hls.attachMedia(video)
     hlsRef.current = hls
     attachedRef.current = true
-  }
+  }, [videoUrl])
 
   // Attempt play but never throw. Most browsers reject autoplay if the video
   // isn't muted, so we always mute upstream — but extensions and corner
   // cases still abort the promise.
-  const play = () => {
+  const play = useCallback(() => {
     ref.current?.play().catch(() => {})
-  }
+  }, [])
 
   useEffect(() => () => {
     hlsRef.current?.destroy()
@@ -94,7 +94,7 @@ export default function ClientLazyVideo({
       return () => io.disconnect()
     }
     // Desktop hover handled by inline handlers below.
-  }, [mode, mobileAutoplay])
+  }, [mode, mobileAutoplay, attach, play])
 
   const onMouseEnter = mode === 'hover' ? () => attach().then(play) : undefined
   const onMouseLeave = mode === 'hover' ? () => ref.current?.pause() : undefined

@@ -26,3 +26,6 @@
 // Without JS the @media (scripting: none) rule keeps content visible.
 body.intro-pending main { visibility: hidden; }
 @media (scripting: none) { body.intro-pending main { visibility: visible !important; } }
+
+// Locks scroll while the mobile menu is open. Toggled from MobileMenu.tsx.
+body.menu-open { overflow: hidden; }

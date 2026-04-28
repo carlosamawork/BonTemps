@@ -1,7 +1,6 @@
-import { getSettings } from './settings';
+import {getSettings} from './settings'
 
 export async function getDefaultSEO() {
   const settings = await getSettings()
-  return settings.seo
+  return settings?.seo ?? null
 }
-
