@@ -1,0 +1,14 @@
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-bubble);
+  color: var(--color-fg);
+  border-radius: 999px;
+  padding: 12px 18px;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.bubble:hover {
+  color: var(--color-grey);
+}
