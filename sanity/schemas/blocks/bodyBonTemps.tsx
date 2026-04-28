@@ -8,12 +8,13 @@ export default defineType({
     {
       type: 'block',
       styles: [
-        { title: 'Normal', value: 'normal' },
-        { title: 'H1', value: 'h1' },
-        { title: 'H2', value: 'h2' },
-        { title: 'H3', value: 'h3' },
-        { title: 'H4', value: 'h4' },
-        { title: 'P Big', value: 'pBig' },
+        { title: 'Body', value: 'normal' },
+        { title: 'Body Large', value: 'bodyLarge' },
+        { title: 'Headline', value: 'headline' },
+        { title: 'Caption', value: 'caption' },
+        { title: 'Sans Small Title', value: 'sansSmall' },
+        { title: 'Serif Detail', value: 'serifDetail' },
+        { title: 'About', value: 'about' },
       ],
       lists: [
         { title: 'Bullet', value: 'bullet' },
