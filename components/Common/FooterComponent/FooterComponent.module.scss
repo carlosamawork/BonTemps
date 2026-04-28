@@ -57,12 +57,14 @@
 .areaCopy {
   grid-area: copy;
   align-self: end;
-  justify-self: end;
+  // Left-aligned within the contacts column so it sits flush with the
+  // email/social values above it.
+  justify-self: start;
 }
 
-// Claim copy: serif italic to match the BonTemps wordmark style. Overrides
-// the default .t-body font-family that BodyBonTempsRenderer applies via the
-// `normal` style, but keeps its size and line-height per spec.
+// Claim copy uses the brand serif (matching the BonTemps wordmark) but
+// stays upright — no italic. Overrides the default .t-body font-family
+// from BodyBonTempsRenderer; size / line-height keep their spec values.
 .claim {
   margin: 0;
   max-width: 100%;
@@ -71,7 +73,6 @@
   :global(.t-body-large),
   :global(.t-about) {
     font-family: var(--font-serif);
-    font-style: italic;
   }
 }
 
