@@ -15,7 +15,7 @@ export default function WorkGrid({projects}: Props) {
   return (
     <ul className={styles.grid}>
       {projects.map((p) => (
-        <li key={p._id}>
+        <li key={p._id} className={styles.cardItem}>
           <ProjectCard project={p} />
         </li>
       ))}

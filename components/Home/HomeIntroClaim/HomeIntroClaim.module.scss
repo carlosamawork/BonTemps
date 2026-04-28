@@ -1,0 +1,14 @@
+@use "../../../styles/breakpoints" as *;
+
+// Sits above the work grid. Wider than reading copy because the claim
+// double-acts as a visual top section per Figma. Top padding pushes it
+// below the fixed header.
+.intro {
+  padding: 100px var(--margin-x) 32px;
+  max-width: 60ch;
+
+  @include desktop {
+    padding-top: 140px;
+    padding-bottom: 48px;
+  }
+}

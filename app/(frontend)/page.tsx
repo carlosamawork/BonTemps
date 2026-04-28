@@ -1,6 +1,6 @@
 import type {Metadata} from 'next'
 import WorkGrid from '@/components/Home/WorkGrid'
-import HomeFooterClaim from '@/components/Home/HomeFooterClaim'
+import HomeIntroClaim from '@/components/Home/HomeIntroClaim'
 import {getWork} from '@/sanity/queries/queries/work'
 import {getIntroClaim} from '@/sanity/queries/common/intro'
 import {BASE_URL, buildUrl, getFavicons, siteDescription, siteTitle} from '@/utils/seoHelper'
@@ -38,8 +38,8 @@ export default async function WorkPage() {
   return (
     <main id="main">
       <h1 className="visually-hidden">{headlineClaim}</h1>
+      <HomeIntroClaim claim={listWork?.claim} />
       <WorkGrid projects={projects ?? []} />
-      <HomeFooterClaim claim={listWork?.claim} />
     </main>
   )
 }

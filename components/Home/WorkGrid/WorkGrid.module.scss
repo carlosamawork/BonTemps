@@ -1,41 +1,78 @@
 @use "../../../styles/breakpoints" as *;
 
+// Responsive column counts per spec: 1 / 2 / 4 / 5.
+// Row tracks are auto. Each card spans 3 rows (title, media, excerpt) and
+// uses subgrid so the title / media / excerpt of every card in a visual row
+// share their row track heights — that way excerpts align horizontally even
+// when images vary in aspect ratio. Whitespace fills under shorter images.
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px var(--grid-gap-x);
-  padding: 100px var(--margin-x) var(--margin-bottom);
+  column-gap: var(--grid-gap-x);
+  row-gap: 48px;
+  padding: 60px var(--margin-x) var(--margin-bottom);
 
   @include tablet-up {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @include desktop {
-    grid-template-columns: repeat(3, 1fr);
+  @include desktop-only {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include desktop-xl {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
+// `display: contents` removes the <li> from the box tree so the <a> becomes
+// the direct grid child. Required for the subgrid chain below.
+.cardItem {
+  display: contents;
+}
+
+// The card is the actual grid item: spans 3 row tracks and adopts them via
+// subgrid. Its children land at row 1 (title), row 2 (media), row 3 (excerpt)
+// of the parent grid, sharing heights with sibling cards in the same visual
+// row.
 .card {
-  display: block;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  row-gap: 8px;
   color: var(--color-fg);
 }
 
-.media {
-  position: relative;
-  overflow: hidden;
-  // Default 5x4 ratio as per Figma project asset spec; can be relaxed later
-  // by setting the wrapper via CSS once we lock final aspect choices.
-  aspect-ratio: 5 / 4;
-  background: var(--color-bg);
+.title {
+  align-self: start;
+  margin: 0;
+  transition: color 200ms ease;
 }
 
+// Image keeps its intrinsic ratio (width 100%, height auto). align-self:
+// start anchors short images to the top of the row track, leaving white
+// space below — that's the alignment behaviour requested.
+.media {
+  position: relative;
+  align-self: start;
+  width: 100%;
+}
+
+.media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+// Hover-only video overlay. Sits on top of the static poster within the
+// .media bounds — never covers the whitespace below.
 .hoverLayer {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 200ms ease;
   pointer-events: none;
-  // Stretch the inner <video> so it fills the card frame.
+
   video {
     width: 100%;
     height: 100%;
@@ -43,27 +80,20 @@
   }
 }
 
-// Hover-grey out the *other* cards' text. Achieved with a sibling class on
-// the grid; we use :hover on the card to fade in the overlay, and :has() on
-// the grid to fade siblings if available. Falls back gracefully without :has().
 .card:hover .hoverLayer {
   opacity: 1;
 }
 
-.title {
-  margin-top: 12px;
+.excerpt {
+  align-self: start;
+  margin: 0;
   transition: color 200ms ease;
 }
 
-.desc {
-  margin-top: 4px;
-  color: var(--color-fg);
-  transition: color 200ms ease;
-}
-
+// When any card is hovered, the others fade their text to grey for focus.
 .grid:has(.card:hover) .card:not(:hover) {
   .title,
-  .desc {
+  .excerpt {
     color: var(--color-grey);
   }
 }
@@ -72,4 +102,5 @@
   padding: 100px var(--margin-x);
   text-align: center;
   color: var(--color-grey);
+  grid-column: 1 / -1;
 }
