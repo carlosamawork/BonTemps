@@ -158,7 +158,7 @@ export default defineType({
     select: {
       title: 'title',
       subtitle: 'subtitle',
-      media: 'featuredImage.desktop',
+      media: 'featuredImage.image',
     },
     prepare({ title, subtitle, media }) {
       return {
