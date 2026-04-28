@@ -9,6 +9,7 @@ import BackToWorkBubble from '@/components/Singles/BackToWorkBubble'
 import RelatedProjects from '@/components/Singles/RelatedProjects'
 import {getAllProjectSlugs, getProject} from '@/sanity/queries/queries/project'
 import {BASE_URL, buildUrl, siteTitle} from '@/utils/seoHelper'
+import {safeJsonLd} from '@/utils/safeJsonLd'
 import styles from './page.module.scss'
 
 export const revalidate = 60
@@ -67,8 +68,30 @@ export default async function ProjectPage({
     {key: 'collaborators', body: project.collaborators},
   ].filter((s) => !!s.body)
 
+  const projectUrl = buildUrl(`/work/${project.slug}`)
+  const ld = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: project.title,
+      description: project.excerpt ?? project.subtitle,
+      url: projectUrl,
+      image: project.featuredImage?.image?.asset?.url,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {'@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL.origin + '/'},
+        {'@type': 'ListItem', position: 2, name: 'Work', item: BASE_URL.origin + '/'},
+        {'@type': 'ListItem', position: 3, name: project.title, item: projectUrl},
+      ],
+    },
+  ]
+
   return (
     <main id="main">
+      <script type="application/ld+json">{safeJsonLd(ld)}</script>
       <ProjectHeader title={project.title} subtitle={project.subtitle} />
 
       <ProjectFeaturedMedia

@@ -10,6 +10,8 @@ import {getFooter} from '@/sanity/queries/common/footer';
 import {getHeader} from '@/sanity/queries/common/header';
 import {getIntroClaim} from '@/sanity/queries/common/intro';
 import type {FooterData, HeaderData} from '@/sanity/types';
+import {BASE_URL, siteTitle, siteDescription} from '@/utils/seoHelper';
+import {safeJsonLd} from '@/utils/safeJsonLd';
 
 import CookieConsent from '@/components/Common/CookieConsent/CookieConsent';
 import ConsentGate from '@/components/Common/Analytics/consentGate';
@@ -38,6 +40,22 @@ export default async function RootLayout({children}: {children: React.ReactNode}
     (results[2].status === 'fulfilled' ? results[2].value : null) ??
     'Beauty Is A Matter Of Precision'
 
+  // Organization JSON-LD. Email and socials come from CMS so safeJsonLd is
+  // required to neutralise any '</script>' sequences in user input.
+  const orgLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteTitle,
+    description: siteDescription,
+    url: BASE_URL.origin,
+    logo: `${BASE_URL.origin}/favicon.ico`,
+    email: header?.contactEmail,
+    sameAs: [
+      header?.instagramUrl,
+      ...(footer?.socials?.map((s) => s.url) ?? []),
+    ].filter(Boolean),
+  }
+
   return (
     <html lang="en">
       <head>
@@ -45,6 +63,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
       </head>
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
+        <script type="application/ld+json">{safeJsonLd(orgLd)}</script>
         <WebProvider>
           <IntroProvider>
             <HeaderComponent data={header} />
