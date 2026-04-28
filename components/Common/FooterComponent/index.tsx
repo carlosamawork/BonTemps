@@ -5,6 +5,11 @@ import styles from './FooterComponent.module.scss'
 
 type Props = {data?: FooterData}
 
+// Footer is a CSS grid using named areas so the four cells (claim,
+// contacts, monogram, copy) snap to their column positions per breakpoint.
+// Monogram lives at the bottom of column 1 and copy lives at the bottom of
+// the contacts column — they share a row visually without needing a flex
+// wrapper.
 export default function FooterComponent({data}: Props) {
   if (!data) return null
 
@@ -16,13 +21,13 @@ export default function FooterComponent({data}: Props) {
   return (
     <footer className={styles.footer}>
       {data.claim && (
-        <div className={styles.claim}>
+        <div className={`${styles.claim} ${styles.areaClaim}`}>
           <BodyBonTempsRenderer value={data.claim} />
         </div>
       )}
 
       {(hasEmails || hasSocials) && (
-        <div className={styles.contacts}>
+        <div className={`${styles.contacts} ${styles.areaContacts}`}>
           {hasEmails &&
             data.emails!.map((entry) => (
               <div key={entry.email} className={styles.contactGroup}>
@@ -52,10 +57,8 @@ export default function FooterComponent({data}: Props) {
         </div>
       )}
 
-      <div className={styles.bottom}>
-        <MonogramBTA className={styles.monogram} />
-        <p className={`t-rights-reserved ${styles.copy}`}>{copyright}</p>
-      </div>
+      <MonogramBTA className={`${styles.monogram} ${styles.areaMonogram}`} />
+      <p className={`${styles.copy} ${styles.areaCopy} t-rights-reserved`}>{copyright}</p>
     </footer>
   )
 }
