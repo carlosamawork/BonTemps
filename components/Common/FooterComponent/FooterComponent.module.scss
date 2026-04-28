@@ -4,55 +4,72 @@
   padding: 80px var(--margin-x) var(--margin-bottom);
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 80px;
   background: var(--color-bg);
   color: var(--color-fg);
 }
 
-.claim {
-  max-width: 1100px;
-}
-
-.bottom {
+// Top half: claim on the left, contact columns on the right.
+.top {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
-  align-items: end;
+  gap: 48px;
 
   @include tablet-up {
-    grid-template-columns: 2fr 1fr;
-    align-items: end;
-  }
-
-  @include desktop {
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--grid-gap-x);
+    align-items: start;
   }
 }
 
-.emails {
+.claim {
+  max-width: 60ch;
+}
+
+// Contact column: labels above values, each "group" is a label + one or
+// more values. Stacks vertically on every breakpoint.
+.contacts {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-
-  li {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+  gap: 24px;
 }
 
-.emailTitle {
+.contactGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactLabel {
   color: var(--color-grey);
 }
 
-.socials {
+// Bottom row: BTA monogram bottom-left, copyright bottom-right.
+.bottom {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-self: end;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 40px;
+}
+
+// Placeholder text monogram. Replace with an SVG once the brand mark is
+// finalised — keeping it as a stylable element until then.
+.monogram {
+  font-family: var(--font-serif);
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-fg);
+
+  @include tablet-up {
+    font-size: 120px;
+  }
+
+  @include desktop {
+    font-size: 160px;
+  }
 }
 
 .copy {
-  align-self: end;
   color: var(--color-grey);
 }
