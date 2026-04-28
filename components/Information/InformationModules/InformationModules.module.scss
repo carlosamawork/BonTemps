@@ -1,0 +1,132 @@
+@use "../../../styles/breakpoints" as *;
+
+// Shared module layout — each block is a section the page can compose
+// vertically without an extra wrapper.
+.clients,
+.textColumn,
+.imgVid {
+  padding: 60px var(--margin-x);
+
+  @include desktop {
+    padding: 80px var(--margin-x);
+  }
+}
+
+// Clients list: each row is name + location with grey/black swap on hover.
+.clients ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.heading {
+  margin: 0 0 24px;
+  color: var(--color-grey);
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: baseline;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.name {
+  color: var(--color-grey);
+  transition: color 180ms ease;
+}
+
+.location {
+  color: var(--color-fg);
+  transition: color 180ms ease;
+}
+
+.rowHover .name {
+  color: var(--color-fg);
+}
+
+.rowHover .location {
+  color: var(--color-grey);
+}
+
+// Text columns: fluid grid that splits the body blocks into N columns.
+.textColumn {
+  display: grid;
+  gap: 32px var(--grid-gap-x);
+  grid-template-columns: 1fr;
+}
+
+.textColumn[data-columns='2'] {
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.textColumn[data-columns='3'] {
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.textColumnItem {
+  min-width: 0;
+}
+
+// Image / Video grid (responsive variants).
+.imgVid {
+  display: grid;
+  gap: var(--grid-gap-x);
+  grid-template-columns: 1fr;
+}
+
+.imgVid[data-columns='2'] {
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.imgVid[data-columns='3'] {
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.imgVidItem {
+  margin: 0;
+
+  img,
+  video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 12px;
+    color: var(--color-grey);
+  }
+}
+
+@include mobile {
+  .imgVid[data-reverse='true'] > :nth-child(odd) {
+    order: 2;
+  }
+  .imgVid[data-reverse='true'] > :nth-child(even) {
+    order: 1;
+  }
+}
