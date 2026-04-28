@@ -1,0 +1,17 @@
+// styles/_layout.scss
+@use "./breakpoints" as *;
+
+:root {
+  --margin-x: 16px;
+  --margin-bottom: 32px;
+  --grid-gap-x: 16px;
+}
+@include tablet {
+  :root { --margin-x: 30px; --margin-bottom: 40px; --grid-gap-x: 15px; }
+}
+@include desktop {
+  :root { --margin-x: 50px; --margin-bottom: 60px; --grid-gap-x: 20px; }
+}
+
+.page-x { padding-left: var(--margin-x); padding-right: var(--margin-x); }
+.page-bottom { padding-bottom: var(--margin-bottom); }
