@@ -18,10 +18,11 @@ const documents = [page, project, service]
 
 // Singleton document types
 import home from './singletons/home'
+import information from './singletons/information'
 import listWork from './singletons/listWork'
 import settings from './singletons/settings'
 
-const singletons = [home, listWork, settings]
+const singletons = [home, listWork, settings, information]
 
 // Block content
 import body from './blocks/body'
@@ -51,7 +52,11 @@ import gridItems from './objects/module/gridItem'
 import moduleImageText from './objects/module/imageText'
 import moduleImageVideo from './objects/module/imageVideo'
 import mediaImage from './objects/module/mediaImage'
+import mediaImageResponsive from './objects/module/mediaImageResponsive'
 import mediaVideo from './objects/module/mediaVideo'
+import mediaVideoResponsive from './objects/module/mediaVideoResponsive'
+import moduleInformationClients from './objects/module/informationClients'
+import moduleInformationImageVideo from './objects/module/informationImageVideo'
 import modulePageImageVideo from './objects/module/pageImageVideo'
 import modulePageTextColumn from './objects/module/pageTextColumn'
 import moduleTextColumn from './objects/module/textColumn'
@@ -81,7 +86,11 @@ const objects = [
   moduleImageText,
   moduleImageVideo,
   mediaImage,
+  mediaImageResponsive,
   mediaVideo,
+  mediaVideoResponsive,
+  moduleInformationClients,
+  moduleInformationImageVideo,
   modulePageImageVideo,
   modulePageTextColumn,
   moduleTextColumn,
