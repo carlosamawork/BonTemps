@@ -1,0 +1,6 @@
+@use "../../../styles/breakpoints" as *;
+
+.aside {
+  padding: 60px var(--margin-x);
+  max-width: 1100px;
+}
