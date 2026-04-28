@@ -1,0 +1,148 @@
+@use "../../../styles/breakpoints" as *;
+
+// Each module owns its own outer padding so the page can compose them
+// vertically without an explicit wrapper. Sides match the page margin
+// tokens so modules align with the project header and featured media.
+.centered,
+.imageVideo,
+.textColumn,
+.imageText {
+  padding: 60px var(--margin-x);
+
+  @include desktop {
+    padding: 80px var(--margin-x);
+  }
+}
+
+// Centered narrow column.
+.centered {
+  text-align: center;
+}
+
+.centeredInner {
+  margin: 0 auto;
+  max-width: 28ch;
+}
+
+// Image/Video grid module. Columns track the editor's `columns` value;
+// items are figures that render an image or a video. Mobile collapses to
+// 1 column and respects `data-reverse` to optionally swap order.
+.imageVideo {
+  display: grid;
+  gap: var(--grid-gap-x);
+  grid-template-columns: 1fr;
+}
+
+.imageVideo[data-columns='2'] {
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.imageVideo[data-columns='3'] {
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include mobile {
+  .imageVideo[data-reverse='true'] > :nth-child(odd) {
+    order: 2;
+  }
+  .imageVideo[data-reverse='true'] > :nth-child(even) {
+    order: 1;
+  }
+}
+
+.imageVideoItem {
+  margin: 0;
+
+  img,
+  video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 12px;
+    color: var(--color-grey);
+  }
+}
+
+// Text column module. Maps editor's columns/span/columnStart to a CSS
+// grid placement. The CSS variables are set inline by the component.
+.textColumn {
+  display: grid;
+}
+
+.textColumn[data-columns='1'] {
+  grid-template-columns: 1fr;
+}
+
+.textColumn[data-columns='2'] {
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--grid-gap-x);
+  }
+}
+
+.textColumn[data-columns='3'] {
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--grid-gap-x);
+  }
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--grid-gap-x);
+  }
+}
+
+.textColumnInner {
+  grid-column: var(--col-start, 1) / span var(--span, 1);
+
+  @include mobile {
+    grid-column: 1 / -1;
+  }
+}
+
+// Image+Text two-column module. `data-side="right"` puts the image after
+// the body on desktop while keeping image-first on mobile.
+.imageText {
+  display: grid;
+  gap: 32px var(--grid-gap-x);
+  grid-template-columns: 1fr;
+
+  @include tablet-up {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
+
+.imageTextMedia,
+.imageTextBody {
+  min-width: 0;
+}
+
+.imageTextMedia img,
+.imageTextMedia video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.imageText[data-side='right'] {
+  @include tablet-up {
+    .imageTextMedia {
+      order: 2;
+    }
+    .imageTextBody {
+      order: 1;
+    }
+  }
+}
