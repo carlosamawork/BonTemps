@@ -4,55 +4,80 @@ import React from 'react';
 import WebProvider from '../../context/webContext';
 import HeaderComponent from '../../components/Common/HeaderComponent';
 import FooterComponent from '../../components/Common/FooterComponent';
-import { getFooter } from '@/sanity/queries/common/footer';
-import { getHeader } from '@/sanity/queries/common/header';
-import type { FooterData, HeaderData } from '@/sanity/types';
+import {IntroProvider} from '@/components/Home/IntroOverlay/IntroProvider';
+import IntroOverlay from '@/components/Home/IntroOverlay';
+import {getFooter} from '@/sanity/queries/common/footer';
+import {getHeader} from '@/sanity/queries/common/header';
+import {getIntroClaim} from '@/sanity/queries/common/intro';
+import type {FooterData, HeaderData} from '@/sanity/types';
+import {BASE_URL, siteTitle, siteDescription} from '@/utils/seoHelper';
+import {safeJsonLd} from '@/utils/safeJsonLd';
 
 import CookieConsent from '@/components/Common/CookieConsent/CookieConsent';
 import ConsentGate from '@/components/Common/Analytics/consentGate';
 
 import Analytics from '@/components/Common/Analytics/google';
 
-function RawHTML({html}:{html: string}) {
-  return <div className="credits" dangerouslySetInnerHTML={{__html: html}} />
-}
+// Inline gate: applied before paint when JS is on, prevents Work content from
+// flashing behind the intro overlay during hydration. The literal is fully
+// hardcoded — no user input is interpolated, so it's safe to inline as text
+// children of <script>.
+const INTRO_GATE = `try {
+  if (!sessionStorage.getItem('bontemps_intro_seen') &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('intro-pending');
+  }
+} catch (e) {}`
 
-export default async function RootLayout({ children, }: { children: React.ReactNode; }) {
+export default async function RootLayout({children}: {children: React.ReactNode}) {
+  const results = await Promise.allSettled([getHeader(), getFooter(), getIntroClaim()])
 
-  const results = await Promise.allSettled([getHeader(), getFooter()])
+  const header: HeaderData | undefined =
+    results[0].status === 'fulfilled' ? results[0].value : undefined
+  const footer: FooterData | undefined =
+    results[1].status === 'fulfilled' ? results[1].value : undefined
+  const claim =
+    (results[2].status === 'fulfilled' ? results[2].value : null) ??
+    'Beauty Is A Matter Of Precision'
 
-  const header: HeaderData | undefined = results[0].status === 'fulfilled' ? results[0].value : undefined
-  const footer: FooterData | undefined = results[1].status === 'fulfilled' ? results[1].value : undefined
+  // Organization JSON-LD. Email and socials come from CMS so safeJsonLd is
+  // required to neutralise any '</script>' sequences in user input.
+  const orgLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteTitle,
+    description: siteDescription,
+    url: BASE_URL.origin,
+    logo: `${BASE_URL.origin}/favicon.ico`,
+    email: header?.contactEmail,
+    sameAs: [
+      header?.instagramUrl,
+      ...(footer?.socials?.map((s) => s.url) ?? []),
+    ].filter(Boolean),
+  }
 
   return (
     <html lang="en">
+      <head>
+        <script>{INTRO_GATE}</script>
+      </head>
       <body>
-        <RawHTML html="<!-- ----------------------------------------------------- -->
-        <!-- Code by AMA, http://ama.work (2026) -->
-        <!-- ----------------------------------------------------- -->" />
+        <a className="skip-link" href="#main">Skip to content</a>
+        <script type="application/ld+json">{safeJsonLd(orgLd)}</script>
         <WebProvider>
-          <HeaderComponent data={header} />
+          <IntroProvider>
+            <HeaderComponent data={header} />
+            {children}
+            <IntroOverlay claim={claim} />
+            <FooterComponent data={footer} />
 
-          {children}
-
-          {/* Cookie Consent */}
-          <CookieConsent />
-          {process.env.NODE_ENV === 'production' && (
-            <>
+            <CookieConsent />
+            {process.env.NODE_ENV === 'production' && (
               <ConsentGate category="analytics">
                 <Analytics />
-                {/* <Hotjar /> */}
               </ConsentGate>
-
-              {/* <ConsentGate category="marketing">
-                <FacebookPixel />
-                <PinterestTag />
-              </ConsentGate> */}
-            </>
-          )}
-          {/* Cookie Consent */}
-
-          <FooterComponent data={footer} />
+            )}
+          </IntroProvider>
         </WebProvider>
       </body>
     </html>

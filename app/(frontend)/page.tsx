@@ -1,91 +1,43 @@
-import WelcomeComponent from '@/components/Welcome/WelcomeComponent';
-import { getDefaultSEO } from '@/sanity/queries/common/defaultSEO';
-import { getHomeSEO } from '@/sanity/queries/queries/home';
-import { BASE_IMAGE_HEIGHT, BASE_IMAGE_URL, BASE_IMAGE_WIDTH, BASE_URL, buildUrl, getFavicons, siteDescription, siteTitle } from '@/utils/seoHelper';
+import type {Metadata} from 'next'
+import WorkGrid from '@/components/Home/WorkGrid'
+import {getWork} from '@/sanity/queries/queries/work'
+import {getIntroClaim} from '@/sanity/queries/common/intro'
+import {BASE_URL, buildUrl, getFavicons, siteDescription, siteTitle} from '@/utils/seoHelper'
 
+export const revalidate = 60
 
-export const revalidate = 1 // revalidate to work set to 1, then we change it to 10
-
-export async function generateMetadata() {
-  const page = await getHomeSEO();
-  const defaultSEO = await getDefaultSEO();
-
-  if (!page) {
-    return {
-      metadataBase: BASE_URL,
-      title: defaultSEO?.title || siteTitle,
-      description: defaultSEO?.description || siteDescription,
-      robots: {
-        index: false,
-        follow: true,
-        nocache: false,
-        googleBot: {
-          index: false,
-          follow: true,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
-        },
-      },
-      alternates: {
-        canonical: BASE_URL.origin,
-      },
-    }
-  }
-
-
+export async function generateMetadata(): Promise<Metadata> {
+  const claim = await getIntroClaim()
+  const description = claim ?? siteDescription
   return {
     metadataBase: BASE_URL,
-    title: `${page.seo?.title || siteTitle}`,
-    description: page.seo?.description || siteDescription,
-    generator: 'Next.js',
-    applicationName: 'Conti, Cert. by ama.work',
+    title: siteTitle,
+    description,
+    alternates: {canonical: buildUrl('/')},
     openGraph: {
-      title: `${page.seo?.title || siteTitle}`,
-      description: page.seo?.description || siteDescription,
-      url: buildUrl("/"),
+      title: siteTitle,
+      description,
+      url: buildUrl('/'),
       siteName: siteTitle,
-      images: [
-        {
-          url: page.seo?.image?.imageUrl || BASE_IMAGE_URL,
-          width: page.seo?.image?.metadata?.dimensions?.width || BASE_IMAGE_WIDTH,
-          height: page.seo?.image?.metadata?.dimensions?.height || BASE_IMAGE_HEIGHT,
-        },
-      ],
       type: 'website',
-    },
-    robots: {
-      index: true,
-      follow: true,
-      nocache: false,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-    icons: getFavicons(),
-    alternates: {
-      canonical: buildUrl("/")
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${page.seo?.title || siteTitle}`,
-      description: page.seo?.description || siteDescription,
-      images: [
-        page.seo?.image?.imageUrl || BASE_IMAGE_URL,
-      ],
+      title: siteTitle,
+      description,
     },
+    icons: getFavicons(),
   }
 }
 
-export default async function Home() {
+export default async function WorkPage() {
+  const {listWork, projects} = await getWork()
+  const headlineClaim = listWork?.claim || siteTitle
 
   return (
-    <main>
-      <WelcomeComponent />
+    <main id="main">
+      <h1 className="visually-hidden">{headlineClaim}</h1>
+      <WorkGrid projects={projects ?? []} claim={listWork?.claim} />
     </main>
   )
 }

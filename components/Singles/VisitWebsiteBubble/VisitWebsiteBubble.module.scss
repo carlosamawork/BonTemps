@@ -1,0 +1,18 @@
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bubble);
+  color: var(--color-fg);
+  border-radius: 999px;
+  padding: 12px 18px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.bubble:hover,
+.bubble:focus-visible {
+  color: var(--color-fg);
+}

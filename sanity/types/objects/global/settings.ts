@@ -1,10 +1,13 @@
 // sanity/types/objects/global/settings.ts
+// Kept as a thin alias for legacy callers. New code should use HeaderData / FooterData
+// directly from the dedicated query results.
 
-import { SEO } from '../seo';
-import type { Menu } from './menu';
+import type {SEO} from '../seo'
+import type {HeaderData} from './header'
+import type {FooterData} from './footer'
 
 export type SettingsData = {
-  headerMenu: Menu;
-  footerMenu: Menu;
-  seo: SEO;
-};
+  header?: HeaderData
+  footer?: FooterData
+  seo?: SEO
+}

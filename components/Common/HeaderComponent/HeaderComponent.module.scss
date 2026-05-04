@@ -1,18 +1,139 @@
-@use "./styles/common/variables.scss" as *;
-@use "./styles/mixins/breakpoints.scss" as *;
+@use "../../../styles/breakpoints" as *;
 
 .header {
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  // Pure blur with no colour wash — the page content shows through, just
+  // softly defocused. Backdrop-filter alone has no fallback colour so we
+  // leave background transparent on purpose.
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  background: transparent;
+  // Soft fade-out at the bottom edge per spec.
+  mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
+}
 
-  background-color: $body-bg;
+// Three-column layout per Figma: logo (left), nav (centre), meta (right).
+// Mobile collapses to logo + burger; the nav and meta hide and the menu
+// surfaces them in the overlay.
+.inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  padding: 16px var(--margin-x);
+  gap: 12px;
 
-  text-align: center;
-  border-bottom: 1px solid $secondary;
-  h4 {
-    margin: 1em;
-    @include media-breakpoint-up(md) {
-    }
+  @include tablet-up {
+    padding: 20px var(--margin-x);
+    grid-template-columns: 1fr auto 1fr;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-fg);
+  z-index: 2;
+}
+
+// Intrinsic SVG aspect ratio is 137 / 24. Height drives the visual weight
+// — sized to sit comfortably alongside the 16px nav text.
+.logoSvg {
+  display: block;
+  width: auto;
+  height: 18px;
+
+  @include desktop {
+    height: 20px;
+  }
+}
+
+.nav {
+  position: relative;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  justify-self: center;
+
+  @include tablet-up {
+    display: flex;
+  }
+}
+
+.navItem {
+  position: relative;
+  padding: 8px 14px;
+  color: var(--color-fg);
+  transition: color 180ms ease;
+  z-index: 1;
+}
+
+.nav:hover .navItem:not(:hover) {
+  color: var(--color-grey);
+}
+
+.bubble {
+  position: absolute;
+  background: var(--color-bubble);
+  border-radius: 999px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contact {
+  cursor: pointer;
+  user-select: none;
+}
+
+// Right-side meta block. Date stacks above Instagram on desktop; collapses
+// out of view on mobile (the burger menu carries Instagram if needed).
+.meta {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 2px;
+  justify-self: end;
+
+  @include tablet-up {
+    display: flex;
+  }
+}
+
+.burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1;
+  justify-self: end;
+
+  @include tablet-up {
+    display: none;
+  }
+}
+
+.mobilePanel {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.96);
+  z-index: 60;
+  padding: 80px var(--margin-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 }

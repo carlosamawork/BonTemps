@@ -1,7 +1,8 @@
-import { imageData } from "../primitives/imageData";
-import { imageSize } from "../primitives/imageSize";
+import {imageData} from '../primitives/imageData'
 
+// Fragment for media.image (single asset variant).
 export const image = `
-    ${imageData},
-    ${imageSize}
+  image { ${imageData} },
+  alt,
+  caption
 `

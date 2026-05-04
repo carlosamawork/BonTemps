@@ -1,0 +1,51 @@
+@use "../../../styles/breakpoints" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+// Vertical stack: claim line on top, monogram below. Centered on both axes.
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.claim {
+  margin: 0;
+  font-family: var(--font-serif);
+  color: #fff;
+
+  span {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+}
+
+.monogramWrap {
+  display: block;
+}
+
+.monogram {
+  display: block;
+  width: auto;
+  height: 80px;
+  color: #fff;
+
+  @include tablet-up {
+    height: 96px;
+  }
+
+  @include desktop-xl {
+    height: 110px;
+  }
+}

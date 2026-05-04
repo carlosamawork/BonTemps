@@ -38,6 +38,15 @@ export default defineType({
       type: 'string',
       group: 'editorial',
     }),
+    // Project website URL
+    defineField({
+      name: 'websiteUrl',
+      title: 'Project website URL',
+      type: 'url',
+      description: 'External URL for "+ Visit Website". Leave empty if the project has no public site.',
+      validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
+      group: 'editorial',
+    }),
     // Excerpt
     defineField({
       name: 'excerpt',
@@ -158,7 +167,7 @@ export default defineType({
     select: {
       title: 'title',
       subtitle: 'subtitle',
-      media: 'featuredImage.desktop',
+      media: 'featuredImage.image',
     },
     prepare({ title, subtitle, media }) {
       return {

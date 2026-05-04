@@ -6,45 +6,18 @@ export default defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'desktop',
-      title: 'Desktop',
+      name: 'image',
+      title: 'Image',
       type: 'image',
       options: { hotspot: true },
       validation: (Rule) => Rule.required(),
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-          validation: (Rule) => Rule.required(),
-        }),
-      ],
     }),
     defineField({
-      name: 'ipad',
-      title: 'iPad',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'mobile',
-      title: 'Mobile',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt text',
-          type: 'string',
-        }),
-      ],
+      name: 'alt',
+      title: 'Alt text',
+      type: 'string',
+      description: 'Alt description for screen readers and SEO. Required.',
+      validation: (Rule) => Rule.required().min(1).max(200),
     }),
     defineField({
       name: 'caption',
@@ -53,15 +26,9 @@ export default defineType({
     }),
   ],
   preview: {
-    select: {
-      media: 'desktop',
-      caption: 'caption',
-    },
-    prepare({ media, caption }) {
-      return {
-        title: caption || 'Image',
-        media,
-      }
+    select: { title: 'alt', media: 'image' },
+    prepare({ title, media }) {
+      return { title: title || 'Image', media }
     },
   },
 })

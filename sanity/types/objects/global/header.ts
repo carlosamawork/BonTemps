@@ -1,7 +1,11 @@
 // sanity/types/objects/global/header.ts
 
-import type { Menu } from './menu';
+export type HeaderMenuItem =
+  | {_key: string; _type: 'linkInternal'; title?: string; slug?: string; type?: string}
+  | {_key: string; _type: 'linkExternal'; title?: string; url?: string; newWindow?: boolean}
 
 export type HeaderData = {
-  headerMenu: Menu;
-};
+  contactEmail?: string
+  instagramUrl?: string
+  headerMenu?: {items?: HeaderMenuItem[]}
+}

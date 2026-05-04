@@ -1,18 +1,116 @@
-@use "./styles/common/variables.scss" as *;
-@use "./styles/mixins/breakpoints.scss" as *;
+@use "../../../styles/breakpoints" as *;
 
+// CSS Grid with named areas. Each breakpoint pins the four blocks (claim,
+// contacts, monogram, copy) to specific cells. The monogram cell and copy
+// cell share the bottom row, so the BTA and copyright always align to each
+// other vertically — at the bottom of their respective columns — without
+// extra flex wrappers.
 .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+  padding: 80px var(--margin-x) var(--margin-bottom);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  display: grid;
+  column-gap: var(--grid-gap-x);
+  row-gap: 48px;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "claim"
+    "contacts"
+    "monogram"
+    "copy";
 
-    background-color: $body-bg;
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "claim    contacts"
+      "monogram copy";
+  }
 
-    text-align: center;
-    border-top: 1px solid $secondary;
-    h4 {
-        margin: 1em;
-        @include media-breakpoint-up(md) {
-        }
-    }
+  @include desktop-only {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "claim    claim claim contacts"
+      "monogram .     .     copy";
+  }
+
+  @include desktop-xl {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas:
+      "claim    claim claim claim contacts"
+      "monogram .     .     .     copy";
+  }
+}
+
+.areaClaim {
+  grid-area: claim;
+}
+
+.areaContacts {
+  grid-area: contacts;
+}
+
+.areaMonogram {
+  grid-area: monogram;
+  align-self: end;
+}
+
+.areaCopy {
+  grid-area: copy;
+  align-self: end;
+  // Left-aligned within the contacts column so it sits flush with the
+  // email/social values above it.
+  justify-self: start;
+}
+
+// Claim copy uses the brand serif (matching the BonTemps wordmark) but
+// stays upright — no italic. Overrides the default .t-body font-family
+// from BodyBonTempsRenderer; size / line-height keep their spec values.
+.claim {
+  margin: 0;
+  max-width: 100%;
+  padding-right: 10vw;
+
+  :global(.t-body),
+  :global(.t-body-large),
+  :global(.t-about) {
+    font-family: var(--font-serif);
+  }
+}
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-self: start;
+}
+
+.contactGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactLabel {
+  color: var(--color-grey);
+}
+
+// Brand SVG mark. Intrinsic ratio 86 / 82. Height drives the visual weight.
+.monogram {
+  display: block;
+  width: auto;
+  height: 80px;
+  color: var(--color-fg);
+
+  @include tablet-up {
+    height: 110px;
+  }
+
+  @include desktop {
+    height: 140px;
+  }
+}
+
+.copy {
+  margin: 0;
+  color: var(--color-grey);
 }

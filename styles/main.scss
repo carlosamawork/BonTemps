@@ -3,12 +3,31 @@
 /* Normalize */
 @use "normalize.css/normalize";
 
-/* Foundations */
+/* Legacy template foundations (kept until existing components are refactored) */
 @use "mixins/utils";
 @use "common/variables";
-
-/* Base */
 @use "common/typography_import";
 @use "common/typography";
 @use "common/default";
 @use "common/general";
+
+/* BonTemps foundations (override legacy where conflicting) */
+@use "./breakpoints" as *;
+@use "./colors";
+@use "./layout";
+@use "./typography" as *;
+@use "./utilities";
+
+/* Override legacy body styles with BonTemps tokens */
+html, body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+a { color: inherit; text-decoration: none; }
+button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; color: inherit; }
+ul, ol { list-style: none; padding: 0; margin: 0; }
+img, video { max-width: 100%; display: block; }

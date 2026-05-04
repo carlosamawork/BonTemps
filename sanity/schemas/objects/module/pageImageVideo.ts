@@ -37,7 +37,7 @@ export default defineType({
   preview: {
     select: {
       mediaType: 'mediaType',
-      media: 'image.desktop',
+      media: 'image.image',
     },
     prepare({ mediaType, media }) {
       return {

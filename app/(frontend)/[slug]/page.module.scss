@@ -1,0 +1,27 @@
+@use "../../../styles/breakpoints" as *;
+
+.article {
+  padding: 120px var(--margin-x) 80px;
+  max-width: 70ch;
+  margin-left: auto;
+  margin-right: auto;
+
+  @include desktop {
+    padding-top: 160px;
+    padding-bottom: 120px;
+  }
+}
+
+.title {
+  margin: 0 0 32px;
+
+  @include desktop {
+    margin-bottom: 48px;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

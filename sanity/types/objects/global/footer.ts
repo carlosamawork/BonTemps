@@ -1,7 +1,13 @@
 // sanity/types/objects/global/footer.ts
 
-import type { Menu } from './menu';
+import type {PortableTextBlock} from '@portabletext/types'
+
+export type FooterEmail = {title: string; email: string}
+export type FooterSocial = {_key?: string; title: string; url: string}
 
 export type FooterData = {
-  footerMenu: Menu;
-};
+  claim?: PortableTextBlock[]
+  emails?: FooterEmail[]
+  socials?: FooterSocial[]
+  copyright?: string
+}
