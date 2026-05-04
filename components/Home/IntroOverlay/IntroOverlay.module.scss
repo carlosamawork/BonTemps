@@ -20,13 +20,27 @@
   gap: 20px;
 }
 
+// Self-contained typography so the global `.t-intro` token doesn't have
+// to win the cascade. font-family is explicitly serif (ABC Marist) and
+// the size scales like t-intro across breakpoints.
 .claim {
   margin: 0;
-  font-family: var(--font-serif);
   color: #fff;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  letter-spacing: -0.01em;
+
+  @include tablet-up {
+    font-size: 32px;
+  }
+
+  @include desktop-xl {
+    font-size: 40px;
+  }
 
   span {
     display: inline-block;
+    font-family: inherit;
     will-change: transform, opacity;
   }
 }

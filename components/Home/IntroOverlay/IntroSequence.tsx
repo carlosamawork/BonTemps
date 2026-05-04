@@ -15,7 +15,7 @@ export default function IntroSequence({claim}: Props) {
 
   return (
     <div className={styles.stage}>
-      <h1 className={`${styles.claim} t-intro`} aria-label={claim}>
+      <h1 className={styles.claim} aria-label={claim}>
         {letters.map((ch, i) => (
           <motion.span
             key={i}
@@ -24,7 +24,9 @@ export default function IntroSequence({claim}: Props) {
             transition={{delay: 0.2 + i * 0.04, duration: 0.35, ease: 'easeOut'}}
             aria-hidden
           >
-            {ch === ' ' ? ' ' : ch}
+            {/* Non-breaking space — a regular ' ' would collapse inside the
+                inline-block span and the words would mash together. */}
+            {ch === ' ' ? ' ' : ch}
           </motion.span>
         ))}
       </h1>

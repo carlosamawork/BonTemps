@@ -11,9 +11,7 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	-webkit-tap-highlight-color: transparent;
-
 	font-weight: normal;
-	font-weight: 500;
 }
 
 html,
@@ -68,7 +66,6 @@ a {
     &:link,
 	&:visited,
 	&:active {
-		color: black;
 		text-decoration: none;
 	}
 

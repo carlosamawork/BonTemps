@@ -28,6 +28,8 @@ const components: PortableTextComponents = {
     annotationLinkEmail: ({children, value}) => <a href={`mailto:${value?.email}`}>{children}</a>,
     colorBlack: ({children}) => <span style={{color: 'var(--color-fg)'}}>{children}</span>,
     colorGrey: ({children}) => <span style={{color: 'var(--color-grey)'}}>{children}</span>,
+    fontSerif: ({children}) => <span style={{fontFamily: 'var(--font-serif)'}}>{children}</span>,
+    fontSans: ({children}) => <span style={{fontFamily: 'var(--font-sans)'}}>{children}</span>,
   },
 }
 

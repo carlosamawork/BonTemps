@@ -21,21 +21,46 @@
 
 .centeredInner {
   margin: 0 auto;
-  max-width: 28ch;
+  max-width: 860px;
 }
 
-// Image/Video grid module. Columns track the editor's `columns` value;
-// items are figures that render an image or a video. Mobile collapses to
-// 1 column and respects `data-reverse` to optionally swap order.
+// Image/Video grid module. Columns track the editor's `columns` value
+// and `data-layout` selects the aspect-ratio recipe per item. Mobile
+// collapses to 1 column and respects `data-reverse` to swap order.
 .imageVideo {
   display: grid;
   gap: var(--grid-gap-x);
   grid-template-columns: 1fr;
 }
 
-.imageVideo[data-columns='2'] {
+// 2-col Option A: equal halves (4×5 · 4×5).
+.imageVideo[data-columns='2'][data-layout='optionA'] {
   @include tablet-up {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+// 2-col Option B: big landscape (3×2) + small vertical (4×5). The wide
+// item gets ~3/4 of the row; reverse swaps the column track so the
+// small item sits first when the editor wants that order.
+.imageVideo[data-columns='2'][data-layout='optionB'] {
+  @include tablet-up {
+    grid-template-columns: 3fr 1fr;
+    align-items: start;
+  }
+}
+.imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] {
+  @include tablet-up {
+    grid-template-columns: 1fr 3fr;
+  }
+}
+
+// 2-col Option C: wide-top (5×4) + vertical (4×5) on equal halves so
+// the vertical extends below while the wide is anchored at the top.
+.imageVideo[data-columns='2'][data-layout='optionC'] {
+  @include tablet-up {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
   }
 }
 
@@ -61,17 +86,62 @@
 .imageVideoItem {
   margin: 0;
 
-  img,
-  video {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
   figcaption {
     margin-top: 12px;
     color: var(--color-grey);
   }
+}
+
+// Inner wrapper carries the aspect ratio so the image/video crop matches
+// the layout slot regardless of the actual upload dimensions. Caption
+// stays outside this box and keeps its natural height.
+.imageVideoMedia {
+  width: 100%;
+  overflow: hidden;
+
+  img,
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Per-layout aspect ratios, applied to the media wrapper.
+.imageVideo[data-columns='1'][data-layout='optionA'] .imageVideoMedia {
+  aspect-ratio: 3 / 2;
+}
+.imageVideo[data-columns='1'][data-layout='optionB'] .imageVideoMedia {
+  aspect-ratio: 16 / 9;
+}
+
+.imageVideo[data-columns='2'][data-layout='optionA'] .imageVideoMedia {
+  aspect-ratio: 4 / 5;
+}
+
+.imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(1) .imageVideoMedia {
+  aspect-ratio: 3 / 2;
+}
+.imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(2) .imageVideoMedia {
+  aspect-ratio: 4 / 5;
+}
+.imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(1) .imageVideoMedia {
+  aspect-ratio: 4 / 5;
+}
+.imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(2) .imageVideoMedia {
+  aspect-ratio: 3 / 2;
+}
+
+.imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(1) .imageVideoMedia {
+  aspect-ratio: 5 / 4;
+}
+.imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(2) .imageVideoMedia {
+  aspect-ratio: 4 / 5;
+}
+
+.imageVideo[data-columns='3'][data-layout='optionA'] .imageVideoMedia {
+  aspect-ratio: 4 / 5;
 }
 
 // Text column module. Maps editor's columns/span/columnStart to a CSS

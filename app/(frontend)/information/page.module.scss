@@ -1,15 +1,7 @@
 @use "../../../styles/breakpoints" as *;
 
-.intro {
-  padding: 120px var(--margin-x) 40px;
-  max-width: 60ch;
-
-  @include desktop {
-    padding-top: 160px;
-    padding-bottom: 60px;
-  }
-}
-
+// Each section component owns its own padding so the page just stacks
+// them vertically. Empty state stays centred for the no-content case.
 .empty {
   padding: 120px var(--margin-x);
   text-align: center;

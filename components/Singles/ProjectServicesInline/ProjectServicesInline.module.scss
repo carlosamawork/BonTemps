@@ -1,0 +1,27 @@
+@use "../../../styles/breakpoints" as *;
+
+// Centered single-line row. Label sits in grey; service titles follow in
+// the body colour. Generous spacing between items so the row reads like
+// the Figma "(Services)   Brand Refresh   Web Design".
+.row {
+  margin: 0;
+  padding: 8px var(--margin-x) 50px;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 1.5em;
+  row-gap: 4px;
+
+  @include desktop {
+    padding-bottom: 68px;
+  }
+}
+
+.label {
+  color: var(--color-grey);
+}
+
+.item {
+  color: var(--color-fg);
+}

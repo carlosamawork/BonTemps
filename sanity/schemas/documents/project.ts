@@ -55,10 +55,41 @@ export default defineType({
       rows: 3,
       group: 'editorial',
     }),
-    // Featured media type selector
+    // Cover media type selector (used as hero on the single project page)
+    defineField({
+      name: 'coverMediaType',
+      title: 'Cover media type',
+      description: 'Hero shown at the top of the single project page.',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Image', value: 'image' },
+          { title: 'Video', value: 'video' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'image',
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'coverImage',
+      title: 'Cover Image',
+      type: 'media.image',
+      hidden: ({ document }) => document?.coverMediaType !== 'image',
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'coverVideo',
+      title: 'Cover Video',
+      type: 'media.video',
+      hidden: ({ document }) => document?.coverMediaType !== 'video',
+      group: 'editorial',
+    }),
+    // Featured media type selector (used in listings: /work grid + relatedProjects)
     defineField({
       name: 'featuredMediaType',
       title: 'Featured media type',
+      description: 'Thumbnail shown in the /work grid and in related projects.',
       type: 'string',
       options: {
         list: [
@@ -90,6 +121,25 @@ export default defineType({
       title: 'Services',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'service' }] }],
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'bodyBonTemps',
+      group: 'editorial',
+    }),
+    // Modules
+    defineField({
+      name: 'modules',
+      title: 'Modules',
+      type: 'array',
+      of: [
+        { type: 'module.centeredText' },
+        { type: 'module.imageVideo' },
+        { type: 'module.textColumn' },
+        { type: 'module.imageText' },
+      ],
       group: 'editorial',
     }),
     // Project Recap (body)
@@ -135,19 +185,7 @@ export default defineType({
       of: [{ type: 'reference', to: [{ type: 'project' }] }],
       group: 'editorial',
     }),
-    // Modules
-    defineField({
-      name: 'modules',
-      title: 'Modules',
-      type: 'array',
-      of: [
-        { type: 'module.centeredText' },
-        { type: 'module.imageVideo' },
-        { type: 'module.textColumn' },
-        { type: 'module.imageText' },
-      ],
-      group: 'editorial',
-    }),
+    
     // Order rank (for orderable document list)
     defineField({
       name: 'orderRank',

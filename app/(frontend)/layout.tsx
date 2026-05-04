@@ -1,6 +1,7 @@
 import "../../styles/main.scss";
 
 import React from 'react';
+import {sans, serif} from '../../styles/fonts';
 import WebProvider from '../../context/webContext';
 import HeaderComponent from '../../components/Common/HeaderComponent';
 import FooterComponent from '../../components/Common/FooterComponent';
@@ -57,7 +58,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${sans.variable} ${serif.variable}`}>
       <head>
         <script>{INTRO_GATE}</script>
       </head>

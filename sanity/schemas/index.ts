@@ -45,10 +45,7 @@ import mediaImage from './objects/module/mediaImage'
 import mediaImageResponsive from './objects/module/mediaImageResponsive'
 import mediaVideo from './objects/module/mediaVideo'
 import mediaVideoResponsive from './objects/module/mediaVideoResponsive'
-import moduleInformationClients from './objects/module/informationClients'
-import moduleInformationImageVideo from './objects/module/informationImageVideo'
 import modulePageImageVideo from './objects/module/pageImageVideo'
-import modulePageTextColumn from './objects/module/pageTextColumn'
 import moduleTextColumn from './objects/module/textColumn'
 import seo from './objects/seo/seo'
 import seoHome from './objects/seo/home'
@@ -71,10 +68,7 @@ const objects = [
   mediaImageResponsive,
   mediaVideo,
   mediaVideoResponsive,
-  moduleInformationClients,
-  moduleInformationImageVideo,
   modulePageImageVideo,
-  modulePageTextColumn,
   moduleTextColumn,
   seo,
   seoHome,

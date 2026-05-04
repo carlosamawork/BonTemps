@@ -1,12 +1,12 @@
 import {notFound} from 'next/navigation'
 import type {Metadata} from 'next'
-import BodyBonTempsRenderer from '@/components/PortableText/BodyBonTempsRenderer'
 import ProjectHeader from '@/components/Singles/ProjectHeader'
+import ProjectServicesInline from '@/components/Singles/ProjectServicesInline'
 import ProjectFeaturedMedia from '@/components/Singles/ProjectFeaturedMedia'
 import ProjectModules from '@/components/Singles/ProjectModules'
+import ProjectRecapGrid from '@/components/Singles/ProjectRecapGrid'
 import VisitWebsiteBubble from '@/components/Singles/VisitWebsiteBubble'
 import BackToWorkBubble from '@/components/Singles/BackToWorkBubble'
-import RelatedProjects from '@/components/Singles/RelatedProjects'
 import {getAllProjectSlugs, getProject} from '@/sanity/queries/queries/project'
 import {BASE_URL, buildUrl, siteTitle} from '@/utils/seoHelper'
 import {safeJsonLd} from '@/utils/safeJsonLd'
@@ -58,16 +58,6 @@ export default async function ProjectPage({
   const project = await getProject(slug)
   if (!project) notFound()
 
-  // Body sections from the editorial fields, rendered in the order the
-  // designer expects. Empty fields are skipped gracefully.
-  const sections: Array<{key: string; body: unknown}> = [
-    {key: 'projectRecap', body: project.projectRecap},
-    {key: 'servicesBody', body: project.servicesBody},
-    {key: 'customTypeface', body: project.customTypeface},
-    {key: 'bonTempsTeam', body: project.bonTempsTeam},
-    {key: 'collaborators', body: project.collaborators},
-  ].filter((s) => !!s.body)
-
   const projectUrl = buildUrl(`/work/${project.slug}`)
   const ld = [
     {
@@ -94,32 +84,28 @@ export default async function ProjectPage({
       <script type="application/ld+json">{safeJsonLd(ld)}</script>
       <ProjectHeader title={project.title} subtitle={project.subtitle} />
 
+      <ProjectServicesInline services={project.services} />
+
       <ProjectFeaturedMedia
-        type={project.featuredMediaType}
-        image={project.featuredImage}
-        video={project.featuredVideo}
+        type={project.coverMediaType}
+        image={project.coverImage}
+        video={project.coverVideo}
       />
 
       <div className={styles.topRow}>
-        <VisitWebsiteBubble url={project.websiteUrl} />
-        {project.excerpt && (
-          <p className={`t-body ${styles.excerpt}`}>{project.excerpt}</p>
-        )}
+        <VisitWebsiteBubble url={project.websiteUrl} description={project.description}/>
       </div>
-
-      {sections.length > 0 && (
-        <div className={styles.sections}>
-          {sections.map((s) => (
-            <section key={s.key} className={styles.section}>
-              <BodyBonTempsRenderer value={s.body} />
-            </section>
-          ))}
-        </div>
-      )}
 
       <ProjectModules modules={project.modules} />
 
-      <RelatedProjects projects={project.relatedProjects} />
+      <ProjectRecapGrid
+        projectRecap={project.projectRecap}
+        servicesBody={project.servicesBody}
+        customTypeface={project.customTypeface}
+        bonTempsTeam={project.bonTempsTeam}
+        collaborators={project.collaborators}
+        relatedProjects={project.relatedProjects}
+      />
 
       <div className={styles.backRow}>
         <BackToWorkBubble />

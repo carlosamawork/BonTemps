@@ -90,8 +90,8 @@
   gap: 4px;
 }
 
-.contactLabel {
-  color: var(--color-grey);
+.contactLink, .contactLink:link{
+  color: #838383;
 }
 
 // Brand SVG mark. Intrinsic ratio 86 / 82. Height drives the visual weight.

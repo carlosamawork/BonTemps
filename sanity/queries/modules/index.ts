@@ -5,8 +5,6 @@
 
 import {image} from '../fragments/image'
 import {video} from '../fragments/video'
-import {imageResponsive} from '../fragments/imageResponsive'
-import {videoResponsive} from '../fragments/videoResponsive'
 
 // Modules used inside `project.modules`
 export const projectModules = `
@@ -34,51 +32,5 @@ export const projectModules = `
       body
     },
     _type == "module.textColumn" => { body, columns, span, columnStart }
-  }
-`
-
-// Modules used inside `page.modules` (when the generic Page document gets
-// converted to use modules; current `page` schema has `body: bodySimple` only,
-// so this fragment is reserved for future use.)
-export const pageModules = `
-  modules[]{
-    _type,
-    _key,
-    _type == "module.pageTextColumn" => {
-      bodies[]{ body }
-    },
-    _type == "module.pageImageVideo" => {
-      mediaType,
-      image{ ${image} },
-      video{ ${video} }
-    }
-  }
-`
-
-// Modules used inside `information.modules`
-export const informationModules = `
-  modules[]{
-    _type,
-    _key,
-    _type == "module.informationClients" => {
-      title,
-      items[]{
-        name,
-        location,
-        "projectSlug": projectRef->slug.current
-      }
-    },
-    _type == "module.pageTextColumn" => {
-      bodies[]{ body }
-    },
-    _type == "module.informationImageVideo" => {
-      columns,
-      reverseOrderOnMobile,
-      items[]{
-        _type,
-        _type == "media.imageResponsive" => { ${imageResponsive} },
-        _type == "media.videoResponsive" => { ${videoResponsive} }
-      }
-    }
   }
 `

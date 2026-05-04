@@ -76,7 +76,7 @@
   display: grid;
   grid-template-rows: subgrid;
   grid-row: span 3;
-  row-gap: 8px;
+  row-gap: 0;
   color: var(--color-fg);
 }
 
@@ -84,6 +84,7 @@
   align-self: start;
   margin: 0;
   transition: color 200ms ease;
+  margin-bottom: 12px;
 }
 
 // Image keeps its intrinsic ratio (width 100%, height auto). align-self:
@@ -93,6 +94,7 @@
   position: relative;
   align-self: start;
   width: 100%;
+  margin-bottom: 19px;
 }
 
 .media img {
@@ -128,7 +130,7 @@
 }
 
 // When any card is hovered, the others fade their text to grey for focus.
-.grid:has(.card:hover) .card:not(:hover) {
+.grid:has(.card:hover) .card:hover {
   .title,
   .excerpt {
     color: var(--color-grey);

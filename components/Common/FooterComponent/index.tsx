@@ -32,7 +32,7 @@ export default function FooterComponent({data}: Props) {
             data.emails!.map((entry) => (
               <div key={entry.email} className={styles.contactGroup}>
                 <span className={`${styles.contactLabel} t-sans-small`}>{entry.title}</span>
-                <a href={`mailto:${entry.email}`} className="t-serif-detail">
+                <a href={`mailto:${entry.email}`} className={`${styles.contactLink} t-serif-detail`}>
                   {entry.email}
                 </a>
               </div>
@@ -47,7 +47,7 @@ export default function FooterComponent({data}: Props) {
                   href={social.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="t-serif-detail"
+                  className={`${styles.contactLink} t-serif-detail`}
                 >
                   {social.title}
                 </a>
