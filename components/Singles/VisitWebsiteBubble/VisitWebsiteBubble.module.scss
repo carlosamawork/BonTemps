@@ -10,9 +10,28 @@
   text-decoration: none;
   cursor: pointer;
   transition: color 180ms ease;
+  width: fit-content;
 }
 
 .bubble:hover,
 .bubble:focus-visible {
   color: var(--color-fg);
+}
+
+// Sliding label that expands from 0 → "Visit Website" on hover. overflow
+// is hidden so the easing on maxWidth crops the text cleanly while it
+// animates in or out, and white-space: nowrap stops the label from
+// breaking onto two lines mid-animation.
+.label {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+// Static "+" — never animates. Sits next to the label and keeps a
+// constant size, so the symbol never gets scaled or distorted by the
+// surrounding layout animation.
+.symbol {
+  display: inline-block;
+  flex-shrink: 0;
 }

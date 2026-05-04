@@ -1,17 +1,36 @@
 import {groq} from 'next-sanity'
 import {client} from '../index'
 import {seo} from '../fragments/seo'
-import {informationModules} from '../modules'
+import {imageResponsive} from '../fragments/imageResponsive'
+import type {MediaImageResponsive} from '@/sanity/types'
 
 export type InformationData = {
-  intro?: any
-  modules?: any[]
+  bio?: any
+  services?: any
+  industries?: any
+  clients?: any
+  press?: any
+  process?: any
+  strategy?: any
+  systems?: any
+  design?: any
+  campaigns?: any
+  coverImage?: MediaImageResponsive
   seo?: any
 }
 
 const INFORMATION_QUERY = groq`*[_type == "information"][0]{
-  intro,
-  ${informationModules},
+  bio,
+  services,
+  industries,
+  clients,
+  press,
+  process,
+  strategy,
+  systems,
+  design,
+  campaigns,
+  coverImage{ ${imageResponsive} },
   seo{ ${seo} }
 }`
 

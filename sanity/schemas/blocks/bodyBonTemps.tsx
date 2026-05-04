@@ -40,6 +40,22 @@ export default defineType({
               <span style={{ color: '#888888' }}>{children}</span>
             ),
           },
+          {
+            title: 'Font: Serif',
+            value: 'fontSerif',
+            icon: () => 'Sf',
+            component: ({ children }: { children: React.ReactNode }) => (
+              <span style={{ fontFamily: 'var(--font-serif)' }}>{children}</span>
+            ),
+          },
+          {
+            title: 'Font: Sans',
+            value: 'fontSans',
+            icon: () => 'Sa',
+            component: ({ children }: { children: React.ReactNode }) => (
+              <span style={{ fontFamily: 'var(--font-sans)' }}>{children}</span>
+            ),
+          },
         ],
         annotations: [
           { name: 'annotationLinkEmail', type: 'annotationLinkEmail' },

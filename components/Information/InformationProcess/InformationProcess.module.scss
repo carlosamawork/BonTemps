@@ -1,0 +1,60 @@
+@use "../../../styles/breakpoints" as *;
+
+// Mirrors InformationBio's grid: 4-col desktop with the body taking cols
+// 1-2 and four labelled cells split across cols 3 and 4. Mobile is a
+// single column so each cell reads at full width.
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px var(--grid-gap-x);
+  padding: 80px var(--margin-x);
+
+  @include tablet-up {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 120px var(--margin-x);
+    gap: 48px var(--grid-gap-x);
+  }
+}
+
+.processCol {
+  @include tablet-up {
+    grid-column: 1 / span 2;
+  }
+}
+
+.col3,
+.col4 {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 32px;
+
+  @include tablet-up {
+    gap: 48px;
+  }
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  margin: 0;
+  color: var(--color-fg);
+  text-transform: capitalize;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.labelGrey {
+  color: var(--color-grey);
+}
+
+.body {
+  color: var(--color-grey);
+
+  p {
+    margin: 0;
+  }
+}

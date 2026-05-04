@@ -28,9 +28,10 @@ export default function IntroOverlay({claim}: Props) {
       {shouldShow && (
         <motion.div
           className={styles.overlay}
-          initial={{opacity: 1}}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
           exit={{opacity: 0, filter: 'blur(8px)'}}
-          transition={{duration: 0.6, ease: 'easeOut'}}
+          transition={{duration: 0.4, ease: 'easeOut'}}
           onClick={dismiss}
           role="dialog"
           aria-modal="true"

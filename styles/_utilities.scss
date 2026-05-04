@@ -22,10 +22,33 @@
   &:focus { top: 0; }
 }
 
-// Used by intro overlay to mask the work page until the provider decides.
-// Without JS the @media (scripting: none) rule keeps content visible.
-body.intro-pending main { visibility: hidden; }
-@media (scripting: none) { body.intro-pending main { visibility: visible !important; } }
+// Used by the intro overlay to mask the work page until React mounts and
+// takes over. The inline gate in app/(frontend)/layout.tsx sets
+// `.intro-pending` on <html> in <head> — before the first paint — so we
+// can paint the viewport solid black and hide the page chrome (header,
+// main, footer) so nothing flashes through. The React intro overlay
+// sits at z-index 100 and is unaffected. Without JS the @media
+// (scripting: none) rule keeps content visible.
+html.intro-pending,
+html.intro-pending body {
+  background: #000;
+}
+html.intro-pending body > main,
+html.intro-pending body > header,
+html.intro-pending body > footer {
+  visibility: hidden;
+}
+@media (scripting: none) {
+  html.intro-pending,
+  html.intro-pending body {
+    background: var(--color-bg);
+  }
+  html.intro-pending body > main,
+  html.intro-pending body > header,
+  html.intro-pending body > footer {
+    visibility: visible !important;
+  }
+}
 
 // Locks scroll while the mobile menu is open. Toggled from MobileMenu.tsx.
 body.menu-open { overflow: hidden; }

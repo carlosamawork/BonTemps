@@ -1,29 +1,25 @@
 // styles/fonts.ts
 //
-// PLACEHOLDER. Replace with next/font/local once the client delivers
-// woff2/woff files into public/fonts/.
-//
-// Real version (uncomment when files exist and update src paths/weights):
-//
-// import localFont from 'next/font/local'
-//
-// export const sans = localFont({
-//   src: [
-//     { path: '../public/fonts/sans-regular.woff2', weight: '400', style: 'normal' },
-//     { path: '../public/fonts/sans-regular.woff', weight: '400', style: 'normal' },
-//   ],
-//   variable: '--font-sans-loaded',
-//   display: 'swap',
-// })
-//
-// export const serif = localFont({
-//   src: [
-//     { path: '../public/fonts/serif-regular.woff2', weight: '400', style: 'normal' },
-//     { path: '../public/fonts/serif-regular.woff', weight: '400', style: 'normal' },
-//   ],
-//   variable: '--font-serif-loaded',
-//   display: 'swap',
-// })
+// Local font loading via next/font/local. The `variable` option exposes
+// each family as a CSS custom property which `_typography.scss` consumes
+// through `--font-sans` / `--font-serif`.
+import localFont from 'next/font/local'
 
-export const sans = {variable: '' as string}
-export const serif = {variable: '' as string}
+// Waldenburg Halbfett — single semibold weight. Mapped to --font-sans.
+export const sans = localFont({
+  src: [
+    {path: './fonts/Waldenburg-Halbfett.otf', weight: '600', style: 'normal'},
+  ],
+  variable: '--font-sans-loaded',
+  display: 'swap',
+})
+
+// ABC Marist Variable Trial — variable font (full weight axis). Mapped
+// to --font-serif.
+export const serif = localFont({
+  src: [
+    {path: './fonts/ABCMaristVariable-Trial.ttf', weight: '100 900', style: 'normal'},
+  ],
+  variable: '--font-serif-loaded',
+  display: 'swap',
+})

@@ -9,8 +9,8 @@
   // Pure blur with no colour wash — the page content shows through, just
   // softly defocused. Backdrop-filter alone has no fallback colour so we
   // leave background transparent on purpose.
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(5px) saturate(140%);
+  -webkit-backdrop-filter: blur(5px) saturate(140%);
   background: transparent;
   // Soft fade-out at the bottom edge per spec.
   mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
@@ -19,23 +19,27 @@
 
 // Three-column layout per Figma: logo (left), nav (centre), meta (right).
 // Mobile collapses to logo + burger; the nav and meta hide and the menu
-// surfaces them in the overlay.
+// surfaces them in the overlay. All children top-align so the texts hug
+// the header padding edge — the bubble keeps its own vertical math (see
+// HeaderClient) so it stays visually centred around the active nav item.
 .inner {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: start;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 16px var(--margin-x);
   gap: 12px;
 
   @include tablet-up {
+    display: grid;
     padding: 20px var(--margin-x);
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: start;
   }
 }
 
 .logo {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   text-decoration: none;
   color: var(--color-fg);
   z-index: 2;
@@ -67,13 +71,13 @@
 
 .navItem {
   position: relative;
-  padding: 8px 14px;
+  padding: 0px 14px;
   color: var(--color-fg);
   transition: color 180ms ease;
   z-index: 1;
 }
 
-.nav:hover .navItem:not(:hover) {
+.nav:hover .navItem:hover {
   color: var(--color-grey);
 }
 
@@ -82,7 +86,18 @@
   background: var(--color-bubble);
   border-radius: 999px;
   z-index: 0;
+  height: 31px;
   pointer-events: none;
+  // Lateral slide only. `top` is set inline by JS but never transitioned,
+  // so a route change between Work / Information animates horizontally
+  // and never visually drops in from below.
+  transition:
+    left 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    width 280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .contact {
@@ -95,13 +110,16 @@
 .meta {
   display: none;
   flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
-  gap: 2px;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0px;
   justify-self: end;
+  line-height: 1;
+  
 
   @include tablet-up {
     display: flex;
+    grid-column: 4;
   }
 }
 

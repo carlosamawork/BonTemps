@@ -1,39 +1,23 @@
 @use "../../../../styles/breakpoints" as *;
 
-// Row that follows the featured media: bubble on the left, excerpt on
-// the right. Stacks on mobile.
+// Row that follows the featured media: pills on the left, excerpt on
+// the right (per Figma the excerpt sits in the right half of the page,
+// starting at the visual center). Stacks on mobile.
 .topRow {
   display: grid;
   gap: 24px var(--grid-gap-x);
   grid-template-columns: 1fr;
-  padding: 40px var(--margin-x);
+  padding: 32px var(--margin-x);
   align-items: start;
 
   @include tablet-up {
-    grid-template-columns: auto 1fr;
-    align-items: start;
+    grid-template-columns: 1fr 1fr;
+    padding: 40px var(--margin-x);
   }
 }
 
 .excerpt {
   margin: 0;
-  max-width: 60ch;
-}
-
-// Stacked editorial sections (recap, services, team, etc.).
-.sections {
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-  padding: 40px var(--margin-x);
-
-  @include desktop {
-    gap: 80px;
-  }
-}
-
-.section {
-  max-width: 60ch;
 }
 
 .backRow {

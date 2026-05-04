@@ -1,0 +1,17 @@
+@use "../../../styles/breakpoints" as *;
+
+.figure {
+  margin: 0;
+  padding: 0 var(--margin-x);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 12px;
+    color: var(--color-grey);
+  }
+}

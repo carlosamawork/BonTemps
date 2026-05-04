@@ -14,10 +14,14 @@ export type ProjectFull = {
   subtitle?: string
   excerpt?: string
   websiteUrl?: string
+  coverMediaType: 'image' | 'video'
+  coverImage?: MediaImage
+  coverVideo?: MediaVideo
   featuredMediaType: 'image' | 'video'
   featuredImage?: MediaImage
   featuredVideo?: MediaVideo
   services?: Array<{_id: string; title: string}>
+  description: any
   projectRecap?: any
   servicesBody?: any
   customTypeface?: any
@@ -35,10 +39,14 @@ const PROJECT_QUERY = groq`*[_type == "project" && slug.current == $slug][0]{
   subtitle,
   excerpt,
   websiteUrl,
+  coverMediaType,
+  coverImage{ ${image} },
+  coverVideo{ ${video} },
   featuredMediaType,
   featuredImage{ ${image} },
   featuredVideo{ ${video} },
   services[]->{ _id, title },
+  description,
   projectRecap,
   servicesBody,
   customTypeface,

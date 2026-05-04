@@ -1,0 +1,60 @@
+@use "../../../styles/breakpoints" as *;
+
+// 4-col desktop grid: bio body spans cols 1-2, while col 3 stacks
+// Services + Clients and col 4 stacks Industries + Press. Mobile drops
+// to a single column so each cell can read at full width.
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px var(--grid-gap-x);
+  padding: 80px var(--margin-x);
+
+  @include tablet-up {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 120px var(--margin-x);
+    gap: 48px var(--grid-gap-x);
+  }
+}
+
+.bioCol {
+  @include tablet-up {
+    grid-column: 1 / span 2;
+  }
+}
+
+.col3,
+.col4 {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  @include tablet-up {
+    gap: 48px;
+  }
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.label {
+  margin: 0;
+  color: var(--color-fg);
+  text-transform: capitalize;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.labelGrey {
+  color: var(--color-grey);
+}
+
+.body {
+  color: var(--color-grey);
+
+  p {
+    margin: 0;
+  }
+}
