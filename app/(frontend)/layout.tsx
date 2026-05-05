@@ -5,6 +5,7 @@ import {sans, serif} from '../../styles/fonts';
 import WebProvider from '../../context/webContext';
 import HeaderComponent from '../../components/Common/HeaderComponent';
 import FooterComponent from '../../components/Common/FooterComponent';
+import PageTransition from '@/components/Common/PageTransition';
 import {IntroProvider} from '@/components/Home/IntroOverlay/IntroProvider';
 import IntroOverlay from '@/components/Home/IntroOverlay';
 import {getFooter} from '@/sanity/queries/common/footer';
@@ -68,7 +69,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         <WebProvider>
           <IntroProvider>
             <HeaderComponent data={header} />
-            {children}
+            <PageTransition>{children}</PageTransition>
             <IntroOverlay claim={claim} />
             <FooterComponent data={footer} />
 

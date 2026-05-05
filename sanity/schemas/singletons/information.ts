@@ -43,9 +43,36 @@ export default defineType({
     defineField({
       name: 'clients',
       title: 'Clients list',
-      description: 'One client per line. Mark the city/location with the "Color Black" decorator if you want it black against the grey name.',
-      type: 'bodyBonTemps',
+      description: 'One client per row with optional location and a project link. On the site the row swaps grey/black colours on hover and links to the project page if set.',
+      type: 'array',
       group: 'bio',
+      of: [
+        {
+          type: 'object',
+          name: 'clientEntry',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Client name',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'location',
+              title: 'Location',
+              type: 'string',
+            }),
+            defineField({
+              name: 'projectRef',
+              title: 'Linked project (optional)',
+              type: 'reference',
+              to: [{type: 'project'}],
+              description: 'When set, the row links to /work/<slug>.',
+            }),
+          ],
+          preview: {select: {title: 'name', subtitle: 'location'}},
+        },
+      ],
     }),
     defineField({
       name: 'press',

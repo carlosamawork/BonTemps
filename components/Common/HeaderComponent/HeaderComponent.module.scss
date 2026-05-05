@@ -43,6 +43,14 @@
   text-decoration: none;
   color: var(--color-fg);
   z-index: 2;
+
+  // Mobile only: scroll-driven fade. The variable is written by
+  // HeaderLogo on every rAF; tablet+ ignore it so the desktop logo
+  // stays solid no matter where the page is scrolled.
+  @include mobile {
+    opacity: var(--logo-opacity, 1);
+    transition: opacity 120ms linear;
+  }
 }
 
 // Intrinsic SVG aspect ratio is 137 / 24. Height drives the visual weight
@@ -62,7 +70,7 @@
   display: none;
   align-items: center;
   gap: 4px;
-  justify-self: center;
+  justify-self: start;
 
   @include tablet-up {
     display: flex;
@@ -77,7 +85,7 @@
   z-index: 1;
 }
 
-.nav:hover .navItem:hover {
+.nav:hover .navItem:not(:hover) {
   color: var(--color-grey);
 }
 

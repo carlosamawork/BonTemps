@@ -12,12 +12,22 @@
   cursor: pointer;
 }
 
-// Vertical stack: claim line on top, monogram below. Centered on both axes.
+// Vertical stack: claim line on top, monogram below. Centered on both
+// axes. The gap between the claim and the monogram steps per breakpoint
+// to match the spec's tightening rhythm at smaller sizes.
 .stage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 17px;
+
+  @include tablet-up {
+    gap: 27px;
+  }
+
+  @include desktop-xl {
+    gap: 29px;
+  }
 }
 
 // Self-contained typography so the global `.t-intro` token doesn't have
