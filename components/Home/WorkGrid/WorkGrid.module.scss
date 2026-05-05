@@ -129,8 +129,9 @@
   transition: color 200ms ease;
 }
 
-// When any card is hovered, the others fade their text to grey for focus.
-.grid:has(.card:hover) .card:hover {
+// When any card is hovered, the OTHER cards fade their text to grey so
+// focus lands on the hovered one (matches the Mouthwash reference).
+.grid:has(.card:hover) .card:not(:hover) {
   .title,
   .excerpt {
     color: var(--color-grey);

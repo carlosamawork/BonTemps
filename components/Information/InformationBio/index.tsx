@@ -1,11 +1,13 @@
 import BodyBonTempsRenderer from '@/components/PortableText/BodyBonTempsRenderer'
+import InformationClientsList from '@/components/Information/InformationClientsList'
+import type {ClientEntry} from '@/sanity/queries/queries/information'
 import styles from './InformationBio.module.scss'
 
 type Props = {
   bio?: unknown
   services?: unknown
   industries?: unknown
-  clients?: unknown
+  clients?: ClientEntry[]
   press?: unknown
 }
 
@@ -40,9 +42,9 @@ export default function InformationBio({bio, services, industries, clients, pres
             <BodyBonTempsRenderer value={services} />
           </Cell>
         )}
-        {!!clients && (
+        {!!clients && clients.length > 0 && (
           <Cell label="Clients">
-            <BodyBonTempsRenderer value={clients} />
+            <InformationClientsList clients={clients} />
           </Cell>
         )}
       </div>

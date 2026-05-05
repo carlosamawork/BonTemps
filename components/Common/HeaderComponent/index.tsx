@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type {HeaderData} from '@/sanity/types'
-import LogoBonTemps from '@/components/Common/Logo/LogoBonTemps'
 import HeaderClient from './HeaderClient'
+import HeaderLogo from './HeaderLogo'
 import ContactButton from './ContactButton'
 import DateBlock from './DateBlock'
 import MobileMenu from './MobileMenu'
@@ -24,9 +24,7 @@ export default function HeaderComponent({data}: Props) {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <Link href="/" className={styles.logo} aria-label="Bon Temps — home">
-          <LogoBonTemps className={styles.logoSvg} />
-        </Link>
+        <HeaderLogo />
 
         <HeaderClient items={NAV_ROUTES}>
           {NAV_ROUTES.map((item) => (

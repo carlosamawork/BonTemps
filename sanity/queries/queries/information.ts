@@ -4,11 +4,18 @@ import {seo} from '../fragments/seo'
 import {imageResponsive} from '../fragments/imageResponsive'
 import type {MediaImageResponsive} from '@/sanity/types'
 
+export type ClientEntry = {
+  _key: string
+  name: string
+  location?: string
+  projectSlug?: string
+}
+
 export type InformationData = {
   bio?: any
   services?: any
   industries?: any
-  clients?: any
+  clients?: ClientEntry[]
   press?: any
   process?: any
   strategy?: any
@@ -23,7 +30,12 @@ const INFORMATION_QUERY = groq`*[_type == "information"][0]{
   bio,
   services,
   industries,
-  clients,
+  clients[]{
+    _key,
+    name,
+    location,
+    "projectSlug": projectRef->slug.current
+  },
   press,
   process,
   strategy,

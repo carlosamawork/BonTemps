@@ -33,9 +33,9 @@ html.intro-pending,
 html.intro-pending body {
   background: #000;
 }
-html.intro-pending body > main,
-html.intro-pending body > header,
-html.intro-pending body > footer {
+html.intro-pending main,
+html.intro-pending header,
+html.intro-pending footer {
   visibility: hidden;
 }
 @media (scripting: none) {
@@ -43,9 +43,9 @@ html.intro-pending body > footer {
   html.intro-pending body {
     background: var(--color-bg);
   }
-  html.intro-pending body > main,
-  html.intro-pending body > header,
-  html.intro-pending body > footer {
+  html.intro-pending main,
+  html.intro-pending header,
+  html.intro-pending footer {
     visibility: visible !important;
   }
 }

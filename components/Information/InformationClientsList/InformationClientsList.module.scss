@@ -1,0 +1,43 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+// One row per client. The default state is name (grey) + (location)
+// (black). On hover the two swap colours; the transition is short so
+// the swap reads as a deliberate interaction rather than a slow fade.
+.row {
+  display: inline;
+  text-decoration: none;
+  color: inherit;
+}
+
+.name {
+  color: var(--color-grey);
+  transition: color 180ms ease;
+}
+
+.location {
+  color: var(--color-fg);
+  transition: color 180ms ease;
+}
+
+.row:hover,
+.row:focus-visible {
+  .name {
+    color: var(--color-fg);
+  }
+  .location {
+    color: var(--color-grey);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name,
+  .location {
+    transition: none;
+  }
+}

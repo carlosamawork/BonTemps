@@ -32,8 +32,8 @@ export default function VisitWebsiteClient({url}: Props) {
             animate={{maxWidth: '12em', opacity: 1, marginRight: '0.4em'}}
             exit={{maxWidth: 0, opacity: 0, marginRight: 0}}
             transition={{
-              maxWidth: {type: 'spring', stiffness: 360, damping: 22, mass: 0.9},
-              marginRight: {type: 'spring', stiffness: 360, damping: 22, mass: 0.9},
+              maxWidth: {type: 'spring', stiffness: 360, damping: 28, mass: 0.9},
+              marginRight: {type: 'spring', stiffness: 360, damping: 28, mass: 0.9},
               opacity: {duration: 0.22, ease: 'easeOut'},
             }}
             aria-hidden

@@ -62,9 +62,11 @@
   justify-self: start;
 }
 
-// Claim copy uses the brand serif (matching the BonTemps wordmark) but
-// stays upright — no italic. Overrides the default .t-body font-family
-// from BodyBonTempsRenderer; size / line-height keep their spec values.
+// Claim copy stays at the spec's 26/24/20 across breakpoints so the
+// claim reads at the same scale as the rest of the 26px body copy
+// regardless of which block style the editor picks in the Studio.
+// font-family is inherited from the global .t-body / .t-body-large /
+// .t-about tokens (all serif now), so no override needed here.
 .claim {
   margin: 0;
   max-width: 100%;
@@ -73,7 +75,12 @@
   :global(.t-body),
   :global(.t-body-large),
   :global(.t-about) {
-    font-family: var(--font-serif);
+    font-size: 26px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+
+    @include tablet { font-size: 24px; }
+    @include mobile { font-size: 20px; line-height: 1; }
   }
 }
 
