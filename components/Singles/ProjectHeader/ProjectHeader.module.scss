@@ -1,17 +1,17 @@
 @use "../../../styles/breakpoints" as *;
 
 .header {
-  padding: 120px var(--margin-x) 30px;
+  padding: 123px var(--margin-x) 30px;
   text-align: center;
 
   @include tablet {
-    padding-top: 160px;
-    padding-bottom: 48px;
+    padding-top: 153px;
+    padding-bottom: 46px;
   }
 
   @include desktop {
-    padding-top: 160px;
-    padding-bottom: 48px;
+    padding-top: 153px;
+    padding-bottom: 53px;
   }
 }
 

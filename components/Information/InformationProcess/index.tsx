@@ -9,55 +9,73 @@ type Props = {
   campaigns?: unknown
 }
 
-type CellProps = {label: string; tone?: 'black' | 'grey'; children: React.ReactNode}
-function Cell({label, tone = 'black', children}: CellProps) {
+type CellProps = {
+  label: string
+  tone?: 'black' | 'grey'
+  bodyTone?: 'black' | 'grey'
+  children: React.ReactNode
+}
+function Cell({label, tone = 'black', bodyTone = 'grey', children}: CellProps) {
   return (
     <div className={styles.cell}>
       <p className={`${styles.label} ${tone === 'grey' ? styles.labelGrey : ''} t-sans-small`}>
         {label}
       </p>
-      <div className={styles.body}>{children}</div>
+      <div className={`${styles.body} ${bodyTone === 'black' ? styles.bodyBlack : ''}`}>
+        {children}
+      </div>
     </div>
   )
 }
 
-// Process block (per Figma): mirrors the Bio block shape — process body
-// in cols 1-2, then Strategy / Systems stacked in col 3 and Design /
-// Campaigns stacked in col 4.
+// Process block — mirrors InformationBio's layout exactly:
+//
+//   Mobile: process body full-width, then `strategy | design` and
+//           `systems | campaigns` as 2-col rows.
+//   iPad:   process body col 1 spanning four rows, strategy / design /
+//           systems / campaigns stacked in col 2.
+//   Desktop: process body cols 1-2, strategy+systems stack col 3,
+//           design+campaigns stack col 4.
 export default function InformationProcess({process, strategy, systems, design, campaigns}: Props) {
   return (
     <section className={styles.grid}>
-      <div className={styles.processCol}>
-        <Cell label="Process" tone="grey">
+      <div className={styles.areaProcess}>
+        <Cell label="Process" tone="grey" bodyTone="black">
           {!!process && <BodyBonTempsRenderer value={process} />}
         </Cell>
       </div>
 
-      <div className={styles.col3}>
-        {!!strategy && (
+      {!!strategy && (
+        <div className={styles.areaStrategy}>
           <Cell label="Strategy">
             <BodyBonTempsRenderer value={strategy} />
           </Cell>
-        )}
-        {!!systems && (
-          <Cell label="Systems">
-            <BodyBonTempsRenderer value={systems} />
-          </Cell>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className={styles.col4}>
-        {!!design && (
+      {!!design && (
+        <div className={styles.areaDesign}>
           <Cell label="Design">
             <BodyBonTempsRenderer value={design} />
           </Cell>
-        )}
-        {!!campaigns && (
+        </div>
+      )}
+
+      {!!systems && (
+        <div className={styles.areaSystems}>
+          <Cell label="Systems">
+            <BodyBonTempsRenderer value={systems} />
+          </Cell>
+        </div>
+      )}
+
+      {!!campaigns && (
+        <div className={styles.areaCampaigns}>
           <Cell label="Campaigns">
             <BodyBonTempsRenderer value={campaigns} />
           </Cell>
-        )}
-      </div>
+        </div>
+      )}
     </section>
   )
 }

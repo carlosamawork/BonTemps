@@ -1,42 +1,48 @@
 @use "../../../styles/breakpoints" as *;
 
-// Mirrors InformationBio's grid: 4-col desktop with the body taking cols
-// 1-2 and four labelled cells split across cols 3 and 4. Mobile is a
-// single column so each cell reads at full width.
+// Mirrors InformationBio's grid pattern (see that file's comments). One
+// big body in col 1 plus four labelled cells distributed across the
+// other columns depending on breakpoint.
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px var(--grid-gap-x);
-  padding: 80px var(--margin-x);
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--grid-gap-x);
+  row-gap: 32px;
+  padding: 60px var(--margin-x);
+  grid-template-areas:
+    "process    process"
+    "strategy   design"
+    "systems    campaigns";
 
-  @include tablet-up {
+  @include tablet {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 48px;
+    grid-template-areas:
+      "process   strategy"
+      "process   design"
+      "process   systems"
+      "process   campaigns";
+  }
+
+  @include desktop {
     grid-template-columns: repeat(4, 1fr);
-    padding: 120px var(--margin-x);
-    gap: 48px var(--grid-gap-x);
+    row-gap: 48px;
+    grid-template-areas:
+      "process   process   strategy   design"
+      "process   process   systems    campaigns";
   }
 }
 
-.processCol {
-  @include tablet-up {
-    grid-column: 1 / span 2;
-  }
-}
-
-.col3,
-.col4 {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 32px;
-
-  @include tablet-up {
-    gap: 48px;
-  }
-}
+.areaProcess   { grid-area: process; }
+.areaStrategy  { grid-area: strategy; }
+.areaDesign    { grid-area: design; }
+.areaSystems   { grid-area: systems; }
+.areaCampaigns { grid-area: campaigns; }
 
 .cell {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 12px;
 }
 
 .label {
@@ -57,4 +63,8 @@
   p {
     margin: 0;
   }
+}
+
+.bodyBlack {
+  color: var(--color-fg);
 }

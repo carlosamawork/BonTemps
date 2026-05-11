@@ -105,11 +105,8 @@ export default async function ProjectPage({
         bonTempsTeam={project.bonTempsTeam}
         collaborators={project.collaborators}
         relatedProjects={project.relatedProjects}
+        bottomAction={<BackToWorkBubble />}
       />
-
-      <div className={styles.backRow}>
-        <BackToWorkBubble />
-      </div>
     </main>
   )
 }
