@@ -67,6 +67,17 @@
   @include mobile { font-size: 14px; }
 }
 
+// Same as t-body but stays at 18px on mobile (Figma uses 18px for the
+// Work-page claim across every breakpoint).
+.t-claim {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  font-weight: 350;
+}
+
 .t-project-desc {
   font-family: var(--font-serif);
   font-size: 18px;
@@ -105,6 +116,7 @@
   font-weight: 350;
   line-height: 1.05;
   letter-spacing: -0.02em;
+  @include tablet { font-size: 22px; }
   @include mobile { font-size: 20px; line-height: 1; }
 }
 
@@ -116,13 +128,14 @@
   letter-spacing: -0.02em;
   font-weight: 400;
   @include tablet { font-size: 40px; line-height: 40px; }
-  @include mobile { font-size: 30px; }
+  @include mobile { font-size: 30px; line-height: 30px; }
 }
 
-// Mobile menu
+// Mobile menu — Figma uses serif Marist 25px / line-height 47.
 .t-mobile-menu {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-size: 25px;
   line-height: 47px;
   letter-spacing: -0.02em;
+  font-weight: 350;
 }

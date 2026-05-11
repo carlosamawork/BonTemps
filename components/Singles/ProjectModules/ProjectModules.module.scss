@@ -3,14 +3,35 @@
 // Each module owns its own outer padding so the page can compose them
 // vertically without an explicit wrapper. Sides match the page margin
 // tokens so modules align with the project header and featured media.
+//
+// Figma differentiates spacing per module kind: image grids stack tight
+// (~20px gap), while text-based modules (centered quote / image+text /
+// text column) get a lot of breathing room (~160px each side desktop).
 .centered,
-.imageVideo,
-.textColumn,
-.imageText {
-  padding: 60px var(--margin-x);
+.textColumn {
+  padding: 90px var(--margin-x) 80px;
 
   @include desktop {
-    padding: 80px var(--margin-x);
+    padding: 160px var(--margin-x);
+  }
+}
+
+// ImageText stacks vertically on mobile (image on top + body below):
+// inner gap between image and body is handled by grid gap, outer module
+// padding stays small so it sits close to neighbouring image modules.
+.imageText {
+  padding: 30px var(--margin-x);
+
+  @include desktop {
+    padding: 160px var(--margin-x);
+  }
+}
+
+.imageVideo {
+  padding: 8px var(--margin-x);
+
+  @include desktop {
+    padding: 10px var(--margin-x);
   }
 }
 

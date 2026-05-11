@@ -5,7 +5,7 @@
 // the Figma "(Services)   Brand Refresh   Web Design".
 .row {
   margin: 0;
-  padding: 8px var(--margin-x) 50px;
+  padding: 0 var(--margin-x) 8px;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
@@ -13,8 +13,16 @@
   column-gap: 1.5em;
   row-gap: 4px;
 
+  @include mobile {
+    font-size: 12px;
+  }
+
+  @include tablet {
+    padding-bottom: 60px;
+  }
+
   @include desktop {
-    padding-bottom: 68px;
+    padding-bottom: 40px;
   }
 }
 

@@ -25,7 +25,7 @@ export default function WorkGrid({projects, claim}: Props) {
     <ul className={styles.grid}>
       {hasClaim && (
         <li className={styles.claimRow}>
-          <p className={`${styles.claimContent} t-body`}>{claim}</p>
+          <p className={`${styles.claimContent} t-claim`}>{claim}</p>
         </li>
       )}
       {hasProjects &&

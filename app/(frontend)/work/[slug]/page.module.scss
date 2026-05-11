@@ -1,25 +1,33 @@
 @use "../../../../styles/breakpoints" as *;
 
-// Row that follows the featured media: pills on the left, excerpt on
-// the right (per Figma the excerpt sits in the right half of the page,
-// starting at the visual center). Stacks on mobile.
+// Mobile/iPad: 1 column, descripción arriba + bubble debajo (Figma).
+// Desktop: 2 columnas, bubble izquierda + descripción derecha.
+//
+// flex-direction: column-reverse invierte el orden JSX (bubble, desc) →
+// (desc, bubble) en mobile. En desktop pasamos a grid y el orden vuelve
+// a ser el del JSX (bubble en col1, desc en col2).
 .topRow {
-  display: grid;
-  gap: 24px var(--grid-gap-x);
-  grid-template-columns: 1fr;
-  padding: 32px var(--margin-x);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 20px;
+  padding: 10px var(--margin-x) 17px;
   align-items: start;
 
-  @include tablet-up {
+  @include tablet {
+    width: 70%;
+    margin-left: auto;
+    gap: 45px;
+    padding: 11px var(--margin-x) 70px;
+  }
+
+  @include desktop {
+    display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 40px var(--margin-x);
+    gap: 0 var(--grid-gap-x);
+    padding: 17px var(--margin-x) 107px;
   }
 }
 
 .excerpt {
   margin: 0;
-}
-
-.backRow {
-  padding: 40px var(--margin-x) 80px;
 }

@@ -1,12 +1,22 @@
+@use "../../../styles/breakpoints" as *;
+
 .bubble {
   display: inline-flex;
   align-items: center;
   background: var(--color-bubble);
   color: var(--color-fg);
-  border-radius: 999px;
-  padding: 12px 18px;
+  border-radius: 26px;
+  padding: 8px 18px;
+  font-size: 15px;
+  line-height: 1;
   text-decoration: none;
   transition: color 180ms ease;
+
+  @include mobile {
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 19.5px;
+  }
 }
 
 .bubble:hover {

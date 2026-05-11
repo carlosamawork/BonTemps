@@ -10,6 +10,7 @@ type Props = {
   bonTempsTeam?: unknown
   collaborators?: unknown
   relatedProjects?: ProjectCardData[]
+  bottomAction?: React.ReactNode
 }
 
 type CellProps = {label: string; children: React.ReactNode}
@@ -22,9 +23,9 @@ function Cell({label, children}: CellProps) {
   )
 }
 
-// Bottom-of-page editorial recap (per Figma). Desktop renders four
-// columns; mobile collapses to two. Empty fields skip their cell so
-// the grid never shows orphan labels.
+// Bottom-of-page editorial recap (per Figma). `bottomAction` (typically
+// the Back-To-Work bubble) renders inside col1 anchored to the bottom of
+// the grid so its baseline aligns with the last metadata row.
 export default function ProjectRecapGrid({
   projectRecap,
   servicesBody,
@@ -32,6 +33,7 @@ export default function ProjectRecapGrid({
   bonTempsTeam,
   collaborators,
   relatedProjects,
+  bottomAction,
 }: Props) {
   const hasAny =
     !!projectRecap ||
@@ -44,13 +46,14 @@ export default function ProjectRecapGrid({
 
   return (
     <section className={styles.grid}>
-      {!!projectRecap && (
-        <div className={styles.col1}>
+      <div className={styles.col1}>
+        {!!projectRecap && (
           <Cell label="Project Recap">
             <BodyBonTempsRenderer value={projectRecap} />
           </Cell>
-        </div>
-      )}
+        )}
+        {bottomAction && <div className={styles.col1Bottom}>{bottomAction}</div>}
+      </div>
 
       {(!!servicesBody || !!customTypeface) && (
         <div className={styles.col2}>

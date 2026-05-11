@@ -54,7 +54,7 @@ export default function HeaderComponent({data}: Props) {
           )}
         </div>
 
-        <MobileMenu items={NAV_ROUTES} contactEmail={contactEmail} />
+        <MobileMenu items={NAV_ROUTES} contactEmail={contactEmail} instagramUrl={instagramUrl} />
       </div>
     </header>
   )

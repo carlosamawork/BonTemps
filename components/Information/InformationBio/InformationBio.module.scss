@@ -1,42 +1,47 @@
 @use "../../../styles/breakpoints" as *;
 
-// 4-col desktop grid: bio body spans cols 1-2, while col 3 stacks
-// Services + Clients and col 4 stacks Industries + Press. Mobile drops
-// to a single column so each cell can read at full width.
+// Three different layouts via grid-template-areas — see component
+// comments for the visual breakdown per breakpoint.
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px var(--grid-gap-x);
-  padding: 80px var(--margin-x);
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--grid-gap-x);
+  row-gap: 32px;
+  padding: 130px var(--margin-x) 60px;
+  grid-template-areas:
+    "bio        bio"
+    "services   industries"
+    "clients    press";
 
-  @include tablet-up {
+  @include tablet {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 48px;
+    grid-template-areas:
+      "bio   services"
+      "bio   industries"
+      "bio   clients"
+      "bio   press";
+  }
+
+  @include desktop {
     grid-template-columns: repeat(4, 1fr);
-    padding: 120px var(--margin-x);
-    gap: 48px var(--grid-gap-x);
+    row-gap: 48px;
+    grid-template-areas:
+      "bio   bio   services   industries"
+      "bio   bio   clients    press";
   }
 }
 
-.bioCol {
-  @include tablet-up {
-    grid-column: 1 / span 2;
-  }
-}
-
-.col3,
-.col4 {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-
-  @include tablet-up {
-    gap: 48px;
-  }
-}
+.areaBio       { grid-area: bio; }
+.areaServices  { grid-area: services; }
+.areaIndustries{ grid-area: industries; }
+.areaClients   { grid-area: clients; }
+.areaPress     { grid-area: press; }
 
 .cell {
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 12px;
 }
 
 .label {
@@ -51,10 +56,17 @@
   color: var(--color-grey);
 }
 
+// Cell body — grey by default (Services, Industries, Clients, Press
+// lists). The big Bio body opts in to `bodyBlack` to read in the page's
+// foreground colour.
 .body {
   color: var(--color-grey);
 
   p {
     margin: 0;
   }
+}
+
+.bodyBlack {
+  color: var(--color-fg);
 }
