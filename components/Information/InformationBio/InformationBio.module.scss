@@ -32,16 +32,22 @@
   }
 }
 
-.areaBio       { grid-area: bio; }
+.areaBio       { grid-area: bio; margin-right: 13px; }
 .areaServices  { grid-area: services; }
 .areaIndustries{ grid-area: industries; }
 .areaClients   { grid-area: clients; }
-.areaPress     { grid-area: press; }
+.areaPress     { 
+  grid-area: press; 
+
+  a:hover{
+    color: black;
+  }
+}
 
 .cell {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 2px;
 }
 
 .label {

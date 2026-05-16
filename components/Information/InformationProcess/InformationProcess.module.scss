@@ -33,16 +33,16 @@
   }
 }
 
-.areaProcess   { grid-area: process; }
-.areaStrategy  { grid-area: strategy; }
-.areaDesign    { grid-area: design; }
-.areaSystems   { grid-area: systems; }
-.areaCampaigns { grid-area: campaigns; }
+.areaProcess   { grid-area: process; margin-right: 13px; }
+.areaStrategy  { grid-area: strategy; margin-right: 5vw;}
+.areaDesign    { grid-area: design; margin-right: 5vw;}
+.areaSystems   { grid-area: systems; margin-right: 5vw;}
+.areaCampaigns { grid-area: campaigns; margin-right: 5vw;}
 
 .cell {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 2px;
 }
 
 .label {

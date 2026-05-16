@@ -129,41 +129,43 @@
   }
 }
 
-// Per-layout aspect ratios, applied to the media wrapper.
-.imageVideo[data-columns='1'][data-layout='optionA'] .imageVideoMedia {
-  aspect-ratio: 3 / 2;
-}
-.imageVideo[data-columns='1'][data-layout='optionB'] .imageVideoMedia {
-  aspect-ratio: 16 / 9;
-}
+// // Per-layout aspect ratios, applied to the media wrapper.
+// .imageVideo[data-columns='1'][data-layout='optionA'] .imageVideoMedia {
+//   aspect-ratio: 3 / 2;
+// }
+// .imageVideo[data-columns='1'][data-layout='optionB'] .imageVideoMedia {
+//   aspect-ratio: 16 / 9;
+// }
 
-.imageVideo[data-columns='2'][data-layout='optionA'] .imageVideoMedia {
-  aspect-ratio: 4 / 5;
-}
+// .imageVideo[data-columns='2'][data-layout='optionA'] .imageVideoMedia {
+//   aspect-ratio: 4 / 5;
+// }
 
-.imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(1) .imageVideoMedia {
-  aspect-ratio: 3 / 2;
-}
-.imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(2) .imageVideoMedia {
-  aspect-ratio: 4 / 5;
-}
-.imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(1) .imageVideoMedia {
-  aspect-ratio: 4 / 5;
-}
-.imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(2) .imageVideoMedia {
-  aspect-ratio: 3 / 2;
-}
+// .imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(1) .imageVideoMedia {
+//   aspect-ratio: 3 / 2;
+// }
+// .imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(2) .imageVideoMedia {
+//   aspect-ratio: 4 / 5;
+// }
 
-.imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(1) .imageVideoMedia {
-  aspect-ratio: 5 / 4;
-}
-.imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(2) .imageVideoMedia {
-  aspect-ratio: 4 / 5;
-}
+// .imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(1) .imageVideoMedia {
+//   aspect-ratio: 4 / 5;
+// }
 
-.imageVideo[data-columns='3'][data-layout='optionA'] .imageVideoMedia {
-  aspect-ratio: 4 / 5;
-}
+// .imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(2) .imageVideoMedia {
+//   aspect-ratio: 3 / 2;
+// }
+
+// .imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(1) .imageVideoMedia {
+//   aspect-ratio: 5 / 4;
+// }
+// .imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(2) .imageVideoMedia {
+//   aspect-ratio: 4 / 5;
+// }
+
+// .imageVideo[data-columns='3'][data-layout='optionA'] .imageVideoMedia {
+//   aspect-ratio: 4 / 5;
+// }
 
 // Text column module. Maps editor's columns/span/columnStart to a CSS
 // grid placement. The CSS variables are set inline by the component.
