@@ -8,13 +8,13 @@ export default defineType({
     {
       type: 'block',
       styles: [
-        { title: 'Body', value: 'normal' },
-        { title: 'Body Large', value: 'bodyLarge' },
         { title: 'Headline', value: 'headline' },
+        { title: 'Body Large', value: 'bodyLarge' },
+        { title: 'Body', value: 'normal' },
         { title: 'Caption', value: 'caption' },
         { title: 'Sans Small Title', value: 'sansSmall' },
         { title: 'Serif Detail', value: 'serifDetail' },
-        { title: 'About', value: 'about' },
+        // { title: 'About', value: 'about' },
       ],
       lists: [
         { title: 'Bullet', value: 'bullet' },

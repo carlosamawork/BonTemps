@@ -6,7 +6,7 @@ import styles from './BackToWorkBubble.module.scss'
 export default function BackToWorkBubble() {
   return (
     <Link href="/" className={`${styles.bubble} t-sans-title`}>
-      + Back To Work
+      Back To Work
     </Link>
   )
 }

@@ -39,12 +39,16 @@ function BubbleOverlay({activeKey}: {activeKey: string | null}) {
   // without a flash. The dependency on `activeKey` is enough — the nav
   // markup is server-rendered, so the anchor is already in the DOM.
   useLayoutEffect(() => {
+    document
+      .querySelectorAll<HTMLElement>('a[data-key]')
+      .forEach((a) => a.removeAttribute('aria-current'))
     if (!activeKey) {
       setRect(null)
       return
     }
     const el = document.querySelector<HTMLElement>(`a[data-key="${activeKey}"]`)
     if (!el || !el.parentElement) return
+    el.setAttribute('aria-current', 'page')
     const parent = el.parentElement.getBoundingClientRect()
     const r = el.getBoundingClientRect()
     // Centre the 31px bubble around the nav text vertically so it stays

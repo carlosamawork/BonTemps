@@ -21,19 +21,19 @@
     "contacts contacts"
     "monogram copy";
 
-  @include desktop-only {
+  @include desktop {
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas:
       "claim    claim claim contacts"
       "monogram .     .     copy";
   }
 
-  @include desktop-xl {
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-areas:
-      "claim    claim claim claim contacts"
-      "monogram .     .     .     copy";
-  }
+  // @include desktop-xl {
+  //   grid-template-columns: repeat(5, 1fr);
+  //   grid-template-areas:
+  //     "claim    claim claim claim contacts"
+  //     "monogram .     .     .     copy";
+  // }
 }
 
 .areaClaim {

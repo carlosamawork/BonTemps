@@ -14,17 +14,20 @@
 
   @include tablet-up {
     grid-template-columns: repeat(2, 1fr);
-    row-gap: 48px;
+    row-gap: 55px;
   }
 
   @include desktop-only {
     padding-top: 140px;
     grid-template-columns: repeat(4, 1fr);
+    padding: 96px var(--margin-x) var(--margin-bottom);
   }
 
   @include desktop-xl {
     padding-top: 140px;
     grid-template-columns: repeat(5, 1fr);
+    row-gap: 55px;
+    padding: 96px var(--margin-x) var(--margin-bottom);
   }
 }
 
@@ -36,8 +39,16 @@
   grid-column: 1 / -1;
   margin-bottom: 75px;
 
-  @include desktop {
-    margin-bottom: 60px;
+  @include tablet {
+    margin-bottom: 96px;
+  }
+
+  @include desktop-only {
+    margin-bottom: 96px;
+  }
+
+  @include desktop-xl{
+    margin-bottom: 178px;
   }
 }
 
@@ -82,7 +93,7 @@
 
 .title {
   align-self: start;
-  margin: 0 0 28px;
+  margin: 0 0 12px;
   transition: color 200ms ease;
 }
 

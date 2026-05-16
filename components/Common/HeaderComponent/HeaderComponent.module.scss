@@ -18,9 +18,27 @@
   backdrop-filter: blur(5px) saturate(140%);
   -webkit-backdrop-filter: blur(5px) saturate(140%);
   background: transparent;
-  // Soft fade-out at the bottom edge per spec.
-  mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
+  // Soft fade-out at the bottom edge per spec. Multiple stops aproximan
+  // una curva ease-out: la zona sólida se mantiene corta pero el blur
+  // decae progresivamente en lugar de cortarse en el último tramo.
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 25%,
+    rgba(0, 0, 0, 0.92) 45%,
+    rgba(0, 0, 0, 0.7) 65%,
+    rgba(0, 0, 0, 0.35) 85%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 25%,
+    rgba(0, 0, 0, 0.92) 45%,
+    rgba(0, 0, 0, 0.7) 65%,
+    rgba(0, 0, 0, 0.35) 85%,
+    transparent 100%
+  );
 }
 
 // Three-column layout per Figma: logo (left), nav (centre), meta (right).
@@ -72,11 +90,11 @@
   height: 20px;
 
   @include tablet-up {
-    height: 24px;
+    height: 23.72px;
   }
 
   @include desktop {
-    height: 28px;
+    height: 23.72px;
   }
 }
 
@@ -104,9 +122,17 @@
   color: var(--color-grey);
 }
 
+// Cuando el hover está sobre el link activo (el que tiene la bubble), no
+// se aplica el efecto de gris al resto: la bubble ya marca el estado y
+// queremos evitar que el header "parpadee" sobre sí mismo.
+.nav:has([aria-current="page"]:hover) .navItem:not(:hover) {
+  color: var(--color-fg);
+}
+
 .bubble {
   position: absolute;
   background: var(--color-bubble);
+  opacity: 0.9;
   border-radius: 999px;
   z-index: 0;
   height: 31px;
