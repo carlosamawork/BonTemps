@@ -92,9 +92,9 @@ export default async function ProjectPage({
         video={project.coverVideo}
       />
 
-      <div className={styles.topRow}>
+      {project.websiteUrl && <div className={styles.topRow}>
         <VisitWebsiteBubble url={project.websiteUrl} description={project.description}/>
-      </div>
+      </div>}
 
       <ProjectModules modules={project.modules} />
 

@@ -5,6 +5,7 @@ import {sans, serif} from '../../styles/fonts';
 import WebProvider from '../../context/webContext';
 import HeaderComponent from '../../components/Common/HeaderComponent';
 import FooterComponent from '../../components/Common/FooterComponent';
+import FooterSwitcher from '../../components/Common/FooterComponent/FooterSwitcher';
 import PageTransition from '@/components/Common/PageTransition';
 import {IntroProvider} from '@/components/Home/IntroOverlay/IntroProvider';
 import IntroOverlay from '@/components/Home/IntroOverlay';
@@ -71,7 +72,10 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             <HeaderComponent data={header} />
             <PageTransition>{children}</PageTransition>
             <IntroOverlay claim={claim} />
-            <FooterComponent data={footer} />
+            <FooterSwitcher
+              defaultFooter={<FooterComponent data={footer} variant="default" />}
+              informationFooter={<FooterComponent data={footer} variant="information" />}
+            />
 
             <CookieConsent />
             {process.env.NODE_ENV === 'production' && (

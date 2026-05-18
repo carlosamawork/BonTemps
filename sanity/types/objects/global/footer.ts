@@ -7,6 +7,7 @@ export type FooterSocial = {_key?: string; title: string; url: string}
 
 export type FooterData = {
   claim?: PortableTextBlock[]
+  informationClaim?: PortableTextBlock[]
   emails?: FooterEmail[]
   socials?: FooterSocial[]
   copyright?: string

@@ -15,13 +15,14 @@
     "systems    campaigns";
 
   @include tablet {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     row-gap: 48px;
+   
     grid-template-areas:
-      "process   strategy"
-      "process   design"
-      "process   systems"
-      "process   campaigns";
+      "process process process strategy"
+      "process process process design"
+      "process process process systems"
+      "process process process campaigns";
   }
 
   @include desktop {

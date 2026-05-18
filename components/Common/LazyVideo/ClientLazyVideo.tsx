@@ -1,76 +1,75 @@
 'use client'
-import {useCallback, useEffect, useRef} from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 import styles from './LazyVideo.module.scss'
 
 type Mode = 'hover' | 'in-view' | 'always'
 
 type Props = {
   videoUrl: string
-  posterUrl: string
   title: string
   mode: Mode
   mobileAutoplay: boolean
   className?: string
+  // When set in `mode='hover'`, the video reacts to enter/leave on the
+  // closest ancestor matching the selector instead of the <video> itself.
+  // Needed when the video sits inside an overlay with `pointer-events: none`
+  // where the element never receives mouse events.
+  hoverTargetSelector?: string
+  // Tiny base64 image used as a blurred placeholder while the video fetches
+  // metadata. Sourced from the poster's Sanity LQIP.
+  lqip?: string
+  // CSS `aspect-ratio` value (eg. `"16 / 9"`) — reserves intrinsic layout
+  // before metadata loads to avoid CLS.
+  aspectRatio?: string
 }
 
 export default function ClientLazyVideo({
   videoUrl,
-  posterUrl,
   title,
   mode,
   mobileAutoplay,
   className,
+  hoverTargetSelector,
+  lqip,
+  aspectRatio,
 }: Props) {
   const ref = useRef<HTMLVideoElement>(null)
-  const hlsRef = useRef<{destroy: () => void} | null>(null)
   const attachedRef = useRef(false)
+  const [loaded, setLoaded] = useState(false)
 
-  // Idempotent: attach once per video element. Safari plays HLS natively,
-  // everywhere else we lazy-load hls.js so the bundle stays light when no
-  // video ever needs to play (eg. when JS hovers never trigger).
-  const attach = useCallback(async () => {
+  // MP4 is supported natively everywhere; setting `src` is enough. With
+  // `preload="metadata"` the browser fetches just enough to paint the first
+  // frame without buffering the full file.
+  const attach = useCallback(() => {
     const video = ref.current
     if (!video || attachedRef.current) return
-    if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoUrl
-      attachedRef.current = true
-      return
-    }
-    const Hls = (await import('hls.js')).default
-    if (!Hls.isSupported()) return
-    const hls = new Hls({enableWorker: true, lowLatencyMode: true})
-    hls.loadSource(videoUrl)
-    hls.attachMedia(video)
-    hlsRef.current = hls
+    video.src = videoUrl
     attachedRef.current = true
   }, [videoUrl])
 
-  // Attempt play but never throw. Most browsers reject autoplay if the video
-  // isn't muted, so we always mute upstream — but extensions and corner
-  // cases still abort the promise.
   const play = useCallback(() => {
     ref.current?.play().catch(() => {})
   }, [])
 
-  useEffect(() => () => {
-    hlsRef.current?.destroy()
-    hlsRef.current = null
-    attachedRef.current = false
-  }, [])
-
   useEffect(() => {
     if (mode === 'always') {
-      attach().then(play)
+      attach()
+      play()
       return
     }
     const el = ref.current
     if (!el) return
+
     if (mode === 'in-view') {
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
-            if (e.isIntersecting) attach().then(play)
-            else ref.current?.pause()
+            if (e.isIntersecting) {
+              attach()
+              play()
+            } else {
+              ref.current?.pause()
+            }
           }
         },
         {threshold: 0.25},
@@ -78,14 +77,19 @@ export default function ClientLazyVideo({
       io.observe(el)
       return () => io.disconnect()
     }
+
     // mode === 'hover'
     const isCoarsePointer = window.matchMedia('(hover: none)').matches
     if (isCoarsePointer && mobileAutoplay) {
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
-            if (e.isIntersecting) attach().then(play)
-            else ref.current?.pause()
+            if (e.isIntersecting) {
+              attach()
+              play()
+            } else {
+              ref.current?.pause()
+            }
           }
         },
         {threshold: 0.5},
@@ -93,24 +97,73 @@ export default function ClientLazyVideo({
       io.observe(el)
       return () => io.disconnect()
     }
-    // Desktop hover handled by inline handlers below.
-  }, [mode, mobileAutoplay, attach, play])
 
-  const onMouseEnter = mode === 'hover' ? () => attach().then(play) : undefined
-  const onMouseLeave = mode === 'hover' ? () => ref.current?.pause() : undefined
+    // Desktop hover: pre-load metadata once the video scrolls into view so
+    // the first frame is painted by the time the user hovers. Playback is
+    // driven by mouse events on the chosen ancestor (or the video itself).
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) attach()
+        }
+      },
+      {threshold: 0.1},
+    )
+    io.observe(el)
+
+    if (hoverTargetSelector) {
+      const target = el.closest(hoverTargetSelector)
+      if (target) {
+        const onEnter = () => {
+          attach()
+          play()
+        }
+        const onLeave = () => ref.current?.pause()
+        target.addEventListener('mouseenter', onEnter)
+        target.addEventListener('mouseleave', onLeave)
+        return () => {
+          io.disconnect()
+          target.removeEventListener('mouseenter', onEnter)
+          target.removeEventListener('mouseleave', onLeave)
+        }
+      }
+    }
+    return () => io.disconnect()
+  }, [mode, mobileAutoplay, attach, play, hoverTargetSelector])
+
+  const useInlineHover = mode === 'hover' && !hoverTargetSelector
+  const onMouseEnter = useInlineHover
+    ? () => {
+        attach()
+        play()
+      }
+    : undefined
+  const onMouseLeave = useInlineHover ? () => ref.current?.pause() : undefined
 
   return (
-    <video
-      ref={ref}
-      poster={posterUrl}
-      muted
-      playsInline
-      loop
-      preload="none"
-      aria-label={title}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      className={`${styles.video} ${className ?? ''}`}
-    />
+    <div
+      className={styles.wrap}
+      style={aspectRatio ? {aspectRatio} : undefined}
+    >
+      {lqip && (
+        <div
+          className={`${styles.placeholder} ${loaded ? styles.isHidden : ''}`}
+          style={{backgroundImage: `url(${lqip})`}}
+          aria-hidden
+        />
+      )}
+      <video
+        ref={ref}
+        muted
+        playsInline
+        loop
+        preload="metadata"
+        aria-label={title}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onLoadedData={() => setLoaded(true)}
+        className={`${styles.video} ${loaded ? styles.isLoaded : ''} ${className ?? ''}`}
+      />
+    </div>
   )
 }
