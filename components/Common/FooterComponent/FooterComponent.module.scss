@@ -36,6 +36,45 @@
   // }
 }
 
+// Information page variant: claim narrows to 2 columns, emails and social
+// take their own column each on desktop. iPad keeps the claim in col 1 and
+// stacks emails / social in col 2. Mobile stacks everything full-width.
+.footer[data-variant="information"] {
+  grid-template-areas:
+    "claim    claim"
+    "emails   emails"
+    "social   social"
+    "monogram copy";
+
+  .claim {
+    margin: 0;
+    max-width: 100%;
+    padding-right: 40px;
+  }
+
+  @include tablet {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+      "claim claim claim   emails"
+      "claim claim claim   social"
+      "monogram monogram monogram copy";
+  }
+
+  @include desktop {
+    grid-template-areas:
+      "claim    claim emails social"
+      "monogram .     .      copy";
+  }
+}
+
+.areaEmails {
+  grid-area: emails;
+}
+
+.areaSocial {
+  grid-area: social;
+}
+
 .areaClaim {
   grid-area: claim;
 }
@@ -47,6 +86,9 @@
 .areaMonogram {
   grid-area: monogram;
   align-self: end;
+  @include tablet {
+    margin-top: 180px;
+  }
 }
 
 .areaCopy {

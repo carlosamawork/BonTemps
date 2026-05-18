@@ -7,12 +7,22 @@
 // Figma differentiates spacing per module kind: image grids stack tight
 // (~20px gap), while text-based modules (centered quote / image+text /
 // text column) get a lot of breathing room (~160px each side desktop).
-.centered,
-.textColumn {
-  padding: 90px var(--margin-x) 80px;
+.centered {
+  padding: 0px var(--margin-x) 0px;
+  margin: 100px 0;
 
   @include desktop {
-    padding: 160px var(--margin-x);
+    padding: 0px var(--margin-x);
+    margin: 160px 0;
+  }
+}
+
+.textColumn {
+  padding: 0px var(--margin-x) 0px;
+  margin: 20px 0;
+  @include desktop {
+    padding: 0px var(--margin-x);
+    margin: 20px 0;
   }
 }
 
@@ -20,18 +30,20 @@
 // inner gap between image and body is handled by grid gap, outer module
 // padding stays small so it sits close to neighbouring image modules.
 .imageText {
-  padding: 30px var(--margin-x);
-
+  padding: 0px var(--margin-x);
+  margin: 20px 0;
   @include desktop {
-    padding: 160px var(--margin-x);
+    padding: 0px var(--margin-x);
+    margin: 20px 0;
   }
 }
 
 .imageVideo {
-  padding: 8px var(--margin-x);
-
+  padding: 0px var(--margin-x);
+  margin: 20px 0;
   @include desktop {
-    padding: 10px var(--margin-x);
+    padding: 0px var(--margin-x);
+    margin: 20px 0;
   }
 }
 

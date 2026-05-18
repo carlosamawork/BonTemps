@@ -4,6 +4,7 @@ import type {FooterData} from '@/sanity/types'
 
 const FOOTER_QUERY = groq`*[_type == "settings"][0].footer{
   claim,
+  informationClaim,
   emails[]{title, email},
   socials[]{
     _key,

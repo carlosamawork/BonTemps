@@ -15,6 +15,13 @@ export default defineType({
       title: 'Claim',
       type: 'bodyBonTemps',
     }),
+    // Information page claim (overrides claim only on /information)
+    defineField({
+      name: 'informationClaim',
+      title: 'Information Page Claim',
+      type: 'bodyBonTemps',
+      description: 'Shown in the footer only on the /information page. Falls back to the main claim if empty.',
+    }),
     // Emails
     defineField({
       name: 'emails',

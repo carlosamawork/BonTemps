@@ -113,26 +113,6 @@
   height: auto;
 }
 
-// Hover-only video overlay. Sits on top of the static poster within the
-// .media bounds — never covers the whitespace below.
-.hoverLayer {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 200ms ease;
-  pointer-events: none;
-
-  video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-.card:hover .hoverLayer {
-  opacity: 1;
-}
-
 .excerpt {
   align-self: start;
   margin: 0;

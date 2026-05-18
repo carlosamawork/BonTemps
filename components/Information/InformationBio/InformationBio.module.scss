@@ -14,13 +14,13 @@
     "clients    press";
 
   @include tablet {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     row-gap: 48px;
     grid-template-areas:
-      "bio   services"
-      "bio   industries"
-      "bio   clients"
-      "bio   press";
+      "bio bio bio services"
+      "bio bio bio industries"
+      "bio bio bio clients"
+      "bio bio bio press";
   }
 
   @include desktop {

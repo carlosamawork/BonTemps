@@ -1,4 +1,3 @@
-import {urlFor} from '@/sanity/queries'
 import type {ModuleVideo} from '@/sanity/types'
 import ClientLazyVideo from './ClientLazyVideo'
 
@@ -9,29 +8,34 @@ type Props = {
   mode?: Mode
   mobileAutoplay?: boolean
   className?: string
+  hoverTargetSelector?: string
 }
 
-// RSC wrapper. The poster image is resolved on the server so the <video>
-// renders an intrinsic poster on first paint even if JavaScript never runs.
-// HLS attachment, IntersectionObserver, and hover handlers live in the
-// client child.
+// RSC wrapper. Reads LQIP + intrinsic aspect ratio off the poster's Sanity
+// metadata so the client component can reserve layout and paint a blurred
+// placeholder before metadata round-trips.
 export default function LazyVideo({
   video,
   mode = 'in-view',
   mobileAutoplay = true,
   className,
+  hoverTargetSelector,
 }: Props) {
-  if (!video?.poster?.asset || !video.videoUrl) return null
-  const posterUrl = urlFor(video.poster).auto('format').width(1600).quality(85).url()
+  if (!video?.videoUrl) return null
+  const lqip = video.poster?.asset?.metadata?.lqip
+  const dim = video.poster?.asset?.metadata?.dimensions
+  const aspectRatio = dim ? `${dim.width} / ${dim.height}` : undefined
 
   return (
     <ClientLazyVideo
       videoUrl={video.videoUrl}
-      posterUrl={posterUrl}
       title={video.title}
       mode={mode}
       mobileAutoplay={mobileAutoplay}
       className={className}
+      hoverTargetSelector={hoverTargetSelector}
+      lqip={lqip}
+      aspectRatio={aspectRatio}
     />
   )
 }
