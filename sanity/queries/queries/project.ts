@@ -3,7 +3,7 @@ import {client} from '../index'
 import {image} from '../fragments/image'
 import {video} from '../fragments/video'
 import {seo} from '../fragments/seo'
-import {projectModules} from '../modules'
+import {projectModulesDesktop, projectModulesMobile} from '../modules'
 import type {MediaImage, MediaVideo} from '@/sanity/types'
 import type {ProjectCardData} from './work'
 
@@ -27,7 +27,8 @@ export type ProjectFull = {
   customTypeface?: any
   bonTempsTeam?: any
   collaborators?: any
-  modules?: any[]
+  modulesMobile?: any[]
+  modulesDesktop?: any[]
   relatedProjects?: ProjectCardData[]
   seo?: any
 }
@@ -52,7 +53,8 @@ const PROJECT_QUERY = groq`*[_type == "project" && slug.current == $slug][0]{
   customTypeface,
   bonTempsTeam,
   collaborators,
-  ${projectModules},
+  ${projectModulesMobile},
+  ${projectModulesDesktop},
   "relatedProjects": relatedProjects[]->{
     _id,
     title,

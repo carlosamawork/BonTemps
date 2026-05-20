@@ -38,6 +38,7 @@ import linkInternal from './objects/global/linkInternal'
 import linkSocial from './objects/global/linkSocial'
 import links from './objects/global/links'
 import menu from './objects/global/menu'
+import columnText from './objects/module/columnText'
 import moduleCenteredText from './objects/module/centeredText'
 import moduleImageText from './objects/module/imageText'
 import moduleImageVideo from './objects/module/imageVideo'
@@ -46,7 +47,6 @@ import mediaImageResponsive from './objects/module/mediaImageResponsive'
 import mediaVideo from './objects/module/mediaVideo'
 import mediaVideoResponsive from './objects/module/mediaVideoResponsive'
 import modulePageImageVideo from './objects/module/pageImageVideo'
-import moduleTextColumn from './objects/module/textColumn'
 import seo from './objects/seo/seo'
 import seoHome from './objects/seo/home'
 import seoPage from './objects/seo/page'
@@ -61,6 +61,7 @@ const objects = [
   linkInternal,
   linkSocial,
   menu,
+  columnText,
   moduleCenteredText,
   moduleImageText,
   moduleImageVideo,
@@ -69,7 +70,6 @@ const objects = [
   mediaVideo,
   mediaVideoResponsive,
   modulePageImageVideo,
-  moduleTextColumn,
   seo,
   seoHome,
   seoPage,

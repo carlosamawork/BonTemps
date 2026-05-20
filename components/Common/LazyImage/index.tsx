@@ -25,7 +25,7 @@ export default function LazyImage({
   const dim = image?.asset?.metadata?.dimensions
   if (!image?.asset || !dim) return null
 
-  const src = urlFor(image).auto('format').width(width).quality(85).url()
+  const src = urlFor(image).auto('format').width(width).quality(100).url()
   const lqip = image.asset.metadata?.lqip
 
   return (

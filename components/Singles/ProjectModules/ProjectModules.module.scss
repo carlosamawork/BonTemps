@@ -1,15 +1,32 @@
 @use "../../../styles/breakpoints" as *;
 
+// ---------------------------------------------------------------------------
+// Breakpoint-scoped wrappers
+// The project page renders modulesMobile and modulesDesktop side by side
+// and lets CSS hide whichever doesn't match the current viewport. SSR
+// serves both HTML trees so crawlers/JS-off readers still see content.
+// ---------------------------------------------------------------------------
+.modulesMobile {
+  @include tablet-up {
+    display: none;
+  }
+}
+
+.modulesDesktop {
+  @include mobile {
+    display: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Each module owns its own outer padding so the page can compose them
 // vertically without an explicit wrapper. Sides match the page margin
 // tokens so modules align with the project header and featured media.
-//
-// Figma differentiates spacing per module kind: image grids stack tight
-// (~20px gap), while text-based modules (centered quote / image+text /
-// text column) get a lot of breathing room (~160px each side desktop).
+// ---------------------------------------------------------------------------
 .centered {
   padding: 0px var(--margin-x) 0px;
   margin: 100px 0;
+  text-align: center;
 
   @include desktop {
     padding: 0px var(--margin-x);
@@ -17,13 +34,9 @@
   }
 }
 
-.textColumn {
-  padding: 0px var(--margin-x) 0px;
-  margin: 20px 0;
-  @include desktop {
-    padding: 0px var(--margin-x);
-    margin: 20px 0;
-  }
+.centeredInner {
+  margin: 0 auto;
+  max-width: 860px;
 }
 
 // ImageText stacks vertically on mobile (image on top + body below):
@@ -32,196 +45,14 @@
 .imageText {
   padding: 0px var(--margin-x);
   margin: 20px 0;
-  @include desktop {
-    padding: 0px var(--margin-x);
-    margin: 20px 0;
-  }
-}
-
-.imageVideo {
-  padding: 0px var(--margin-x);
-  margin: 20px 0;
-  @include desktop {
-    padding: 0px var(--margin-x);
-    margin: 20px 0;
-  }
-}
-
-// Centered narrow column.
-.centered {
-  text-align: center;
-}
-
-.centeredInner {
-  margin: 0 auto;
-  max-width: 860px;
-}
-
-// Image/Video grid module. Columns track the editor's `columns` value
-// and `data-layout` selects the aspect-ratio recipe per item. Mobile
-// collapses to 1 column and respects `data-reverse` to swap order.
-.imageVideo {
-  display: grid;
-  gap: var(--grid-gap-x);
-  grid-template-columns: 1fr;
-}
-
-// 2-col Option A: equal halves (4×5 · 4×5).
-.imageVideo[data-columns='2'][data-layout='optionA'] {
-  @include tablet-up {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-// 2-col Option B: big landscape (3×2) + small vertical (4×5). The wide
-// item gets ~3/4 of the row; reverse swaps the column track so the
-// small item sits first when the editor wants that order.
-.imageVideo[data-columns='2'][data-layout='optionB'] {
-  @include tablet-up {
-    grid-template-columns: 3fr 1fr;
-    align-items: start;
-  }
-}
-.imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] {
-  @include tablet-up {
-    grid-template-columns: 1fr 3fr;
-  }
-}
-
-// 2-col Option C: wide-top (5×4) + vertical (4×5) on equal halves so
-// the vertical extends below while the wide is anchored at the top.
-.imageVideo[data-columns='2'][data-layout='optionC'] {
-  @include tablet-up {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-}
-
-.imageVideo[data-columns='3'] {
-  @include desktop {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @include tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@include mobile {
-  .imageVideo[data-reverse='true'] > :nth-child(odd) {
-    order: 2;
-  }
-  .imageVideo[data-reverse='true'] > :nth-child(even) {
-    order: 1;
-  }
-}
-
-.imageVideoItem {
-  margin: 0;
-
-  figcaption {
-    margin-top: 12px;
-    color: var(--color-grey);
-  }
-}
-
-// Inner wrapper carries the aspect ratio so the image/video crop matches
-// the layout slot regardless of the actual upload dimensions. Caption
-// stays outside this box and keeps its natural height.
-.imageVideoMedia {
-  width: 100%;
-  overflow: hidden;
-
-  img,
-  video {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-// // Per-layout aspect ratios, applied to the media wrapper.
-// .imageVideo[data-columns='1'][data-layout='optionA'] .imageVideoMedia {
-//   aspect-ratio: 3 / 2;
-// }
-// .imageVideo[data-columns='1'][data-layout='optionB'] .imageVideoMedia {
-//   aspect-ratio: 16 / 9;
-// }
-
-// .imageVideo[data-columns='2'][data-layout='optionA'] .imageVideoMedia {
-//   aspect-ratio: 4 / 5;
-// }
-
-// .imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(1) .imageVideoMedia {
-//   aspect-ratio: 3 / 2;
-// }
-// .imageVideo[data-columns='2'][data-layout='optionB']:not([data-reverse='true']) > :nth-child(2) .imageVideoMedia {
-//   aspect-ratio: 4 / 5;
-// }
-
-// .imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(1) .imageVideoMedia {
-//   aspect-ratio: 4 / 5;
-// }
-
-// .imageVideo[data-columns='2'][data-layout='optionB'][data-reverse='true'] > :nth-child(2) .imageVideoMedia {
-//   aspect-ratio: 3 / 2;
-// }
-
-// .imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(1) .imageVideoMedia {
-//   aspect-ratio: 5 / 4;
-// }
-// .imageVideo[data-columns='2'][data-layout='optionC'] > :nth-child(2) .imageVideoMedia {
-//   aspect-ratio: 4 / 5;
-// }
-
-// .imageVideo[data-columns='3'][data-layout='optionA'] .imageVideoMedia {
-//   aspect-ratio: 4 / 5;
-// }
-
-// Text column module. Maps editor's columns/span/columnStart to a CSS
-// grid placement. The CSS variables are set inline by the component.
-.textColumn {
-  display: grid;
-}
-
-.textColumn[data-columns='1'] {
-  grid-template-columns: 1fr;
-}
-
-.textColumn[data-columns='2'] {
-  @include tablet-up {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--grid-gap-x);
-  }
-}
-
-.textColumn[data-columns='3'] {
-  @include desktop {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--grid-gap-x);
-  }
-
-  @include tablet {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--grid-gap-x);
-  }
-}
-
-.textColumnInner {
-  grid-column: var(--col-start, 1) / span var(--span, 1);
-
-  @include mobile {
-    grid-column: 1 / -1;
-  }
-}
-
-// Image+Text two-column module. `data-side="right"` puts the image after
-// the body on desktop while keeping image-first on mobile.
-.imageText {
   display: grid;
   gap: 32px var(--grid-gap-x);
   grid-template-columns: 1fr;
+
+  @include desktop {
+    padding: 0px var(--margin-x);
+    margin: 20px 0;
+  }
 
   @include tablet-up {
     grid-template-columns: 1fr 1fr;
@@ -250,4 +81,72 @@
       order: 1;
     }
   }
+}
+
+// ---------------------------------------------------------------------------
+// Columns module (image / video / text)
+// Grid of 1/2/3 columns. Each cell is one item — media or text — and the
+// cell takes its natural height. Rows align items to the top so a tall
+// item next to a short one doesn't force the short one to stretch.
+// Mobile collapses to a single column regardless of `data-columns`.
+// ---------------------------------------------------------------------------
+.imageVideo {
+  padding: 0px var(--margin-x);
+  margin: 20px 0;
+  display: grid;
+  gap: var(--grid-gap-x);
+  grid-template-columns: 1fr;
+  align-items: start;
+
+  @include desktop {
+    padding: 0px var(--margin-x);
+    margin: 20px 0;
+  }
+}
+
+.imageVideo[data-columns='2'] {
+  @include tablet-up {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.imageVideo[data-columns='3'] {
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.imageVideoItem {
+  margin: 0;
+
+  figcaption {
+    margin-top: 12px;
+    color: var(--color-grey);
+  }
+}
+
+// Media wrapper keeps natural aspect ratio: width fills the cell, height
+// is dictated by the image/video's intrinsic dimensions. No aspect-ratio
+// presets — the editor's upload owns the height.
+.imageVideoMedia {
+  width: 100%;
+
+  img,
+  video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+// Text cell inside the columns grid. Fills the cell width and centers
+// vertically relative to neighbouring media so a short caption next to a
+// tall image sits visually balanced.
+.imageVideoText {
+  width: 100%;
+  align-self: center;
 }

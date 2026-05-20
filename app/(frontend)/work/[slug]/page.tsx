@@ -96,7 +96,8 @@ export default async function ProjectPage({
         <VisitWebsiteBubble url={project.websiteUrl} description={project.description}/>
       </div>}
 
-      <ProjectModules modules={project.modules} />
+      <ProjectModules modules={project.modulesMobile} breakpoint="mobile" />
+      <ProjectModules modules={project.modulesDesktop} breakpoint="desktop" />
 
       <ProjectRecapGrid
         projectRecap={project.projectRecap}
