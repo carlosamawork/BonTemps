@@ -7,18 +7,21 @@ import styles from './IntroOverlay.module.scss'
 
 type Props = {claim: string}
 
-// Total visible time is the stagger length plus a hold. We derive it from
-// the claim length so longer claims stay on screen long enough to read.
-const PER_LETTER_MS = 40
-const HOLD_MS = 1200
-const BASE_DELAY_MS = 400
+// Total visible time = base delay + stagger window + monogram duration + hold.
+// The monogram starts when the last letter starts and runs for the same
+// duration, so it's the monogram (not the letters) that bounds the reveal.
+// Mirrors the constants in IntroSequence.
+const BASE_DELAY_MS = 200
+const PER_LETTER_MS = 60
+const LETTER_DURATION_MS = 1400
+const HOLD_MS = 600
 
 export default function IntroOverlay({claim}: Props) {
   const {shouldShow, dismiss} = useIntro()
 
   useEffect(() => {
     if (!shouldShow) return
-    const total = BASE_DELAY_MS + claim.length * PER_LETTER_MS + HOLD_MS
+    const total = BASE_DELAY_MS + claim.length * PER_LETTER_MS + LETTER_DURATION_MS + HOLD_MS
     const t = window.setTimeout(dismiss, total)
     return () => window.clearTimeout(t)
   }, [shouldShow, dismiss, claim.length])

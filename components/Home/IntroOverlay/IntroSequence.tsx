@@ -5,13 +5,23 @@ import styles from './IntroOverlay.module.scss'
 
 type Props = {claim: string}
 
-// Vertical stack per Figma: claim on top, monogram BTA below. Letters
-// animate in sequence; the monogram fades in once the claim is settled.
-// The visible <h1> exposes the claim to assistive tech via aria-label so
-// the per-letter spans can stay aria-hidden.
+// Vertical stack per Figma: claim on top, monogram BTA below.
+// Per-letter opacity reveal tuned to feel continuous, not mechanical.
+// Recipe matches the unstated.co intro: 80ms stagger but 2s per-letter
+// duration. At any moment ~25 letters are mid-fade at different opacities,
+// so the line reads as a gradient of light sweeping across rather than
+// letters popping in. power2.inOut from GSAP ~= cubic-bezier(0.65,0,0.35,1).
+const LETTER_DURATION = 1.4
+const LETTER_STAGGER = 0.06
+const BASE_DELAY = 0.2
+const SOFT_EASE = [0.65, 0, 0.35, 1] as const
+
 export default function IntroSequence({claim}: Props) {
   const letters = Array.from(claim)
-  const monogramDelay = 0.2 + letters.length * 0.04 + 0.15
+  // Monogram starts when the last letter starts fading in, with the same
+  // duration and ease so it reads as one continuous gesture closing the
+  // sequence.
+  const monogramDelay = BASE_DELAY + letters.length * LETTER_STAGGER
 
   return (
     <div className={styles.stage}>
@@ -19,13 +29,15 @@ export default function IntroSequence({claim}: Props) {
         {letters.map((ch, i) => (
           <motion.span
             key={i}
-            initial={{y: 18, opacity: 0}}
-            animate={{y: 0, opacity: 1}}
-            transition={{delay: 0.2 + i * 0.04, duration: 0.35, ease: 'easeOut'}}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            transition={{
+              delay: BASE_DELAY + i * LETTER_STAGGER,
+              duration: LETTER_DURATION,
+              ease: SOFT_EASE,
+            }}
             aria-hidden
           >
-            {/* Non-breaking space — a regular ' ' would collapse inside the
-                inline-block span and the words would mash together. */}
             {ch === ' ' ? ' ' : ch}
           </motion.span>
         ))}
@@ -34,9 +46,9 @@ export default function IntroSequence({claim}: Props) {
       <motion.div
         className={styles.monogramWrap}
         aria-hidden
-        initial={{y: 12, opacity: 0}}
-        animate={{y: 0, opacity: 1}}
-        transition={{delay: monogramDelay, duration: 0.45, ease: 'easeOut'}}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{delay: monogramDelay, duration: LETTER_DURATION, ease: SOFT_EASE}}
       >
         <MonogramBTA className={styles.monogram} />
       </motion.div>
