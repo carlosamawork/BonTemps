@@ -1,6 +1,7 @@
 import CenteredText from './CenteredText'
 import ImageVideoModule from './ImageVideoModule'
 import ImageText from './ImageText'
+import Spacer from './Spacer'
 import styles from './ProjectModules.module.scss'
 
 type ModuleEntry = {
@@ -46,6 +47,13 @@ export default function ProjectModules({modules, breakpoint}: Props) {
                 image={m.image as never}
                 video={m.video as never}
                 body={m.body as unknown}
+              />
+            )
+          case 'module.spacer':
+            return (
+              <Spacer
+                key={m._key}
+                size={m.size as 'small' | 'medium' | 'large' | 'xl' | undefined}
               />
             )
           default:

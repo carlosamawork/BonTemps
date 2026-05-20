@@ -47,6 +47,7 @@ import mediaImageResponsive from './objects/module/mediaImageResponsive'
 import mediaVideo from './objects/module/mediaVideo'
 import mediaVideoResponsive from './objects/module/mediaVideoResponsive'
 import modulePageImageVideo from './objects/module/pageImageVideo'
+import moduleSpacer from './objects/module/spacer'
 import seo from './objects/seo/seo'
 import seoHome from './objects/seo/home'
 import seoPage from './objects/seo/page'
@@ -70,6 +71,7 @@ const objects = [
   mediaVideo,
   mediaVideoResponsive,
   modulePageImageVideo,
+  moduleSpacer,
   seo,
   seoHome,
   seoPage,

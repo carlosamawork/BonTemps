@@ -90,6 +90,9 @@ export default async function ProjectPage({
         type={project.coverMediaType}
         image={project.coverImage}
         video={project.coverVideo}
+        mobileType={project.coverMediaTypeMobile}
+        mobileImage={project.coverImageMobile}
+        mobileVideo={project.coverVideoMobile}
       />
 
       {project.websiteUrl && <div className={styles.topRow}>

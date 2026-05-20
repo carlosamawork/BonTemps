@@ -28,7 +28,8 @@ const moduleBody = `
     image{ ${image} },
     video{ ${video} },
     body
-  }
+  },
+  _type == "module.spacer" => { size }
 `
 
 export const projectModulesMobile = `

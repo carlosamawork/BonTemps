@@ -148,5 +148,41 @@
 // tall image sits visually balanced.
 .imageVideoText {
   width: 100%;
-  align-self: center;
+}
+
+// ---------------------------------------------------------------------------
+// Spacer module — invisible block that adds extra vertical room between
+// neighbouring modules. Heights scale per breakpoint to keep rhythm with
+// the existing module margins (centered: 100/160, image*: 20/20).
+// ---------------------------------------------------------------------------
+.spacer {
+  width: 100%;
+}
+
+.spacer[data-size='small'] {
+  height: 32px;
+  @include desktop {
+    height: 48px;
+  }
+}
+
+.spacer[data-size='medium'] {
+  height: 64px;
+  @include desktop {
+    height: 96px;
+  }
+}
+
+.spacer[data-size='large'] {
+  height: 100px;
+  @include desktop {
+    height: 160px;
+  }
+}
+
+.spacer[data-size='xl'] {
+  height: 160px;
+  @include desktop {
+    height: 240px;
+  }
 }

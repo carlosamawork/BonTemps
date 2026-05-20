@@ -17,6 +17,9 @@ export type ProjectFull = {
   coverMediaType: 'image' | 'video'
   coverImage?: MediaImage
   coverVideo?: MediaVideo
+  coverMediaTypeMobile?: 'none' | 'image' | 'video'
+  coverImageMobile?: MediaImage
+  coverVideoMobile?: MediaVideo
   featuredMediaType: 'image' | 'video'
   featuredImage?: MediaImage
   featuredVideo?: MediaVideo
@@ -43,6 +46,9 @@ const PROJECT_QUERY = groq`*[_type == "project" && slug.current == $slug][0]{
   coverMediaType,
   coverImage{ ${image} },
   coverVideo{ ${video} },
+  coverMediaTypeMobile,
+  coverImageMobile{ ${image} },
+  coverVideoMobile{ ${video} },
   featuredMediaType,
   featuredImage{ ${image} },
   featuredVideo{ ${video} },
