@@ -20,25 +20,16 @@ export default defineField({
       type: 'image',
       options: {hotspot: true},
       description:
-        'Shown before the video plays and as a fallback if the HLS source fails to load.',
+        'Shown before the video plays and as a fallback if the source fails to load.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'videoUrl',
-      title: 'Video URL (HLS .m3u8)',
+      title: 'Video URL',
       type: 'url',
       description:
-        'Direct HLS streaming URL from Vimeo Pro (must end in .m3u8). Do not use embed/iframe URLs.',
-      validation: (Rule) =>
-        Rule.required()
-          .uri({scheme: ['https']})
-          .custom((value) => {
-            if (!value) return true
-            return value.includes('.m3u8')
-              ? true
-              : 'URL should typically end with .m3u8 (HLS manifest).'
-          })
-          .warning(),
+        'Direct video URL (e.g. .mp4 or HLS .m3u8). Do not use embed/iframe URLs.',
+      validation: (Rule) => Rule.required().uri({scheme: ['https']}),
     }),
   ],
   preview: {
