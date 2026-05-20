@@ -129,15 +129,28 @@ export default defineType({
       type: 'bodyBonTemps',
       group: 'editorial',
     }),
-    // Modules
+    // Modules — Mobile layout (rendered <768px)
     defineField({
-      name: 'modules',
-      title: 'Modules',
+      name: 'modulesMobile',
+      title: 'Modules — Mobile',
+      description: 'Layout shown on mobile (<768px). Independent from the desktop/tablet layout.',
       type: 'array',
       of: [
         { type: 'module.centeredText' },
         { type: 'module.imageVideo' },
-        { type: 'module.textColumn' },
+        { type: 'module.imageText' },
+      ],
+      group: 'editorial',
+    }),
+    // Modules — Desktop / Tablet layout (rendered ≥768px)
+    defineField({
+      name: 'modulesDesktop',
+      title: 'Modules — Desktop & Tablet',
+      description: 'Layout shown on tablet and desktop (≥768px).',
+      type: 'array',
+      of: [
+        { type: 'module.centeredText' },
+        { type: 'module.imageVideo' },
         { type: 'module.imageText' },
       ],
       group: 'editorial',

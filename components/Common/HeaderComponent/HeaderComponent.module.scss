@@ -118,6 +118,12 @@
   z-index: 1;
 }
 
+// Active route always reads in grey — the bubble marks position, the colour
+// reinforces the "you are here" cue.
+.navItem[aria-current="page"] {
+  color: var(--color-grey);
+}
+
 .nav:hover .navItem:not(:hover) {
   color: var(--color-grey);
 }

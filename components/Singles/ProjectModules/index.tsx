@@ -1,7 +1,7 @@
 import CenteredText from './CenteredText'
 import ImageVideoModule from './ImageVideoModule'
-import TextColumn from './TextColumn'
 import ImageText from './ImageText'
+import styles from './ProjectModules.module.scss'
 
 type ModuleEntry = {
   _key: string
@@ -9,15 +9,22 @@ type ModuleEntry = {
   [k: string]: unknown
 }
 
-type Props = {modules?: ModuleEntry[]}
+type Props = {
+  modules?: ModuleEntry[]
+  // Which breakpoint this modules array is intended for. The wrapper
+  // hides itself via CSS when the viewport doesn't match, so both arrays
+  // can be rendered side by side and SSR stays crawler-friendly.
+  breakpoint: 'mobile' | 'desktop'
+}
 
 // Switch over module `_type`. Add new module renderers here when the
 // schema grows. Unknown types are silently skipped so editorial drafts
 // don't crash the page.
-export default function ProjectModules({modules}: Props) {
+export default function ProjectModules({modules, breakpoint}: Props) {
   if (!modules || modules.length === 0) return null
+  const wrapperClass = breakpoint === 'mobile' ? styles.modulesMobile : styles.modulesDesktop
   return (
-    <>
+    <div className={wrapperClass}>
       {modules.map((m) => {
         switch (m._type) {
           case 'module.centeredText':
@@ -27,21 +34,7 @@ export default function ProjectModules({modules}: Props) {
               <ImageVideoModule
                 key={m._key}
                 columns={(m.columns as 1 | 2 | 3) ?? 1}
-                reverseOrder={Boolean(m.reverseOrder)}
                 items={(m.items as never[]) ?? []}
-                layout1col={m.layout1col as string | undefined}
-                layout2col={m.layout2col as string | undefined}
-                layout3col={m.layout3col as string | undefined}
-              />
-            )
-          case 'module.textColumn':
-            return (
-              <TextColumn
-                key={m._key}
-                body={m.body as unknown}
-                columns={(m.columns as 1 | 2 | 3) ?? 1}
-                span={m.span as 1 | 2 | 3 | undefined}
-                columnStart={m.columnStart as 1 | 2 | 3 | undefined}
               />
             )
           case 'module.imageText':
@@ -59,6 +52,6 @@ export default function ProjectModules({modules}: Props) {
             return null
         }
       })}
-    </>
+    </div>
   )
 }

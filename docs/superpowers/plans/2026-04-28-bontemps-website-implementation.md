@@ -416,7 +416,7 @@ $bp-desktop-xl-min: 1800px;
 .t-headline-project {
   font-family: var(--font-sans);
   font-size: 50px;
-  line-height: 1.05;
+  line-height: 47px;
   letter-spacing: -0.02em;
   @include tablet { font-size: 40px; line-height: 40px; }
   @include mobile { font-size: 30px; }
