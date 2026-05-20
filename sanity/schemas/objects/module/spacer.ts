@@ -1,4 +1,4 @@
-import { StretchIcon } from '@sanity/icons'
+import { SplitVerticalIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
 const SIZE_TITLES: Record<string, string> = {
@@ -12,7 +12,7 @@ export default defineType({
   name: 'module.spacer',
   title: 'Spacer',
   type: 'object',
-  icon: StretchIcon,
+  icon: SplitVerticalIcon,
   description: 'Vertical spacing between modules.',
   fields: [
     defineField({
