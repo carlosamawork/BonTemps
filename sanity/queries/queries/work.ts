@@ -14,6 +14,9 @@ export type ProjectCardData = {
   featuredMediaType: 'image' | 'video'
   featuredImage?: MediaImage
   featuredVideo?: MediaVideo
+  hoverMediaType?: 'none' | 'image' | 'video'
+  hoverImage?: MediaImage
+  hoverVideo?: MediaVideo
 }
 
 export type WorkData = {
@@ -34,7 +37,10 @@ const WORK_QUERY = groq`{
     excerpt,
     featuredMediaType,
     featuredImage{ ${image} },
-    featuredVideo{ ${video} }
+    featuredVideo{ ${video} },
+    hoverMediaType,
+    hoverImage{ ${image} },
+    hoverVideo{ ${video} }
   }
 }`
 

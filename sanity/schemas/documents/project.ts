@@ -115,6 +115,38 @@ export default defineType({
       hidden: ({ document }) => document?.featuredMediaType !== 'video',
       group: 'editorial',
     }),
+    // Hover media: optional overlay shown on cursor hover in the /work grid
+    // (and related projects). Cross-fades with the featured media via opacity.
+    defineField({
+      name: 'hoverMediaType',
+      title: 'Hover media type',
+      description: 'Shown on cursor hover over the project card. Leave as "None" to skip.',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'None', value: 'none' },
+          { title: 'Image', value: 'image' },
+          { title: 'Video', value: 'video' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'none',
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'hoverImage',
+      title: 'Hover Image',
+      type: 'media.image',
+      hidden: ({ document }) => document?.hoverMediaType !== 'image',
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'hoverVideo',
+      title: 'Hover Video',
+      type: 'media.video',
+      hidden: ({ document }) => document?.hoverMediaType !== 'video',
+      group: 'editorial',
+    }),
     // Services references
     defineField({
       name: 'services',
