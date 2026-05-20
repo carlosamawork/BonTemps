@@ -16,3 +16,18 @@
     color: var(--color-grey);
   }
 }
+
+// Visibility wrappers — only added when the editor sets a mobile-only
+// cover override. Both figures are SSR'd; CSS hides the off-breakpoint
+// one so crawlers / JS-off readers still get the right markup tree.
+.figureMobile {
+  @include tablet-up {
+    display: none;
+  }
+}
+
+.figureDesktop {
+  @include mobile {
+    display: none;
+  }
+}

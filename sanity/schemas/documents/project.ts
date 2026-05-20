@@ -85,6 +85,39 @@ export default defineType({
       hidden: ({ document }) => document?.coverMediaType !== 'video',
       group: 'editorial',
     }),
+    // Cover media — Mobile override (rendered <768px). When left as "None"
+    // the desktop cover is shown on mobile too. When set, it replaces the
+    // desktop cover on mobile via SSR + CSS visibility swap.
+    defineField({
+      name: 'coverMediaTypeMobile',
+      title: 'Cover media type — Mobile',
+      description: 'Optional mobile-only cover. Leave as "None" to reuse the desktop cover on mobile.',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'None (use desktop)', value: 'none' },
+          { title: 'Image', value: 'image' },
+          { title: 'Video', value: 'video' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'none',
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'coverImageMobile',
+      title: 'Cover Image — Mobile',
+      type: 'media.image',
+      hidden: ({ document }) => document?.coverMediaTypeMobile !== 'image',
+      group: 'editorial',
+    }),
+    defineField({
+      name: 'coverVideoMobile',
+      title: 'Cover Video — Mobile',
+      type: 'media.video',
+      hidden: ({ document }) => document?.coverMediaTypeMobile !== 'video',
+      group: 'editorial',
+    }),
     // Featured media type selector (used in listings: /work grid + relatedProjects)
     defineField({
       name: 'featuredMediaType',
@@ -171,6 +204,7 @@ export default defineType({
         { type: 'module.centeredText' },
         { type: 'module.imageVideo' },
         { type: 'module.imageText' },
+        { type: 'module.spacer' },
       ],
       group: 'editorial',
     }),
@@ -184,6 +218,7 @@ export default defineType({
         { type: 'module.centeredText' },
         { type: 'module.imageVideo' },
         { type: 'module.imageText' },
+        { type: 'module.spacer' },
       ],
       group: 'editorial',
     }),
