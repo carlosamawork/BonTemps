@@ -76,13 +76,6 @@ export default async function RootLayout({children}: {children: React.ReactNode}
               defaultFooter={<FooterComponent data={footer} variant="default" />}
               informationFooter={<FooterComponent data={footer} variant="information" />}
             />
-
-            <CookieConsent />
-            {process.env.NODE_ENV === 'production' && (
-              <ConsentGate category="analytics">
-                <Analytics />
-              </ConsentGate>
-            )}
           </IntroProvider>
         </WebProvider>
       </body>
