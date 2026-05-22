@@ -20,9 +20,9 @@ export default defineConfig({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET as string,
   basePath: "/admin",
   icon: myLogo,
-
   plugins: [
-    structureTool({ structure, title: 'Website Content' }),
+    structureTool({ 
+      structure, title: 'Website Content' }),
     imageHotspotArrayPlugin(),
     media(),
     ...(isDev ? devOnlyPlugins : []),
