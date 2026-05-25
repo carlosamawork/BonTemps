@@ -3,6 +3,7 @@ import WorkGrid from '@/components/Home/WorkGrid'
 import {getWork} from '@/sanity/queries/queries/work'
 import {getIntroClaim} from '@/sanity/queries/common/intro'
 import {BASE_URL, buildUrl, getFavicons, siteDescription, siteTitle} from '@/utils/seoHelper'
+import {toPlainText} from '@/utils/toPlainText'
 
 export const revalidate = 60
 
@@ -32,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function WorkPage() {
   const {listWork, projects} = await getWork()
-  const headlineClaim = listWork?.claim || siteTitle
+  const headlineClaim = toPlainText(listWork?.claim) || siteTitle
 
   return (
     <main id="main">

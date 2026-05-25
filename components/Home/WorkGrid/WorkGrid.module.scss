@@ -71,6 +71,18 @@
   @include desktop-xl {
     max-width: calc((2 * 100% - 3 * var(--grid-gap-x)) / 5);
   }
+
+  // BodyBonTempsRenderer wraps the "normal" style as <p class="t-body">.
+  // The Work claim must stay at 18px across breakpoints (the previous
+  // `t-claim` token), so we override the mobile downsize here.
+  :global(.t-body) {
+    font-size: 18px;
+    margin: 0;
+
+    + :global(.t-body) {
+      margin-top: 1em;
+    }
+  }
 }
 
 // `display: contents` removes the <li> from the box tree so the <a> becomes

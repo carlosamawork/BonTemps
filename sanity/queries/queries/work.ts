@@ -1,4 +1,5 @@
 import {groq} from 'next-sanity'
+import type {PortableTextBlock} from '@portabletext/types'
 import {client} from '../index'
 import {image} from '../fragments/image'
 import {video} from '../fragments/video'
@@ -20,7 +21,7 @@ export type ProjectCardData = {
 }
 
 export type WorkData = {
-  listWork: {claim?: string; seo?: any} | null
+  listWork: {claim?: PortableTextBlock[]; seo?: any} | null
   projects: ProjectCardData[]
 }
 

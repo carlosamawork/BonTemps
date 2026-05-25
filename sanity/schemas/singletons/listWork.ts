@@ -14,7 +14,7 @@ export default defineType({
     defineField({
       name: 'claim',
       title: 'Claim',
-      type: 'string',
+      type: 'bodyBonTemps',
       group: 'editorial',
     }),
     // SEO
