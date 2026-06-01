@@ -26,18 +26,34 @@ export const BASE_IMAGE_URL = buildUrl("/images/cc_ama_fbshare_1200x800.jpg");
 export const BASE_IMAGE_WIDTH = 1200;
 export const BASE_IMAGE_HEIGHT = 800;
 
-export const FAVICON_CLEAR = buildUrl("/favicon/favicon_clear.png");
-export const FAVICON_DARK = buildUrl("/favicon/favicon_dark.png");
+// Two real variants of the Bon Temps monogram: a black mark for light browser
+// chrome and a white mark for dark mode. SVG is the primary (crisp at any size,
+// adapts via the media query); the PNGs are fallbacks for browsers that don't
+// support SVG favicons.
+//
+// These are ROOT-RELATIVE on purpose — do NOT wrap them in buildUrl(). Next
+// emits icon hrefs verbatim, so the browser resolves them against the current
+// origin (localhost in dev, the real domain in prod). Using buildUrl() would
+// hardcode the staging domain in dev and 404 → the browser falls back to its
+// default globe icon. For an absolute URL (e.g. JSON-LD logo) call
+// buildUrl(APPLE_TOUCH_ICON) at the use site.
+export const FAVICON_LIGHT_SVG = "/favicon/favicon-light.svg"; // black
+export const FAVICON_DARK_SVG = "/favicon/favicon-dark.svg"; // white
+export const FAVICON_LIGHT_PNG = "/favicon/favicon-light.png"; // black
+export const FAVICON_DARK_PNG = "/favicon/favicon-dark.png"; // white
+export const APPLE_TOUCH_ICON = "/favicon/apple-touch-icon.png";
 
 export function getFavicons() {
 	return {
 		icon: [
-			{ media: '(prefers-color-scheme: light)', url: FAVICON_CLEAR, href: FAVICON_CLEAR },
-			{ media: '(prefers-color-scheme: dark)', url: FAVICON_DARK, href: FAVICON_DARK },
+			{ media: '(prefers-color-scheme: light)', type: 'image/svg+xml', url: FAVICON_LIGHT_SVG },
+			{ media: '(prefers-color-scheme: dark)', type: 'image/svg+xml', url: FAVICON_DARK_SVG },
+			{ media: '(prefers-color-scheme: light)', type: 'image/png', url: FAVICON_LIGHT_PNG },
+			{ media: '(prefers-color-scheme: dark)', type: 'image/png', url: FAVICON_DARK_PNG },
 		],
-		shortcut: FAVICON_CLEAR,
-		apple: FAVICON_CLEAR,
-		other: { rel: 'apple-touch-icon-precomposed', url: FAVICON_CLEAR },
+		shortcut: FAVICON_LIGHT_PNG,
+		apple: APPLE_TOUCH_ICON,
+		other: { rel: 'apple-touch-icon-precomposed', url: APPLE_TOUCH_ICON },
 	};
 }
 

@@ -150,11 +150,11 @@
   color: var(--color-fg);
 
   @include tablet-up {
-    height: 83px;
+    height: 81px;
   }
 
   @include desktop {
-    height: 130px;
+    height: 81px;
   }
 }
 

@@ -9,6 +9,9 @@ type Props = {
   mobileAutoplay?: boolean
   className?: string
   hoverTargetSelector?: string
+  /** Fit the video + blur placeholder inside the box with `contain`,
+   *  top-aligned. Used by the fixed-ratio work-grid thumbnails. */
+  contain?: boolean
 }
 
 // RSC wrapper. Reads LQIP + intrinsic aspect ratio off the poster's Sanity
@@ -20,6 +23,7 @@ export default function LazyVideo({
   mobileAutoplay = true,
   className,
   hoverTargetSelector,
+  contain,
 }: Props) {
   if (!video?.videoUrl) return null
   const lqip = video.poster?.asset?.metadata?.lqip
@@ -36,6 +40,7 @@ export default function LazyVideo({
       hoverTargetSelector={hoverTargetSelector}
       lqip={lqip}
       aspectRatio={aspectRatio}
+      contain={contain}
     />
   )
 }

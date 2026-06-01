@@ -13,8 +13,9 @@ import {getFooter} from '@/sanity/queries/common/footer';
 import {getHeader} from '@/sanity/queries/common/header';
 import {getIntroClaim} from '@/sanity/queries/common/intro';
 import type {FooterData, HeaderData} from '@/sanity/types';
-import {BASE_URL, siteTitle, siteDescription} from '@/utils/seoHelper';
+import {BASE_URL, buildUrl, siteTitle, siteDescription, getFavicons, APPLE_TOUCH_ICON} from '@/utils/seoHelper';
 import {safeJsonLd} from '@/utils/safeJsonLd';
+import type {Metadata} from 'next';
 
 import CookieConsent from '@/components/Common/CookieConsent/CookieConsent';
 import ConsentGate from '@/components/Common/Analytics/consentGate';
@@ -31,6 +32,13 @@ const INTRO_GATE = `try {
     document.documentElement.classList.add('intro-pending');
   }
 } catch (e) {}`
+
+// Declared at the layout so the Bon Temps favicon (black in light mode, white
+// in dark mode) applies to every frontend route — not just the home page.
+export const metadata: Metadata = {
+  metadataBase: BASE_URL,
+  icons: getFavicons(),
+}
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const results = await Promise.allSettled([getHeader(), getFooter(), getIntroClaim()])
@@ -51,7 +59,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
     name: siteTitle,
     description: siteDescription,
     url: BASE_URL.origin,
-    logo: `${BASE_URL.origin}/favicon.ico`,
+    logo: buildUrl(APPLE_TOUCH_ICON),
     email: header?.contactEmail,
     sameAs: [
       header?.instagramUrl,

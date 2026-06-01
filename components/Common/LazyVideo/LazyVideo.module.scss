@@ -6,8 +6,14 @@
 .placeholder {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  display: block;
+  width: 100%;
+  height: 100%;
+  // Default fill (cover) for normal usage; work-grid contain mode overrides
+  // object-fit/position inline so the blur keeps the poster's own ratio and
+  // aligns with the contained video.
+  object-fit: cover;
+  object-position: center;
   filter: blur(8px) saturate(1.1);
   opacity: 0.92;
   transition: opacity 600ms ease, filter 600ms ease;

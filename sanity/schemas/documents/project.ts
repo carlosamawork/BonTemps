@@ -38,6 +38,18 @@ export default defineType({
       type: 'string',
       group: 'editorial',
     }),
+    // Coming soon — project shows in the /work grid with its thumbnail but is
+    // not yet clickable; on hover it reveals "(Coming soon)" in grey next to
+    // the title instead of swapping to hover media.
+    defineField({
+      name: 'comingSoon',
+      title: 'Coming soon',
+      description:
+        'Show in the Work grid as a non-clickable card. On hover it reveals "(Coming soon)" next to the title instead of the hover media. Use until the case study is published.',
+      type: 'boolean',
+      initialValue: false,
+      group: 'editorial',
+    }),
     // Project website URL
     defineField({
       name: 'websiteUrl',

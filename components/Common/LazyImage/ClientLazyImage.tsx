@@ -12,6 +12,11 @@ type Props = {
   priority?: boolean
   className?: string
   lqip?: string
+  // Passed straight to next/image's `style`. next/image reads objectFit /
+  // objectPosition from here to size BOTH the image and the blur placeholder,
+  // so a `contain` image gets a `contain` blur (not a cover one that fills the
+  // whole box). Setting it only via CSS would leave the blur as cover.
+  imgStyle?: React.CSSProperties
 }
 
 export default function ClientLazyImage({
@@ -23,6 +28,7 @@ export default function ClientLazyImage({
   priority,
   className,
   lqip,
+  imgStyle,
 }: Props) {
   const [loaded, setLoaded] = useState(false)
   return (
@@ -35,6 +41,7 @@ export default function ClientLazyImage({
       priority={priority}
       placeholder={lqip ? 'blur' : 'empty'}
       blurDataURL={lqip}
+      style={imgStyle}
       className={`${styles.img} ${className ?? ''} ${loaded ? styles.isLoaded : ''}`}
       onLoad={() => setLoaded(true)}
     />

@@ -15,14 +15,15 @@
 
   @include mobile {
     font-size: 12px;
+    padding-bottom: 40px;
   }
 
   @include tablet {
-    padding-bottom: 60px;
+    padding-bottom: 68px;
   }
 
   @include desktop {
-    padding-bottom: 40px;
+    padding-bottom: 68px;
   }
 }
 

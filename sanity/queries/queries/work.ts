@@ -11,7 +11,7 @@ export type ProjectCardData = {
   title: string
   slug: string
   subtitle?: string
-  excerpt?: string
+  comingSoon?: boolean
   featuredMediaType: 'image' | 'video'
   featuredImage?: MediaImage
   featuredVideo?: MediaVideo
@@ -35,7 +35,7 @@ const WORK_QUERY = groq`{
     title,
     "slug": slug.current,
     subtitle,
-    excerpt,
+    comingSoon,
     featuredMediaType,
     featuredImage{ ${image} },
     featuredVideo{ ${video} },
