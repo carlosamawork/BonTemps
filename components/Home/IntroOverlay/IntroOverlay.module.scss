@@ -30,39 +30,53 @@
   }
 }
 
-// Self-contained typography so the global `.t-intro` token doesn't have
-// to win the cascade. font-family is explicitly serif (ABC Marist) and
-// the size scales like t-intro across breakpoints.
+// Self-contained typography so the global `.t-intro` token doesn't have to win
+// the cascade. Sizes per the updated Figma: 28px everywhere except big desktop
+// (32px). Tracking +0.28px ≈ 0.01em.
 .claim {
   margin: 0;
   color: #fff;
   font-family: var(--font-serif);
   font-size: 28px;
-  letter-spacing: -0.01em;
+  font-weight: 350;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-align: center;
 
-  @include tablet-up {
-    font-size: 32px;
+  // Constrain on phones so the claim wraps to two lines with breathing room
+  // instead of running to the screen edges.
+  @include mobile {
+    max-width: calc(100vw - 48px);
   }
 
   @include desktop-xl {
-    font-size: 40px;
+    font-size: 32px;
   }
+}
 
-  span {
-    display: inline-block;
-    font-family: inherit;
-    will-change: transform, opacity;
-  }
+// Each word is an inline-block unit that never breaks internally, so wrapping
+// only ever happens between words (clean two lines on mobile).
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.letter {
+  display: inline-block;
+  font-family: inherit;
+  will-change: transform, opacity;
 }
 
 .monogramWrap {
   display: block;
 }
 
+// Heights per the updated Figma (monogram width ≈ height × 86/82): phone 46px
+// (~48 wide), tablet/desktop 50px (~52 wide), big desktop 65px (~68 wide).
 .monogram {
   display: block;
   width: auto;
-  height: 48px;
+  height: 46px;
   color: #fff;
 
   @include tablet-up {
@@ -70,6 +84,6 @@
   }
 
   @include desktop-xl {
-    height: 78px;
+    height: 65px;
   }
 }

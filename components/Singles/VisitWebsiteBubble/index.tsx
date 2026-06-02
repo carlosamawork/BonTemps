@@ -1,22 +1,18 @@
 import BodyBonTempsRenderer from '@/components/PortableText/BodyBonTempsRenderer'
-import VisitWebsiteClient from './VisitWebsiteClient'
-import styles from './VisitWebsiteBubble.module.scss'
+import LinkBubble from '@/components/Common/LinkBubble'
 
-type Props = {url?: string, description: Body}
+type Props = {url?: string; description?: unknown}
 
-// Hides itself when the project has no public URL. The bubble itself is a
-// client component because the expand-on-hover animation requires
-// framer-motion `layout`.
+// "Visit Website" stays here (after the cover) and always links to the
+// project's own website. It now shares the LinkBubble component, so it inherits
+// the smoother hover animation. The configurable, body-placed button is the
+// `linkButton` block instead.
 export default function VisitWebsiteBubble({url, description}: Props) {
   if (!url) return null
   return (
-  <>
-    <VisitWebsiteClient url={url} />
-    {description && (
-      <div className={styles.description}>
-        <BodyBonTempsRenderer value={description} />
-      </div>
-    )}
-  </>
+    <>
+      <LinkBubble url={url} label="Visit Website" />
+      {description ? <BodyBonTempsRenderer value={description} /> : null}
+    </>
   )
 }

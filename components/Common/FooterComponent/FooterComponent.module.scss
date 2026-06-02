@@ -6,7 +6,8 @@
 // other vertically — at the bottom of their respective columns — without
 // extra flex wrappers.
 .footer {
-  padding: 80px var(--margin-x) var(--margin-bottom);
+  padding: 0 var(--margin-x) 0;
+  margin:  0px 0 var(--margin-bottom);
   background: var(--color-bg);
   color: var(--color-fg);
   display: grid;
@@ -21,11 +22,16 @@
     "contacts contacts"
     "monogram copy";
 
+  @include tablet {
+    margin:  80px 0 var(--margin-bottom);
+  }
+
   @include desktop {
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas:
       "claim    claim claim contacts"
       "monogram .     .     copy";
+    margin:  80px 0 var(--margin-bottom);
   }
 
   // @include desktop-xl {
@@ -34,6 +40,20 @@
   //     "claim    claim claim claim contacts"
   //     "monogram .     .     .     copy";
   // }
+}
+
+// Single-project variant: on phones the footer collapses to just the monogram
+// and the copyright (claim + contacts are hidden). Tablet/desktop inherit the
+// default footer.
+.footer[data-variant="project"] {
+  @include mobile {
+    grid-template-areas: "monogram copy";
+
+    .areaClaim,
+    .areaContacts {
+      display: none;
+    }
+  }
 }
 
 // Information page variant: claim narrows to 2 columns, emails and social

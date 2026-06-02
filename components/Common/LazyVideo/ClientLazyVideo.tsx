@@ -148,11 +148,10 @@ export default function ClientLazyVideo({
   return (
     <div
       className={styles.wrap}
-      // In `contain` mode the parent box already defines the ratio (the fixed
-      // work-grid block), so the wrap must fill it instead of taking the
-      // video's natural aspect-ratio — otherwise the placeholder sizes to that
-      // natural box and the blur covers the whole block.
-      style={contain ? {width: '100%', height: '100%'} : aspectRatio ? {aspectRatio} : undefined}
+      // Keep the natural aspect-ratio for CLS/mobile (natural height). In the
+      // fixed work-grid block (tablet+), the parent CSS sets the wrap height to
+      // 100% so it fills the block and the video/placeholder are contained.
+      style={aspectRatio ? {aspectRatio} : undefined}
     >
       {lqip && (
         // Real <img>, not a CSS background, so the poster keeps its own aspect

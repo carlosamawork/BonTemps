@@ -10,21 +10,24 @@
   display: flex;
   flex-direction: column-reverse;
   gap: 20px;
-  padding: 10px var(--margin-x) 17px;
+  padding: 0px var(--margin-x) 0px;
   align-items: start;
+  margin: 10px 0 17px;
 
   @include tablet {
     width: 70%;
     margin-left: auto;
     gap: 45px;
-    padding: 11px var(--margin-x) 70px;
+    padding: 0px var(--margin-x) 0px;
+    margin: 11px 0 76px;
   }
 
   @include desktop {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 var(--grid-gap-x);
-    padding: 17px var(--margin-x) 107px;
+    padding: 0px var(--margin-x) 0px;
+    margin: 17px 0 76px;
   }
 }
 

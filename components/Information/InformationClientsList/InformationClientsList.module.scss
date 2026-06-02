@@ -4,6 +4,8 @@
   padding: 0;
   display: flex;
   flex-direction: column;
+  font-family: var(--font-serif);
+  
 }
 
 // One row per client. The default state is name (grey) + (location)

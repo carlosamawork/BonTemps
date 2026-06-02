@@ -109,6 +109,12 @@ export default async function ProjectPage({
         bonTempsTeam={project.bonTempsTeam}
         collaborators={project.collaborators}
         relatedProjects={project.relatedProjects}
+        projectRecapHeading={project.projectRecapHeading}
+        servicesHeading={project.servicesHeading}
+        customTypefaceHeading={project.customTypefaceHeading}
+        bonTempsTeamHeading={project.bonTempsTeamHeading}
+        collaboratorsHeading={project.collaboratorsHeading}
+        relatedProjectsHeading={project.relatedProjectsHeading}
         bottomAction={<BackToWorkBubble />}
       />
     </main>

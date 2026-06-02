@@ -38,6 +38,7 @@ import linkInternal from './objects/global/linkInternal'
 import linkSocial from './objects/global/linkSocial'
 import links from './objects/global/links'
 import menu from './objects/global/menu'
+import linkButton from './objects/linkButton'
 import columnText from './objects/module/columnText'
 import moduleCenteredText from './objects/module/centeredText'
 import moduleImageText from './objects/module/imageText'
@@ -62,6 +63,7 @@ const objects = [
   linkInternal,
   linkSocial,
   menu,
+  linkButton,
   columnText,
   moduleCenteredText,
   moduleImageText,

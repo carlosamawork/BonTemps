@@ -234,42 +234,85 @@ export default defineType({
       ],
       group: 'editorial',
     }),
-    // Project Recap (body)
+    // Project Recap (heading + body). The heading is editable; if left empty
+    // the frontend falls back to the default shown here as initialValue.
+    defineField({
+      name: 'projectRecapHeading',
+      title: 'Project Recap — Heading',
+      type: 'string',
+      initialValue: 'Project Recap',
+      group: 'editorial',
+    }),
     defineField({
       name: 'projectRecap',
       title: 'Project Recap',
       type: 'bodyBonTemps',
       group: 'editorial',
     }),
-    // Services body
+    // Services (heading + body)
+    defineField({
+      name: 'servicesHeading',
+      title: 'Services — Heading',
+      type: 'string',
+      initialValue: 'Services',
+      group: 'editorial',
+    }),
     defineField({
       name: 'servicesBody',
       title: 'Services',
       type: 'bodyBonTemps',
       group: 'editorial',
     }),
-    // Custom Typeface body
+    // Typeface (heading + body)
+    defineField({
+      name: 'customTypefaceHeading',
+      title: 'Typeface — Heading',
+      type: 'string',
+      initialValue: 'Custom Typeface',
+      group: 'editorial',
+    }),
     defineField({
       name: 'customTypeface',
       title: 'Custom Typeface',
       type: 'bodyBonTemps',
       group: 'editorial',
     }),
-    // Bon Temps Team body
+    // Bon Temps Team (heading + body)
+    defineField({
+      name: 'bonTempsTeamHeading',
+      title: 'BonTemps Team — Heading',
+      type: 'string',
+      initialValue: 'BonTemps Team',
+      group: 'editorial',
+    }),
     defineField({
       name: 'bonTempsTeam',
       title: 'Bon Temps Team',
       type: 'bodyBonTemps',
       group: 'editorial',
     }),
-    // Collaborators body
+    // Collaborators (heading + body)
+    defineField({
+      name: 'collaboratorsHeading',
+      title: 'Collaborators — Heading',
+      type: 'string',
+      initialValue: 'Collaborators',
+      group: 'editorial',
+    }),
     defineField({
       name: 'collaborators',
       title: 'Collaborators',
       type: 'bodyBonTemps',
       group: 'editorial',
     }),
-    // Related Projects
+    // Related Projects (heading + list)
+    defineField({
+      name: 'relatedProjectsHeading',
+      title: 'Related Projects — Heading',
+      type: 'string',
+      initialValue: 'Related Projects',
+      group: 'editorial',
+    }),
     defineField({
       name: 'relatedProjects',
       title: 'Related Projects',

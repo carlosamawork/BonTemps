@@ -14,6 +14,8 @@ export default defineType({
         { title: 'Caption', value: 'caption' },
         { title: 'Sans Small Title', value: 'sansSmall' },
         { title: 'Serif Detail', value: 'serifDetail' },
+        // First line indented — for the intro of a paragraph (e.g. Project Recap).
+        { title: 'Indented', value: 'bodyIndent' },
         // { title: 'About', value: 'about' },
       ],
       lists: [
@@ -64,5 +66,7 @@ export default defineType({
         ],
       },
     },
+    // Inline pill button placed between text blocks, wherever the editor wants.
+    { type: 'linkButton' },
   ],
 })

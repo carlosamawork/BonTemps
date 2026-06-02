@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: 1fr;
   column-gap: var(--grid-gap-x);
-  row-gap: 24px;
+  row-gap: 46px;
   padding: 85px var(--margin-x) var(--margin-bottom);
 
   @include tablet-up {
@@ -130,39 +130,52 @@
   }
 }
 
-// Fixed 3:4 block — every thumbnail occupies the same size regardless of the
-// asset's aspect ratio, so rows stay uniform. The image is contained and
-// top-aligned inside it: wide images leave whitespace below, skinny ones on
-// the sides.
+// Mobile: the thumbnail keeps the image's natural height (no fixed block).
+// Tablet+: a fixed 3:4 block so rows stay uniform — the image is contained and
+// top-aligned inside it (wide images leave whitespace below, skinny ones on
+// the sides).
 .media {
   position: relative;
   align-self: start;
   width: 100%;
-  aspect-ratio: 3 / 4;
+
+  @include tablet-up {
+    aspect-ratio: 3 / 4;
+  }
 }
 
-// Static layer fills the block. Fades out on hover when an optional hover
-// layer exists.
+// Mobile: static layer in normal flow so the media takes the image's natural
+// height. Tablet+: absolutely fills the fixed block. Fades out on hover when
+// an optional hover layer exists.
 .mediaStatic {
-  position: absolute;
-  inset: 0;
+  position: relative;
   transition: opacity 300ms ease;
-}
 
-// Direct child fills the block: the next/image <img> for image projects, or
-// LazyVideo's .wrap div for video projects (which would otherwise collapse to
-// auto height now that .mediaStatic is absolutely positioned).
-.mediaStatic > * {
-  height: 100%;
+  @include tablet-up {
+    position: absolute;
+    inset: 0;
+  }
 }
 
 .mediaStatic img,
 .mediaStatic video {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: top;
+  height: auto; // mobile: natural height
+
+  @include tablet-up {
+    height: 100%;
+    object-fit: contain;
+    object-position: top;
+  }
+}
+
+// Tablet+ only: the direct child (next/image <img> or LazyVideo's .wrap div)
+// fills the fixed block. On mobile it stays auto so the natural height shows.
+.mediaStatic > * {
+  @include tablet-up {
+    height: 100%;
+  }
 }
 
 // Hover overlay covers the static layer with the same box and the same

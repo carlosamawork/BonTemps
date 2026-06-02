@@ -20,6 +20,17 @@
   max-width: 960px;
 }
 
+// Mobile headline per Figma: 28 / line-height 25. Scoped under `.header` so it
+// outranks the global `t-headline-project` token (30 / 30). The header already
+// uses the standard page margins (var(--margin-x)), so the line fills the
+// normal mobile width instead of wrapping two words per line.
+.header .title {
+  @include mobile {
+    font-size: 28px;
+    line-height: 25px;
+  }
+}
+
 .subtitle {
   display: inline;
 }

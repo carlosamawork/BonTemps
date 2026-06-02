@@ -83,6 +83,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
             <FooterSwitcher
               defaultFooter={<FooterComponent data={footer} variant="default" />}
               informationFooter={<FooterComponent data={footer} variant="information" />}
+              projectFooter={<FooterComponent data={footer} variant="project" />}
             />
           </IntroProvider>
         </WebProvider>
