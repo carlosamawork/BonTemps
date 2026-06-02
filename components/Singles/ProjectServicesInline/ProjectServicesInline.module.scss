@@ -19,6 +19,11 @@
     font-size: 14px;
     line-height: 1.05;
     padding-bottom: 40px;
+
+    // Stack the label + services as a centered column (instead of the
+    // horizontal wrapping row used on tablet/desktop).
+    flex-direction: column;
+    align-items: center;
   }
 
   @include tablet {
