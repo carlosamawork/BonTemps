@@ -3,7 +3,7 @@ import BodyBonTempsRenderer from '@/components/PortableText/BodyBonTempsRenderer
 import MonogramBTA from '@/components/Common/Logo/MonogramBTA'
 import styles from './FooterComponent.module.scss'
 
-type Variant = 'default' | 'information'
+type Variant = 'default' | 'information' | 'project'
 
 type Props = {data?: FooterData; variant?: Variant}
 

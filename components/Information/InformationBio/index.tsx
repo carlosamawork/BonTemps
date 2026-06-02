@@ -43,7 +43,7 @@ export default function InformationBio({bio, services, industries, clients, pres
   return (
     <section className={styles.grid}>
       <div className={styles.areaBio}>
-        <Cell label="Bio" tone="grey" bodyTone="black">
+        <Cell label="About" tone="grey" bodyTone="black">
           {!!bio && <BodyBonTempsRenderer value={bio} />}
         </Cell>
       </div>

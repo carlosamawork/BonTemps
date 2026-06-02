@@ -18,9 +18,8 @@
   width: fit-content;
 
   @include mobile {
-    font-size: 11px;
-    padding: 6px 14px;
-    border-radius: 19.5px;
+    font-size: 14px;
+    
   }
 }
 
@@ -29,19 +28,23 @@
   color: var(--color-fg);
 }
 
-// Sliding label that expands from 0 → "Visit Website" on hover. overflow
-// is hidden so the easing on maxWidth crops the text cleanly while it
-// animates in or out, and white-space: nowrap stops the label from
-// breaking onto two lines mid-animation.
+// Sliding label that expands from 0 → its natural width on hover. overflow is
+// hidden so the width easing crops the text cleanly while it reveals, and
+// white-space: nowrap stops it breaking onto two lines mid-animation.
 .label {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
 }
 
-// Static "+" — never animates. Sits next to the label and keeps a
-// constant size, so the symbol never gets scaled or distorted by the
-// surrounding layout animation.
+// Inner layer: fades + slides in from the right. inline-block so the transform
+// applies; the parent's overflow:hidden clips it during the slide.
+.labelInner {
+  display: inline-block;
+}
+
+// Static "+" — never animates, sits next to the label at a constant size so
+// the symbol is never scaled or distorted by the width animation.
 .symbol {
   display: inline-block;
   flex-shrink: 0;

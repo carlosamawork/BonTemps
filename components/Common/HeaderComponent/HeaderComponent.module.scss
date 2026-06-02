@@ -137,8 +137,13 @@
 
 .bubble {
   position: absolute;
-  background: var(--color-bubble);
-  opacity: 0.9;
+  // Tint the grey via alpha (not element-wide `opacity`, which also made the
+  // grey itself see-through). A heavier backdrop blur + slight desaturation
+  // turns whatever scrolls underneath into an abstract grey wash instead of a
+  // clearly legible image.
+  background: rgba(237, 237, 237, 0.72);
+  backdrop-filter: blur(28px) saturate(0.7);
+  -webkit-backdrop-filter: blur(28px) saturate(0.7);
   border-radius: 999px;
   z-index: 0;
   height: 31px;
@@ -161,6 +166,25 @@
   padding-right: 0;
 }
 
+// Cross-fade wrapper for the Contact / Copied label swap. The sizer sits in
+// normal flow (invisible) to hold the box width; the animated labels stack
+// absolutely on top so they overlap during the fade.
+.contactSwap {
+  position: relative;
+  display: inline-block;
+}
+
+.contactSizer {
+  visibility: hidden;
+}
+
+.contactLabel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+}
+
 // Right-side meta block (Date + Instagram). Figma only renders this on
 // desktop — iPad and mobile keep the header clean (logo + nav / burger).
 .meta {
@@ -178,19 +202,19 @@
   }
 }
 
-// Mobile-only burger pill (Figma): 42 × 20, bg #e6e6e6, radius 26, with
-// three thin horizontal lines stacked inside. Hidden from tablet up — the
-// inline nav takes over.
+// Mobile-only burger pill (Figma node 2030:644): 50 × 24, bg #e6e6e6,
+// radius ~31, with TWO thin horizontal lines that morph into an X on open.
+// Hidden from tablet up — the inline nav takes over.
 .burger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 20px;
+  width: 50px;
+  height: 24px;
   padding: 0;
   border: none;
   background: #e6e6e6;
-  border-radius: 26px;
+  border-radius: 31px;
   cursor: pointer;
   justify-self: end;
 
@@ -199,24 +223,29 @@
   }
 }
 
+// Relative box; each line is absolutely placed so the morph maths (converge
+// ±2.4px to the centre, then rotate ±45°) stays exact regardless of flex gaps.
 .burgerLines {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 20px;
+  position: relative;
+  width: 23.81px;
   height: 6px;
 }
 
-.burgerLines > span {
-  display: block;
-  height: 1px;
+.burgerLine {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.2px;
   background: var(--color-fg);
-}
+  border-radius: 1px;
+  transform-origin: center;
 
-.burgerClose {
-  font-size: 18px;
-  line-height: 1;
-  color: var(--color-fg);
+  &:first-child {
+    top: 0;
+  }
+  &:last-child {
+    bottom: 0;
+  }
 }
 
 .mobilePanel {

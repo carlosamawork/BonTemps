@@ -37,6 +37,12 @@
 .centeredInner {
   margin: 0 auto;
   max-width: 80%;
+
+  // Mobile: use the full width (normal page margins) so the copy doesn't
+  // collapse to two words per line.
+  @include mobile {
+    max-width: 100%;
+  }
 }
 
 // ImageText stacks vertically on mobile (image on top + body below):

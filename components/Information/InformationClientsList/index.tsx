@@ -15,7 +15,7 @@ export default function InformationClientsList({clients}: Props) {
   return (
     <ul className={styles.list}>
       {clients.map((c) => (
-        <li key={c._key}>
+        <li key={c._key} className={'t-body'}>
           {c.projectSlug ? (
             <Link href={`/work/${c.projectSlug}`} className={styles.row}>
               <RowContent name={c.name} location={c.location} />

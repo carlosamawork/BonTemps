@@ -1,15 +1,17 @@
 @use "../../../styles/breakpoints" as *;
 
 // Responsive column counts per spec: 1 / 2 / 4 / 5.
-// Row tracks are auto. Each card spans 3 rows (title, media, excerpt) and
-// uses subgrid so the title / media / excerpt of every card in a visual row
-// share their row track heights — that way excerpts align horizontally even
-// when images vary in aspect ratio. Whitespace fills under shorter images.
+// Row tracks are auto. Each card spans 2 rows (title, media) and uses subgrid
+// so the title + media of every card in a visual row share their row track
+// heights — media tops line up even when titles wrap to different line counts.
+// The media is a FIXED 3:4 block (see .media), so rows never resize to an
+// individual thumbnail; the image is contained inside it (whitespace below for
+// wide images, on the sides for skinny ones).
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   column-gap: var(--grid-gap-x);
-  row-gap: 24px;
+  row-gap: 46px;
   padding: 85px var(--margin-x) var(--margin-bottom);
 
   @include tablet-up {
@@ -18,13 +20,11 @@
   }
 
   @include desktop-only {
-    padding-top: 140px;
     grid-template-columns: repeat(4, 1fr);
     padding: 96px var(--margin-x) var(--margin-bottom);
   }
 
   @include desktop-xl {
-    padding-top: 140px;
     grid-template-columns: repeat(5, 1fr);
     row-gap: 55px;
     padding: 96px var(--margin-x) var(--margin-bottom);
@@ -47,8 +47,10 @@
     margin-bottom: 96px;
   }
 
-  @include desktop-xl{
-    margin-bottom: 178px;
+  // Keep the claim→projects gap consistent into big-desktop instead of
+  // ballooning (was 178px), which left the top row looking empty/bare.
+  @include desktop-xl {
+    margin-bottom: 96px;
   }
 }
 
@@ -91,14 +93,13 @@
   display: contents;
 }
 
-// The card is the actual grid item: spans 3 row tracks and adopts them via
-// subgrid. Its children land at row 1 (title), row 2 (media), row 3 (excerpt)
-// of the parent grid, sharing heights with sibling cards in the same visual
-// row.
+// The card is the actual grid item: spans 2 row tracks and adopts them via
+// subgrid. Its children land at row 1 (title) and row 2 (media) of the parent
+// grid, sharing heights with sibling cards in the same visual row.
 .card {
   display: grid;
   grid-template-rows: subgrid;
-  grid-row: span 3;
+  grid-row: span 2;
   row-gap: 0;
   color: var(--color-fg);
 }
@@ -109,32 +110,76 @@
   transition: color 200ms ease;
 }
 
-// Image keeps its intrinsic ratio (width 100%, height auto). align-self:
-// start anchors short images to the top of the row track, leaving white
-// space below — that's the alignment behaviour requested.
+// "(Coming soon)" suffix on unpublished projects: grey, fades in on hover.
+// Touch devices (no hover) show it permanently so the state is still legible.
+.comingSoon {
+  color: var(--color-grey);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+@media (hover: hover) {
+  .card:hover .comingSoon {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .comingSoon {
+    opacity: 1;
+  }
+}
+
+// Mobile: the thumbnail keeps the image's natural height (no fixed block).
+// Tablet+: a fixed 3:4 block so rows stay uniform — the image is contained and
+// top-aligned inside it (wide images leave whitespace below, skinny ones on
+// the sides).
 .media {
   position: relative;
   align-self: start;
   width: 100%;
-  margin-bottom: 14px;
+
+  @include tablet-up {
+    aspect-ratio: 3 / 4;
+  }
 }
 
-.media img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-// Static layer keeps the card height (it stays in normal flow). Fades out
-// on hover when an optional hover layer exists.
+// Mobile: static layer in normal flow so the media takes the image's natural
+// height. Tablet+: absolutely fills the fixed block. Fades out on hover when
+// an optional hover layer exists.
 .mediaStatic {
   position: relative;
-  width: 100%;
   transition: opacity 300ms ease;
+
+  @include tablet-up {
+    position: absolute;
+    inset: 0;
+  }
 }
 
-// Hover overlay covers the static layer with the same box. `object-fit:
-// cover` handles ratio differences between the two assets.
+.mediaStatic img,
+.mediaStatic video {
+  display: block;
+  width: 100%;
+  height: auto; // mobile: natural height
+
+  @include tablet-up {
+    height: 100%;
+    object-fit: contain;
+    object-position: top;
+  }
+}
+
+// Tablet+ only: the direct child (next/image <img> or LazyVideo's .wrap div)
+// fills the fixed block. On mobile it stays auto so the natural height shows.
+.mediaStatic > * {
+  @include tablet-up {
+    height: 100%;
+  }
+}
+
+// Hover overlay covers the static layer with the same box and the same
+// contain/top-aligned fit so the swap stays inside the fixed block.
 .mediaHover {
   position: absolute;
   inset: 0;
@@ -144,12 +189,18 @@
   pointer-events: none;
   transition: opacity 300ms ease;
 
+  // Same fill rule as the static layer for the LazyVideo .wrap case.
+  > * {
+    height: 100%;
+  }
+
   img,
   video {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: top;
   }
 }
 
@@ -164,17 +215,12 @@
   }
 }
 
-.excerpt {
-  align-self: start;
-  margin: 0;
-  transition: color 200ms ease;
-}
-
-// When any card is hovered, the OTHER cards fade their text to grey so
-// focus lands on the hovered one (matches the Mouthwash reference).
-.grid:has(.card:hover) .card:not(:hover) {
-  .title,
-  .excerpt {
+// On hover, the hovered card's OWN title fades to grey — alongside the media
+// cross-fading to its hover state. Other cards stay untouched. Coming-soon
+// cards are excluded: their title stays black and only the "(Coming soon)"
+// suffix is grey.
+@media (hover: hover) {
+  .card:not([data-coming-soon]):hover .title {
     color: var(--color-grey);
   }
 }

@@ -14,15 +14,19 @@
   row-gap: 4px;
 
   @include mobile {
-    font-size: 12px;
+    // Mobile "body" size — 14 / 105% (12 was too small). Same size reused by
+    // quotes, services, collaborators, etc. on mobile.
+    font-size: 14px;
+    line-height: 1.05;
+    padding-bottom: 40px;
   }
 
   @include tablet {
-    padding-bottom: 60px;
+    padding-bottom: 68px;
   }
 
   @include desktop {
-    padding-bottom: 40px;
+    padding-bottom: 68px;
   }
 }
 

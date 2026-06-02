@@ -25,13 +25,19 @@ export type ProjectFull = {
   featuredVideo?: MediaVideo
   services?: Array<{_id: string; title: string}>
   description: any
+  projectRecapHeading?: string
   projectRecap?: any
+  servicesHeading?: string
   servicesBody?: any
+  customTypefaceHeading?: string
   customTypeface?: any
+  bonTempsTeamHeading?: string
   bonTempsTeam?: any
+  collaboratorsHeading?: string
   collaborators?: any
   modulesMobile?: any[]
   modulesDesktop?: any[]
+  relatedProjectsHeading?: string
   relatedProjects?: ProjectCardData[]
   seo?: any
 }
@@ -54,13 +60,19 @@ const PROJECT_QUERY = groq`*[_type == "project" && slug.current == $slug][0]{
   featuredVideo{ ${video} },
   services[]->{ _id, title },
   description,
+  projectRecapHeading,
   projectRecap,
+  servicesHeading,
   servicesBody,
+  customTypefaceHeading,
   customTypeface,
+  bonTempsTeamHeading,
   bonTempsTeam,
+  collaboratorsHeading,
   collaborators,
   ${projectModulesMobile},
   ${projectModulesDesktop},
+  relatedProjectsHeading,
   "relatedProjects": relatedProjects[]->{
     _id,
     title,

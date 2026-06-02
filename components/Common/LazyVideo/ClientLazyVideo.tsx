@@ -21,6 +21,10 @@ type Props = {
   // CSS `aspect-ratio` value (eg. `"16 / 9"`) — reserves intrinsic layout
   // before metadata loads to avoid CLS.
   aspectRatio?: string
+  // Fit the video AND its blur placeholder inside the box with `contain`,
+  // top-aligned (used by the fixed-ratio work-grid thumbnails). Otherwise the
+  // placeholder defaults to `cover` and would fill the whole block.
+  contain?: boolean
 }
 
 export default function ClientLazyVideo({
@@ -32,6 +36,7 @@ export default function ClientLazyVideo({
   hoverTargetSelector,
   lqip,
   aspectRatio,
+  contain,
 }: Props) {
   const ref = useRef<HTMLVideoElement>(null)
   const attachedRef = useRef(false)
@@ -143,13 +148,21 @@ export default function ClientLazyVideo({
   return (
     <div
       className={styles.wrap}
+      // Keep the natural aspect-ratio for CLS/mobile (natural height). In the
+      // fixed work-grid block (tablet+), the parent CSS sets the wrap height to
+      // 100% so it fills the block and the video/placeholder are contained.
       style={aspectRatio ? {aspectRatio} : undefined}
     >
       {lqip && (
-        <div
+        // Real <img>, not a CSS background, so the poster keeps its own aspect
+        // ratio and lands exactly where the <video> will (both object-fit).
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
           className={`${styles.placeholder} ${loaded ? styles.isHidden : ''}`}
-          style={{backgroundImage: `url(${lqip})`}}
+          src={lqip}
+          alt=""
           aria-hidden
+          style={contain ? {objectFit: 'contain', objectPosition: 'top'} : undefined}
         />
       )}
       <video
@@ -162,6 +175,7 @@ export default function ClientLazyVideo({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onLoadedData={() => setLoaded(true)}
+        style={contain ? {objectFit: 'contain', objectPosition: 'top'} : undefined}
         className={`${styles.video} ${loaded ? styles.isLoaded : ''} ${className ?? ''}`}
       />
     </div>

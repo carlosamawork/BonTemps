@@ -67,6 +67,12 @@
   @include mobile { font-size: 14px; }
 }
 
+// Combine with `t-body`. First-line indent for paragraph intros (e.g. the
+// "Indented" block style used in Project Recap).
+.t-body-indent {
+  text-indent: 2.5em;
+}
+
 // Same as t-body but stays at 18px on mobile (Figma uses 18px for the
 // Work-page claim across every breakpoint).
 .t-claim {
