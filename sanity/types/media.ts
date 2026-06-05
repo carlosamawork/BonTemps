@@ -26,6 +26,8 @@ export type MediaImage = {
 export type ModuleVideo = {
   title: string
   videoUrl: string
+  // Editor opt-in: show the Sound On / Sound Off control (single projects).
+  soundEnabled?: boolean
   poster: SanityImage
 }
 

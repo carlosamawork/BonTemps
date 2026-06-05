@@ -1,9 +1,15 @@
 @use "../../../styles/breakpoints" as *;
 
 .figure {
-  margin: 0 0 48px;
+  margin: 0 0 20px;
   padding: 0 var(--margin-x);
+  @include tablet {
+    margin: 0 0 33px;
+  }
 
+  @include desktop {
+    margin: 0 0 33px;
+  }
   img {
     display: block;
     width: 100%;

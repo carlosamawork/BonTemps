@@ -64,7 +64,8 @@
   letter-spacing: -0.02em;
   margin-top: 0;
   font-weight: 350;
-  @include mobile { font-size: 14px; }
+  // Mobile "body" — 15 / 105% per client feedback (14 still read too small).
+  @include mobile { font-size: 15px; }
 }
 
 // Combine with `t-body`. First-line indent for paragraph intros (e.g. the

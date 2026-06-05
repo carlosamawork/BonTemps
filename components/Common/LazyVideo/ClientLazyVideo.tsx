@@ -25,6 +25,11 @@ type Props = {
   // top-aligned (used by the fixed-ratio work-grid thumbnails). Otherwise the
   // placeholder defaults to `cover` and would fill the whole block.
   contain?: boolean
+  // Renders the "Sound On" / "Sound Off" pill (already gated upstream by the
+  // editor's `soundEnabled` flag + the call-site opt-in). The video still
+  // autoplays muted; unmuting is always a user gesture, which keeps mobile
+  // autoplay policies happy.
+  soundControl?: boolean
 }
 
 export default function ClientLazyVideo({
@@ -37,10 +42,90 @@ export default function ClientLazyVideo({
   lqip,
   aspectRatio,
   contain,
+  soundControl,
 }: Props) {
   const ref = useRef<HTMLVideoElement>(null)
+  const wrapRef = useRef<HTMLDivElement>(null)
   const attachedRef = useRef(false)
+  const hideTimerRef = useRef<number | null>(null)
   const [loaded, setLoaded] = useState(false)
+  const [soundOn, setSoundOn] = useState(false)
+  const [controlVisible, setControlVisible] = useState(false)
+
+  // Drive `muted` through the DOM property (not the React attribute): React
+  // doesn't update `muted` after mount, and the element must stay muted until
+  // the user explicitly asks for sound.
+  const toggleSound = useCallback(() => {
+    const video = ref.current
+    if (!video) return
+    const nextMuted = !video.muted
+    video.muted = nextMuted
+    setSoundOn(!nextMuted)
+    // Unmuting counts as a user gesture — also resume playback in case the
+    // video was paused (e.g. re-entering the viewport edge case).
+    if (!nextMuted) video.play().catch(() => {})
+  }, [])
+
+  // "Poke" the control: show it and restart the idle countdown. Any user
+  // activity (mouse movement on desktop, scrolling on mobile) calls this;
+  // after IDLE_MS without activity the pill fades away.
+  const IDLE_MS = 2000
+  const poke = useCallback(() => {
+    setControlVisible(true)
+    if (hideTimerRef.current) window.clearTimeout(hideTimerRef.current)
+    hideTimerRef.current = window.setTimeout(() => setControlVisible(false), IDLE_MS)
+  }, [])
+
+  const hideControl = useCallback(() => {
+    if (hideTimerRef.current) window.clearTimeout(hideTimerRef.current)
+    setControlVisible(false)
+  }, [])
+
+  // Sound pill visibility.
+  // Desktop: only while the cursor is over the video, fading out if the
+  //   mouse rests for IDLE_MS (mousemove re-shows it).
+  // Mobile: while the video is in view AND the page is actively scrolling;
+  //   once the scroll settles for IDLE_MS it fades away.
+  useEffect(() => {
+    if (!soundControl) return
+    const wrap = wrapRef.current
+    if (!wrap) return
+
+    const isCoarsePointer = window.matchMedia('(hover: none)').matches
+
+    if (!isCoarsePointer) {
+      const onMove = () => poke()
+      wrap.addEventListener('mousemove', onMove)
+      wrap.addEventListener('mouseleave', hideControl)
+      return () => {
+        wrap.removeEventListener('mousemove', onMove)
+        wrap.removeEventListener('mouseleave', hideControl)
+        if (hideTimerRef.current) window.clearTimeout(hideTimerRef.current)
+      }
+    }
+
+    let inView = false
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          inView = e.isIntersecting
+          if (inView) poke()
+          else hideControl()
+        }
+      },
+      {threshold: 0.25},
+    )
+    io.observe(wrap)
+    const onScroll = () => {
+      if (inView) poke()
+    }
+    window.addEventListener('scroll', onScroll, {passive: true})
+    return () => {
+      io.disconnect()
+      window.removeEventListener('scroll', onScroll)
+      if (hideTimerRef.current) window.clearTimeout(hideTimerRef.current)
+    }
+  }, [soundControl, poke, hideControl])
 
   // MP4 is supported natively everywhere; setting `src` is enough. With
   // `preload="metadata"` the browser fetches just enough to paint the first
@@ -147,6 +232,7 @@ export default function ClientLazyVideo({
 
   return (
     <div
+      ref={wrapRef}
       className={styles.wrap}
       // Keep the natural aspect-ratio for CLS/mobile (natural height). In the
       // fixed work-grid block (tablet+), the parent CSS sets the wrap height to
@@ -178,6 +264,21 @@ export default function ClientLazyVideo({
         style={contain ? {objectFit: 'contain', objectPosition: 'top'} : undefined}
         className={`${styles.video} ${loaded ? styles.isLoaded : ''} ${className ?? ''}`}
       />
+      {soundControl && (
+        <button
+          type="button"
+          className={`${styles.soundButton} ${controlVisible ? styles.isVisible : ''}`}
+          onClick={() => {
+            toggleSound()
+            // Interacting counts as activity — keep the pill up a bit longer.
+            poke()
+          }}
+          aria-pressed={soundOn}
+        >
+          {/* Label reads as the action: "Sound On" activates, "Sound Off" mutes. */}
+          {soundOn ? 'Sound Off' : 'Sound On'}
+        </button>
+      )}
     </div>
   )
 }

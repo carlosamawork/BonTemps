@@ -4,6 +4,7 @@ import {imageData} from '../primitives/imageData'
 export const moduleVideo = `
   title,
   videoUrl,
+  soundEnabled,
   poster { ${imageData} }
 `
 

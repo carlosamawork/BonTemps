@@ -20,14 +20,16 @@ const EASE = [0.4, 0, 0.2, 1] as const
 // so they glide in like the Canyon Coffee menu rather than popping.
 const SOFT_EASE = [0.22, 1, 0.36, 1] as const
 
-// Mobile-only burger + full-screen overlay (per Figma: 50×24 #e6e6e6 pill with
-// two lines; #f9f7f7 panel, centred serif menu and a BTA monogram near the
-// bottom). The panel slides DOWN from the top edge (curtain) and the two
-// burger lines morph into an X on open.
+// Mobile-only burger + full-screen overlay (58×32 #e6e6e6 pill — sized up
+// from the Figma 50×24 per client feedback — with two lines; #f9f7f7 panel,
+// centred serif menu and a BTA monogram near the bottom). The panel slides
+// DOWN from the top edge (curtain) and the two burger lines morph into an X
+// on open. The ±3.9px converge offsets must match the .burgerLines box height
+// in HeaderComponent.module.scss (lines sit at top/bottom of a 9px box).
 //
-// The panel renders through a portal into <body> because the parent <header>
-// uses `backdrop-filter`, which creates a containing block that would
-// otherwise size the fixed-positioned panel to the header's tiny bounds.
+// The panel renders through a portal into <body> so its fixed positioning is
+// always resolved against the viewport, immune to any ancestor (filter,
+// mask, transform) becoming a containing block.
 export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -71,7 +73,17 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
       opacity: 0,
       transition: reduce
         ? {duration: 0}
-        : {duration: 0.3, ease: EASE, when: 'afterChildren' as const},
+        : {
+            duration: 0.3,
+            ease: EASE,
+            // Items stagger OFF one by one (reverse order: last in, first
+            // out) before the panel itself fades — mirrors the Canyon
+            // Coffee close instead of vanishing as a block. `afterChildren`
+            // holds the panel fade until the last item has finished.
+            when: 'afterChildren' as const,
+            staggerChildren: 0.1,
+            staggerDirection: -1,
+          },
     },
     open: {
       opacity: 1,
@@ -93,7 +105,9 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
     closed: {
       y: reduce ? 0 : 8,
       opacity: 0,
-      transition: {duration: reduce ? 0 : 0.35, ease: 'easeOut' as const},
+      // Long enough that each item's fade-off reads individually against
+      // the 0.1s stagger, without the full close dragging.
+      transition: {duration: reduce ? 0 : 0.3, ease: 'easeOut' as const},
     },
     open: {
       y: 0,
@@ -181,12 +195,12 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
           {/* Two lines that converge + rotate into an X when open. */}
           <motion.span
             className={styles.burgerLine}
-            animate={open ? {rotate: 45, y: 2.4} : {rotate: 0, y: 0}}
+            animate={open ? {rotate: 45, y: 3.9} : {rotate: 0, y: 0}}
             transition={burgerTransition}
           />
           <motion.span
             className={styles.burgerLine}
-            animate={open ? {rotate: -45, y: -2.4} : {rotate: 0, y: 0}}
+            animate={open ? {rotate: -45, y: -3.9} : {rotate: 0, y: 0}}
             transition={burgerTransition}
           />
         </span>

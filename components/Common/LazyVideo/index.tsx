@@ -12,6 +12,11 @@ type Props = {
   /** Fit the video + blur placeholder inside the box with `contain`,
    *  top-aligned. Used by the fixed-ratio work-grid thumbnails. */
   contain?: boolean
+  /** Call-site opt-in for the Sound On / Sound Off pill. The button only
+   *  renders when this is true AND the editor enabled `soundEnabled` on the
+   *  video in Sanity — so work-grid thumbnails never show it even if the
+   *  same video has sound enabled for its single-project module. */
+  soundControl?: boolean
 }
 
 // RSC wrapper. Reads LQIP + intrinsic aspect ratio off the poster's Sanity
@@ -24,6 +29,7 @@ export default function LazyVideo({
   className,
   hoverTargetSelector,
   contain,
+  soundControl = false,
 }: Props) {
   if (!video?.videoUrl) return null
   const lqip = video.poster?.asset?.metadata?.lqip
@@ -41,6 +47,7 @@ export default function LazyVideo({
       lqip={lqip}
       aspectRatio={aspectRatio}
       contain={contain}
+      soundControl={soundControl && video.soundEnabled === true}
     />
   )
 }

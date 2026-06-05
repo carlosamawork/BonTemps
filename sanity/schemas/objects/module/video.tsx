@@ -31,6 +31,14 @@ export default defineField({
         'Direct video URL (e.g. .mp4 or HLS .m3u8). Do not use embed/iframe URLs.',
       validation: (Rule) => Rule.required().uri({scheme: ['https']}),
     }),
+    defineField({
+      name: 'soundEnabled',
+      title: 'Enable sound control',
+      type: 'boolean',
+      description:
+        'Show a "Sound On / Sound Off" button over the video (single projects only). Enable it just for videos that actually have audio. Videos always start muted.',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {

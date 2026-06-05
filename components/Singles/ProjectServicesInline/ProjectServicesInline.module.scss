@@ -14,16 +14,20 @@
   row-gap: 4px;
 
   @include mobile {
-    // Mobile "body" size — 14 / 105% (12 was too small). Same size reused by
-    // quotes, services, collaborators, etc. on mobile.
-    font-size: 14px;
+    // Mobile "body" size — 15 / 105% (14 still read too small). Same size
+    // reused by quotes, services, collaborators, etc. on mobile (see t-body).
+    font-size: 15px;
     line-height: 1.05;
     padding-bottom: 40px;
 
     // Stack the label + services as a centered column (instead of the
-    // horizontal wrapping row used on tablet/desktop).
+    // horizontal wrapping row used on tablet/desktop). row-gap must be 0
+    // here: the 4px wrap-gap inherited from the row layout was adding to
+    // every stacked line, inflating the effective leading to ~133% — this
+    // is what made the line-height look looser than Figma's 105%.
     flex-direction: column;
     align-items: center;
+    row-gap: 0;
   }
 
   @include tablet {
