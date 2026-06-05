@@ -72,6 +72,7 @@
 
     p{
       color: black;
+      font-size: 18px;
       @include tablet {
         color: var(--color-grey-mid);
       }
@@ -226,7 +227,8 @@
 
   p {
     margin: 0;
-    font-size: 14px;
+    // Matches the mobile "body" size (15 / 105%, see t-body).
+    font-size: 15px;
 
     @include tablet {
       font-size: 18px;

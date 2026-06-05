@@ -37,7 +37,7 @@ export default function ImageVideoModule({columns, items}: Props) {
                 />
               )}
               {item._type === 'media.video' && item.video && (
-                <LazyVideo video={item.video} mode="in-view" />
+                <LazyVideo video={item.video} mode="in-view" soundControl />
               )}
             </div>
             {item.caption && <figcaption className="t-caption">{item.caption}</figcaption>}

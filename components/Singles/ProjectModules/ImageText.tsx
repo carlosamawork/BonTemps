@@ -23,7 +23,7 @@ export default function ImageText({imageSide, mediaType, image, video, body}: Pr
           <LazyImage image={image.image} alt={image.alt} sizes="50vw" />
         )}
         {mediaType === 'video' && video?.video && (
-          <LazyVideo video={video.video} mode="in-view" />
+          <LazyVideo video={video.video} mode="in-view" soundControl />
         )}
       </div>
       <div className={styles.imageTextBody}>

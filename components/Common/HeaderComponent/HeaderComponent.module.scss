@@ -14,7 +14,8 @@
   }
   // Pure blur with no colour wash — the page content shows through, just
   // softly defocused. Backdrop-filter alone has no fallback colour so we
-  // leave background transparent on purpose.
+  // leave background transparent on purpose. The mask below fades the blur
+  // out in a gradient towards the bottom edge.
   backdrop-filter: blur(5px) saturate(140%);
   -webkit-backdrop-filter: blur(5px) saturate(140%);
   background: transparent;
@@ -124,26 +125,17 @@
   color: var(--color-grey);
 }
 
-.nav:hover .navItem:not(:hover) {
+// Hover greys out the hovered item itself; the rest of the nav keeps its
+// normal black. (The active item is already grey, so hovering it is a no-op.)
+.navItem:hover {
   color: var(--color-grey);
-}
-
-// Cuando el hover está sobre el link activo (el que tiene la bubble), no
-// se aplica el efecto de gris al resto: la bubble ya marca el estado y
-// queremos evitar que el header "parpadee" sobre sí mismo.
-.nav:has([aria-current="page"]:hover) .navItem:not(:hover) {
-  color: var(--color-fg);
 }
 
 .bubble {
   position: absolute;
-  // Tint the grey via alpha (not element-wide `opacity`, which also made the
-  // grey itself see-through). A heavier backdrop blur + slight desaturation
-  // turns whatever scrolls underneath into an abstract grey wash instead of a
-  // clearly legible image.
-  background: rgba(237, 237, 237, 0.72);
-  backdrop-filter: blur(28px) saturate(0.7);
-  -webkit-backdrop-filter: blur(28px) saturate(0.7);
+  // Opaque on purpose: the header already applies its own backdrop blur, and
+  // stacking a second translucent blur inside it rendered inconsistently.
+  background: var(--color-bubble);
   border-radius: 999px;
   z-index: 0;
   height: 31px;
@@ -202,15 +194,16 @@
   }
 }
 
-// Mobile-only burger pill (Figma node 2030:644): 50 × 24, bg #e6e6e6,
-// radius ~31, with TWO thin horizontal lines that morph into an X on open.
+// Mobile-only burger pill: bg #e6e6e6, radius ~31, with TWO thin horizontal
+// lines that morph into an X on open. Sized up from the Figma 50×24 per
+// client feedback — the original read too small and the X felt compressed.
 // Hidden from tablet up — the inline nav takes over.
 .burger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 24px;
+  width: 58px;
+  height: 32px;
   padding: 0;
   border: none;
   background: #e6e6e6;
@@ -224,11 +217,11 @@
 }
 
 // Relative box; each line is absolutely placed so the morph maths (converge
-// ±2.4px to the centre, then rotate ±45°) stays exact regardless of flex gaps.
+// ±3.9px to the centre, then rotate ±45°) stays exact regardless of flex gaps.
 .burgerLines {
   position: relative;
   width: 23.81px;
-  height: 6px;
+  height: 9px;
 }
 
 .burgerLine {

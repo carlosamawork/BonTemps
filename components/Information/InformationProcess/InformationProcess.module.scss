@@ -8,7 +8,7 @@
   grid-template-columns: 1fr 1fr;
   column-gap: var(--grid-gap-x);
   row-gap: 32px;
-  padding: 60px var(--margin-x);
+  padding: 0px var(--margin-x) 60px;
   grid-template-areas:
     "process    process"
     "strategy   design"
@@ -28,6 +28,7 @@
   @include desktop {
     grid-template-columns: repeat(4, 1fr);
     row-gap: 48px;
+    padding: 32px var(--margin-x);
     grid-template-areas:
       "process   process   strategy   design"
       "process   process   systems    campaigns";

@@ -37,3 +37,46 @@
 .video.isLoaded {
   opacity: 1;
 }
+
+// Sound On / Sound Off pill — bottom-right corner, same opaque #ededed
+// language as the nav bubble. Serif small, no border, gentle hover darken.
+// Hidden by default: ClientLazyVideo toggles `isVisible` on user activity
+// (mouse over + movement on desktop, in-view + scrolling on mobile) and
+// drops it after ~2s idle so the pill never sits on the video permanently.
+.soundButton {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1;
+  padding: 8px 14px 6px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-bubble);
+  color: var(--color-fg);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 350;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: background 180ms ease, opacity 280ms ease;
+
+  &:hover {
+    background: #e0e0e0;
+  }
+
+  // Keyboard users: focusing the button always reveals it, regardless of
+  // the pointer-activity logic.
+  &:focus-visible {
+    background: #e0e0e0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.soundButton.isVisible {
+  opacity: 1;
+  pointer-events: auto;
+}

@@ -36,7 +36,7 @@ function FigureContent({
   if (type === 'video' && video?.video) {
     return (
       <>
-        <LazyVideo video={video.video} mode="in-view" />
+        <LazyVideo video={video.video} mode="in-view" soundControl />
         {video.caption && <figcaption className="t-caption">{video.caption}</figcaption>}
       </>
     )
