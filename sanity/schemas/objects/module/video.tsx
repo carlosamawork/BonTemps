@@ -1,6 +1,8 @@
 import {DocumentVideoIcon} from '@sanity/icons'
 import {defineField} from 'sanity'
 
+import {isComingSoon} from '../../../utils/comingSoon'
+
 export default defineField({
   name: 'module.video',
   title: 'Video',
@@ -12,7 +14,10 @@ export default defineField({
       title: 'Internal title',
       type: 'string',
       description: 'For Sanity preview only.',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.custom((value, context) =>
+          isComingSoon(context) ? true : value ? true : 'Required',
+        ),
     }),
     defineField({
       name: 'poster',
@@ -21,7 +26,10 @@ export default defineField({
       options: {hotspot: true},
       description:
         'Shown before the video plays and as a fallback if the source fails to load.',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.custom((value, context) =>
+          isComingSoon(context) ? true : value ? true : 'Required',
+        ),
     }),
     defineField({
       name: 'videoUrl',
@@ -29,7 +37,10 @@ export default defineField({
       type: 'url',
       description:
         'Direct video URL (e.g. .mp4 or HLS .m3u8). Do not use embed/iframe URLs.',
-      validation: (Rule) => Rule.required().uri({scheme: ['https']}),
+      validation: (Rule) =>
+        Rule.uri({scheme: ['https']}).custom((value, context) =>
+          isComingSoon(context) ? true : value ? true : 'Required',
+        ),
     }),
     defineField({
       name: 'soundEnabled',
