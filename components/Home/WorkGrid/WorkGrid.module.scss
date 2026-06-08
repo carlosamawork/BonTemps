@@ -108,6 +108,10 @@
   align-self: start;
   margin: 0 0 12px;
   transition: color 200ms ease;
+
+  @include mobile {
+    margin: 0 0 7px;
+  }
 }
 
 // "(Coming soon)" suffix on unpublished projects: grey, fades in on hover.
