@@ -1,7 +1,6 @@
 import { DocumentsIcon } from '@sanity/icons'
-import { defineField, defineType } from 'sanity'
-
-import { validateSlug } from '../../utils/validateSlug'
+import { defineField, defineType, Slug } from 'sanity'
+import slug from 'slug'
 
 export default defineType({
   name: 'project',
@@ -18,7 +17,12 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      // Required, unless the project is a "Coming soon" placeholder.
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.comingSoon) return true
+          return value ? true : 'Required'
+        }),
       group: 'editorial',
     }),
     // Slug
@@ -27,8 +31,21 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: { source: 'title' },
+      // Skip slug validation for "Coming soon" placeholders; otherwise apply
+      // the shared slug rules (required + format) used across the project.
       // @ts-ignore
-      validation: validateSlug,
+      validation: (Rule) =>
+        Rule.custom((value: Slug, context) => {
+          if (context.document?.comingSoon) return true
+
+          const currentSlug = value && value.current
+          if (!currentSlug) return 'Required'
+          if (currentSlug.length >= 96) return 'Must be less than 96 characters'
+          if (currentSlug !== slug(currentSlug, { lower: true })) {
+            return 'Must be a valid slug'
+          }
+          return true
+        }),
       group: 'editorial',
     }),
     // Subtitle
@@ -151,6 +168,16 @@ export default defineType({
       title: 'Featured Image',
       type: 'media.image',
       hidden: ({ document }) => document?.featuredMediaType !== 'image',
+      // The thumbnail is the only thing shown for a Coming soon card, so it is
+      // required when the project is Coming soon and the media type is image.
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const doc = context.document
+          if (doc?.comingSoon && doc?.featuredMediaType === 'image' && !value) {
+            return 'A featured image is required for Coming soon projects'
+          }
+          return true
+        }),
       group: 'editorial',
     }),
     defineField({
@@ -158,6 +185,15 @@ export default defineType({
       title: 'Featured Video',
       type: 'media.video',
       hidden: ({ document }) => document?.featuredMediaType !== 'video',
+      // Required when the project is Coming soon and the media type is video.
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const doc = context.document
+          if (doc?.comingSoon && doc?.featuredMediaType === 'video' && !value) {
+            return 'A featured video is required for Coming soon projects'
+          }
+          return true
+        }),
       group: 'editorial',
     }),
     // Hover media: optional overlay shown on cursor hover in the /work grid
