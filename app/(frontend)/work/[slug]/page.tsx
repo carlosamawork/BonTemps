@@ -1,3 +1,4 @@
+import {cache} from 'react'
 import {notFound} from 'next/navigation'
 import type {Metadata} from 'next'
 import ProjectHeader from '@/components/Singles/ProjectHeader'
@@ -8,11 +9,21 @@ import ProjectRecapGrid from '@/components/Singles/ProjectRecapGrid'
 import VisitWebsiteBubble from '@/components/Singles/VisitWebsiteBubble'
 import BackToWorkBubble from '@/components/Singles/BackToWorkBubble'
 import {getAllProjectSlugs, getProject} from '@/sanity/queries/queries/project'
-import {BASE_URL, buildUrl, siteTitle} from '@/utils/seoHelper'
+import {
+  BASE_URL,
+  buildOgImages,
+  buildUrl,
+  defaultRobots,
+  getFavicons,
+  siteTitle,
+} from '@/utils/seoHelper'
 import {safeJsonLd} from '@/utils/safeJsonLd'
 import styles from './page.module.scss'
 
 export const revalidate = 60
+
+// Dedupes the fetch shared by generateMetadata and the page render.
+const getProjectCached = cache(getProject)
 
 export async function generateStaticParams() {
   const slugs = await getAllProjectSlugs()
@@ -25,10 +36,12 @@ export async function generateMetadata({
   params: Promise<{slug: string}>
 }): Promise<Metadata> {
   const {slug} = await params
-  const project = await getProject(slug)
+  const project = await getProjectCached(slug)
   if (!project) return {}
-  const title = `${project.title} — ${siteTitle}`
-  const description = project.excerpt ?? project.subtitle ?? siteTitle
+  const seo = project.seo
+  const title = seo?.title || `${project.title} — ${siteTitle}`
+  const description = seo?.description || project.excerpt || project.subtitle || siteTitle
+  const images = buildOgImages(seo?.image)
   return {
     metadataBase: BASE_URL,
     title,
@@ -39,13 +52,17 @@ export async function generateMetadata({
       description,
       url: buildUrl(`/work/${project.slug}`),
       siteName: siteTitle,
+      images,
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: images.map((image) => image.url),
     },
+    robots: defaultRobots,
+    icons: getFavicons(),
   }
 }
 
@@ -55,7 +72,7 @@ export default async function ProjectPage({
   params: Promise<{slug: string}>
 }) {
   const {slug} = await params
-  const project = await getProject(slug)
+  const project = await getProjectCached(slug)
   if (!project) notFound()
 
   const projectUrl = buildUrl(`/work/${project.slug}`)

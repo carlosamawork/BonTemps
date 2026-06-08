@@ -77,7 +77,17 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
 
   // The panel background fades in with opacity only (no slide). The links
   // still stagger in on top. Reduced-motion just shortens to an instant swap.
+  //
+  // `hidden` is the entrance-only start (panel uses initial="hidden"). It
+  // propagates the "hidden" label down to the items so each one starts lifted
+  // + transparent and rises in on the stagger. `closed` is the EXIT label, a
+  // plain fade with no lift. Keeping them separate is what lets the open
+  // animation regain its bottom-to-top movement while the close stays a clean
+  // unison fade.
   const panelVariants = {
+    hidden: {
+      opacity: 0,
+    },
     closed: {
       opacity: 0,
       // Simple fadeout on close: the whole panel (and its items) fades out
@@ -100,13 +110,21 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
 
   // Fade-dominant entrance: opacity runs longer than the small lift, so the
   // items glide in smoothly instead of snapping into place.
+  //
+  // Three states on purpose. `hidden` is the entrance-only start (used via
+  // initial="hidden" on each item): below + transparent, so items rise into
+  // place one by one as the parent staggers them in. `closed` is the EXIT
+  // state: a plain unison fade with no lift (y stays 0), keeping the close a
+  // simple fade-out in sync with the panel. Splitting the two lets the open
+  // animation regain its bottom-to-top movement without the close inheriting
+  // a downward drift.
   const itemVariants = {
-    closed: {
-      // Simple fadeout on close — no lift, no stagger; items fade straight
-      // out in unison with the panel.
-      y: 0,
+    hidden: {
+      // Short travel (Canyon Coffee-style): the items barely lift — a subtle
+      // reveal, not a long glide. Keep this small so the entrance reads as a
+      // gentle settle rather than a slide.
+      y: 10,
       opacity: 0,
-      transition: {duration: reduce ? 0 : 0.5, ease: 'easeOut' as const},
     },
     open: {
       y: 0,
@@ -117,6 +135,13 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
             opacity: {duration: 0.7, ease: 'easeOut' as const},
             y: {duration: 0.7, ease: SOFT_EASE},
           },
+    },
+    closed: {
+      // Simple fadeout on close — no lift, no stagger; items fade straight
+      // out in unison with the panel.
+      y: 0,
+      opacity: 0,
+      transition: {duration: reduce ? 0 : 0.5, ease: 'easeOut' as const},
     },
   }
 
@@ -141,7 +166,7 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
         <motion.div
           className={styles.mobilePanel}
           variants={panelVariants}
-          initial="closed"
+          initial="hidden"
           animate="open"
           exit="closed"
         >
