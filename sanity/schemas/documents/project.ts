@@ -35,7 +35,7 @@ export default defineType({
       // the shared slug rules (required + format) used across the project.
       // @ts-ignore
       validation: (Rule) =>
-        Rule.custom((value: Slug, context) => {
+        Rule.custom((value: Slug | undefined, context) => {
           if (context.document?.comingSoon) return true
 
           const currentSlug = value && value.current
