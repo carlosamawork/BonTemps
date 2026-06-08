@@ -7,39 +7,54 @@
   right: 0;
   z-index: 50;
 
+  background: transparent;
+
   // When the mobile menu is open, lift the header (and its burger pill)
   // above the panel so the close "×" stays interactive.
   :global(body.menu-open) & {
     z-index: 70;
   }
-  // Pure blur with no colour wash — the page content shows through, just
-  // softly defocused. Backdrop-filter alone has no fallback colour so we
-  // leave background transparent on purpose. The mask below fades the blur
-  // out in a gradient towards the bottom edge.
-  backdrop-filter: blur(5px) saturate(140%);
-  -webkit-backdrop-filter: blur(5px) saturate(140%);
-  background: transparent;
-  // Soft fade-out at the bottom edge per spec. Multiple stops aproximan
-  // una curva ease-out: la zona sólida se mantiene corta pero el blur
-  // decae progresivamente en lugar de cortarse en el último tramo.
-  mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 25%,
-    rgba(0, 0, 0, 0.92) 45%,
-    rgba(0, 0, 0, 0.7) 65%,
-    rgba(0, 0, 0, 0.35) 85%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 25%,
-    rgba(0, 0, 0, 0.92) 45%,
-    rgba(0, 0, 0, 0.7) 65%,
-    rgba(0, 0, 0, 0.35) 85%,
-    transparent 100%
-  );
+
+  // The blur + fade-out live on a dedicated layer BEHIND the content, not on
+  // the header element itself. Putting the mask on `.header` directly faded
+  // out everything inside it — including the bubble and the burger pill, whose
+  // lower halves sit in the fade zone and so read as translucent. Isolating
+  // the effect here keeps those UI chips fully opaque while preserving the
+  // soft blur fade for the page content showing through.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    // Pure blur with no colour wash — the page content shows through, just
+    // softly defocused. Backdrop-filter alone has no fallback colour so we
+    // leave background transparent on purpose. The mask below fades the blur
+    // out in a gradient towards the bottom edge.
+    backdrop-filter: blur(5px) saturate(140%);
+    -webkit-backdrop-filter: blur(5px) saturate(140%);
+    // Soft fade-out at the bottom edge per spec. Multiple stops aproximan
+    // una curva ease-out: la zona sólida se mantiene corta pero el blur
+    // decae progresivamente en lugar de cortarse en el último tramo.
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 25%,
+      rgba(0, 0, 0, 0.92) 45%,
+      rgba(0, 0, 0, 0.7) 65%,
+      rgba(0, 0, 0, 0.35) 85%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 25%,
+      rgba(0, 0, 0, 0.92) 45%,
+      rgba(0, 0, 0, 0.7) 65%,
+      rgba(0, 0, 0, 0.35) 85%,
+      transparent 100%
+    );
+  }
 }
 
 // Three-column layout per Figma: logo (left), nav (centre), meta (right).
@@ -80,6 +95,22 @@
   @include mobile {
     opacity: var(--logo-opacity, 1);
     transition: opacity 120ms linear;
+
+    // During the whole menu lifecycle (open + the close fade) the logo's
+    // opacity animates over the same 0.5s as the panel. `menu-open` lives until
+    // AnimatePresence's onExitComplete, so the close fade is fully covered; the
+    // snappy 120ms above is kept for normal scroll-driven fading.
+    :global(body.menu-open) & {
+      transition: opacity 500ms ease;
+    }
+
+    // Force the logo visible only while the menu is actually open. This class
+    // is dropped the instant the menu starts closing, so the logo fades back
+    // to its scrolled state in sync with the panel (via the 0.5s above) instead
+    // of snapping away after the panel is gone.
+    :global(body.menu-shown) & {
+      opacity: 1;
+    }
   }
 }
 
@@ -228,7 +259,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  height: 1.2px;
+  height: 1px;
   background: var(--color-fg);
   border-radius: 1px;
   transform-origin: center;

@@ -51,18 +51,27 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
     return () => mq.removeEventListener('change', handleChange)
   }, [])
 
-  // Add `menu-open` as soon as the menu opens (keeps the header — logo +
-  // burger — above the panel via z-index). We do NOT remove it on close here:
-  // the panel keeps fading for ~0.3s after `open` flips false, and dropping the
-  // class early would let the still-fading panel cover the logo/burger and make
-  // them flicker. It's removed in AnimatePresence's onExitComplete instead.
+  // Two body classes, with deliberately different lifetimes:
+  //   • `menu-open`  — added on open, removed in onExitComplete. Lasts through
+  //     the whole close fade so the header (logo + burger) stays above the
+  //     still-fading panel via z-index, and so the logo keeps its 0.5s
+  //     menu-synced transition for the close.
+  //   • `menu-shown` — added on open, removed the instant the menu starts
+  //     closing. Forces the logo visible only while open, so on close it fades
+  //     back to its scrolled state in sync with the panel instead of snapping.
   useEffect(() => {
-    if (open) document.body.classList.add('menu-open')
+    if (open) {
+      document.body.classList.add('menu-open')
+      document.body.classList.add('menu-shown')
+    } else {
+      document.body.classList.remove('menu-shown')
+    }
   }, [open])
 
   useEffect(() => {
     return () => {
       document.body.classList.remove('menu-open')
+      document.body.classList.remove('menu-shown')
     }
   }, [])
 
@@ -71,19 +80,9 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
   const panelVariants = {
     closed: {
       opacity: 0,
-      transition: reduce
-        ? {duration: 0}
-        : {
-            duration: 0.3,
-            ease: EASE,
-            // Items stagger OFF one by one (reverse order: last in, first
-            // out) before the panel itself fades — mirrors the Canyon
-            // Coffee close instead of vanishing as a block. `afterChildren`
-            // holds the panel fade until the last item has finished.
-            when: 'afterChildren' as const,
-            staggerChildren: 0.1,
-            staggerDirection: -1,
-          },
+      // Simple fadeout on close: the whole panel (and its items) fades out
+      // together as a single block — no per-item stagger or orchestration.
+      transition: reduce ? {duration: 0} : {duration: 0.5, ease: EASE},
     },
     open: {
       opacity: 1,
@@ -103,11 +102,11 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
   // items glide in smoothly instead of snapping into place.
   const itemVariants = {
     closed: {
-      y: reduce ? 0 : 8,
+      // Simple fadeout on close — no lift, no stagger; items fade straight
+      // out in unison with the panel.
+      y: 0,
       opacity: 0,
-      // Long enough that each item's fade-off reads individually against
-      // the 0.1s stagger, without the full close dragging.
-      transition: {duration: reduce ? 0 : 0.3, ease: 'easeOut' as const},
+      transition: {duration: reduce ? 0 : 0.5, ease: 'easeOut' as const},
     },
     open: {
       y: 0,
@@ -132,7 +131,12 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
   ]
 
   const panel = (
-    <AnimatePresence onExitComplete={() => document.body.classList.remove('menu-open')}>
+    <AnimatePresence
+      onExitComplete={() => {
+        document.body.classList.remove('menu-open')
+        document.body.classList.remove('menu-shown')
+      }}
+    >
       {open && (
         <motion.div
           className={styles.mobilePanel}
