@@ -1,5 +1,7 @@
 import { defineField, defineType } from 'sanity'
 
+import { isComingSoon } from '../../../utils/comingSoon'
+
 export default defineType({
   name: 'media.video',
   title: 'Video',
@@ -9,7 +11,10 @@ export default defineType({
       name: 'video',
       title: 'Video',
       type: 'module.video',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.custom((value, context) =>
+          isComingSoon(context) ? true : value ? true : 'Required',
+        ),
     }),
     defineField({
       name: 'caption',
