@@ -54,8 +54,13 @@ export default function ContactButton({
           hidden sizer holds the box at the current word's width while the
           animated copies stack on top. */}
       <span className={styles.contactSwap}>
+        {/* The sizer always reserves the width of "Contact" (the longer word),
+            so the box never changes width when swapping to "Copied". With the
+            labels anchored at left:0 the "C" stays put — on the centred mobile
+            menu item that means "Copied" keeps Contact's exact left edge
+            instead of re-centring (and so shifting) the whole word. */}
         <span aria-hidden className={styles.contactSizer}>
-          {copied ? 'Copied' : 'Contact'}
+          Contact
         </span>
         <AnimatePresence initial={false} mode={crossfade ? 'sync' : 'wait'}>
           <motion.span

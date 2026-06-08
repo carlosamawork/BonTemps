@@ -57,6 +57,39 @@ export function getFavicons() {
 	};
 }
 
+// Shape returned by the `seo.image` projection in sanity/queries/fragments/seo.ts.
+type SeoImage =
+	| {
+			imageUrl?: string | null
+			metadata?: {dimensions?: {width?: number; height?: number} | null} | null
+	  }
+	| null
+	| undefined
+
+// Builds the Open Graph `images` array from a Sanity `seo.image`, falling back
+// to the site-wide default OG image when the page has no editorial SEO image.
+export function buildOgImages(image?: SeoImage) {
+	return [
+		{
+			url: image?.imageUrl || BASE_IMAGE_URL,
+			width: image?.metadata?.dimensions?.width || BASE_IMAGE_WIDTH,
+			height: image?.metadata?.dimensions?.height || BASE_IMAGE_HEIGHT,
+		},
+	];
+}
+
+// Default indexable robots directives. Spread into `metadata.robots`.
+export const defaultRobots = {
+	index: true,
+	follow: true,
+	googleBot: {
+		index: true,
+		follow: true,
+		'max-image-preview': 'large',
+		'max-snippet': -1,
+	},
+} as const;
+
 export function formatSlug(slug: string) {
 	if (!slug) return '';
 	// Replace dashes/underscores with spaces and capitalize first letter of each word
