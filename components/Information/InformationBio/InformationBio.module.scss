@@ -7,7 +7,7 @@
   grid-template-columns: 1fr 1fr;
   column-gap: var(--grid-gap-x);
   row-gap: 32px;
-  padding: 130px var(--margin-x) 60px;
+  padding: 130px var(--margin-x) 200px;
   grid-template-areas:
     "bio        bio"
     "services   industries"
@@ -32,7 +32,7 @@
   }
 }
 
-.areaBio       { grid-area: bio; margin-right: 13px; }
+.areaBio       { grid-area: bio; margin-right: 50px; }
 .areaServices  { grid-area: services; }
 .areaIndustries{ grid-area: industries; }
 .areaClients   { grid-area: clients; }
