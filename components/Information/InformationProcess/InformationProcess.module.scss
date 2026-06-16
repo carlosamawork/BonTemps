@@ -8,7 +8,7 @@
   grid-template-columns: 1fr 1fr;
   column-gap: var(--grid-gap-x);
   row-gap: 32px;
-  padding: 0px var(--margin-x) 60px;
+  padding: 0px var(--margin-x) 130px;
   grid-template-areas:
     "process    process"
     "strategy   design"
@@ -26,7 +26,7 @@
   }
 
   @include desktop {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     row-gap: 48px;
     padding: 32px var(--margin-x);
     grid-template-areas:
@@ -35,7 +35,7 @@
   }
 }
 
-.areaProcess   { grid-area: process; margin-right: 13px; }
+.areaProcess   { grid-area: process; margin-right: 50px; }
 .areaStrategy  { grid-area: strategy; margin-right: 5vw;}
 .areaDesign    { grid-area: design; margin-right: 5vw;}
 .areaSystems   { grid-area: systems; margin-right: 5vw;}
