@@ -77,6 +77,27 @@
   pointer-events: none;
   backdrop-filter: blur(5px) saturate(140%);
   -webkit-backdrop-filter: blur(5px) saturate(140%);
+
+  // Ride the scroll on the compositor: a JS scroll listener lags behind
+  // momentum scrolling (the strip showed an unblurred gap until JS caught
+  // up), while a scroll-driven animation stays in sync frame-perfect.
+  // --sb-scroll-range is kept up to date by StatusBarBleed.tsx; the 16px
+  // cushion tucks the curtain's bottom edge under the header's solid blur
+  // zone so rounding never exposes a seam. Browsers without support fall
+  // back to the JS listener in the component.
+  @supports (animation-timeline: scroll()) {
+    animation: curtainRide linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes curtainRide {
+  from {
+    transform: translateY(-224px);
+  }
+  to {
+    transform: translateY(calc(var(--sb-scroll-range, 0px) - 224px));
+  }
 }
 
 // Three-column layout per Figma: logo (left), nav (centre), meta (right).
