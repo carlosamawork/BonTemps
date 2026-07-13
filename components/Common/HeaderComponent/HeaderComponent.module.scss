@@ -59,6 +59,26 @@
       transparent 100%
     );
   }
+
+  // iOS Safari keeps the layout viewport below the status bar (safe-area
+  // env() is 0 in browser mode) but paints the page canvas as a "bleed"
+  // behind it when content scrolls under. This strip sits above the viewport
+  // so it only ever renders inside that bleed, blurring it with the exact
+  // same filter as ::before — the status bar area reads as a continuation of
+  // the header blur instead of showing sharp content. Off-screen (invisible)
+  // everywhere else, so no breakpoint is needed.
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -80px;
+    height: 80px;
+    z-index: -1;
+    pointer-events: none;
+    backdrop-filter: blur(5px) saturate(140%);
+    -webkit-backdrop-filter: blur(5px) saturate(140%);
+  }
 }
 
 // Three-column layout per Figma: logo (left), nav (centre), meta (right).
