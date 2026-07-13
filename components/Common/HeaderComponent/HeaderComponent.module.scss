@@ -61,6 +61,24 @@
   }
 }
 
+// In-flow curtain for the iOS status bar bleed (see StatusBarBleed.tsx). It
+// lives in the document — NOT inside the fixed header — because Safari's
+// bleed only renders document content. Same filter as .header::before so the
+// strip blends seamlessly into the header blur. JS keeps its bottom edge at
+// the viewport top; it is never visible inside the viewport itself.
+.statusBarBleed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 240px;
+  transform: translate3d(0, -240px, 0);
+  z-index: 40;
+  pointer-events: none;
+  backdrop-filter: blur(5px) saturate(140%);
+  -webkit-backdrop-filter: blur(5px) saturate(140%);
+}
+
 // Three-column layout per Figma: logo (left), nav (centre), meta (right).
 // Mobile collapses to logo + burger; the nav and meta hide and the menu
 // surfaces them in the overlay. All children top-align so the texts hug
