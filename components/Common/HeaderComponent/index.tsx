@@ -5,7 +5,6 @@ import HeaderLogo from './HeaderLogo'
 import ContactButton from './ContactButton'
 import DateBlock from './DateBlock'
 import MobileMenu from './MobileMenu'
-import StatusBarBleed from './StatusBarBleed'
 import styles from './HeaderComponent.module.scss'
 
 type Props = {data?: HeaderData}
@@ -23,8 +22,6 @@ export default function HeaderComponent({data}: Props) {
   const instagramUrl = data?.instagramUrl
 
   return (
-    <>
-    <StatusBarBleed />
     <header className={styles.header}>
       <div className={styles.inner}>
         <HeaderLogo />
@@ -60,6 +57,5 @@ export default function HeaderComponent({data}: Props) {
         <MobileMenu items={NAV_ROUTES} contactEmail={contactEmail} instagramUrl={instagramUrl} />
       </div>
     </header>
-    </>
   )
 }

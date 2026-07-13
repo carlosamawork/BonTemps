@@ -31,6 +31,15 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
+    // No blur on mobile, by client decision: iOS Safari cannot extend any
+    // page-painted effect into the status bar strip (every route — fixed
+    // layers, metadata, in-flow curtains — was tested and either fails or
+    // desyncs during momentum scroll; see MEMORY.md 2026-07-13), so instead
+    // of a blur that stops dead at the viewport edge the mobile header is
+    // simply transparent. Desktop keeps the blur.
+    @include mobile {
+      display: none;
+    }
     // Pure blur with no colour wash — the page content shows through, just
     // softly defocused. Backdrop-filter alone has no fallback colour so we
     // leave background transparent on purpose. The mask below fades the blur
@@ -58,54 +67,6 @@
       rgba(0, 0, 0, 0.35) 85%,
       transparent 100%
     );
-  }
-}
-
-// In-flow curtain for the iOS status bar bleed (see StatusBarBleed.tsx). It
-// lives in the document — NOT inside the fixed header — because Safari's
-// bleed only renders document content. Same filter as .header::before so the
-// strip blends seamlessly into the header blur. JS keeps its bottom edge at
-// the viewport top; it is never visible inside the viewport itself.
-.statusBarBleed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 240px;
-  transform: translate3d(0, -240px, 0);
-  z-index: 40;
-  pointer-events: none;
-  // Near-opaque white base, per client choice. WebKit defers off-viewport
-  // backdrop-filter realization during momentum scrolling, so a transparent
-  // blur curtain flashes unblurred content on hard downward flings — no CSS
-  // arrangement avoids it (measured in the simulator across 7 variants). The
-  // white base covers content even when the blur lags; the blur must stay,
-  // both for the residual softness and because it forces the composited
-  // layer that keeps this paint realized (solid white WITHOUT it flashed
-  // the most of all variants).
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(5px) saturate(140%);
-  -webkit-backdrop-filter: blur(5px) saturate(140%);
-
-  // Ride the scroll on the compositor: a JS scroll listener lags behind
-  // momentum scrolling (the strip showed an unblurred gap until JS caught
-  // up), while a scroll-driven animation stays in sync frame-perfect.
-  // --sb-scroll-range is kept up to date by StatusBarBleed.tsx; the 16px
-  // cushion tucks the curtain's bottom edge under the header's solid blur
-  // zone so rounding never exposes a seam. Browsers without support fall
-  // back to the JS listener in the component.
-  @supports (animation-timeline: scroll()) {
-    animation: curtainRide linear both;
-    animation-timeline: scroll(root block);
-  }
-}
-
-@keyframes curtainRide {
-  from {
-    transform: translateY(-224px);
-  }
-  to {
-    transform: translateY(calc(var(--sb-scroll-range, 0px) - 224px));
   }
 }
 
