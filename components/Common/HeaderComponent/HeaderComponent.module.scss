@@ -6,6 +6,10 @@
   left: 0;
   right: 0;
   z-index: 50;
+  // With viewport-fit=cover (frontend layout) the page extends under the iOS
+  // status bar; this pushes the header content below the notch while the
+  // ::before blur layer (inset: 0) keeps covering that strip. 0px elsewhere.
+  padding-top: env(safe-area-inset-top, 0px);
 
   background: transparent;
 
