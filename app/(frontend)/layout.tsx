@@ -15,7 +15,7 @@ import {getIntroClaim} from '@/sanity/queries/common/intro';
 import type {FooterData, HeaderData} from '@/sanity/types';
 import {BASE_URL, buildUrl, siteTitle, siteDescription, getFavicons, APPLE_TOUCH_ICON} from '@/utils/seoHelper';
 import {safeJsonLd} from '@/utils/safeJsonLd';
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 
 import CookieConsent from '@/components/Common/CookieConsent/CookieConsent';
 import ConsentGate from '@/components/Common/Analytics/consentGate';
@@ -38,6 +38,16 @@ const INTRO_GATE = `try {
 export const metadata: Metadata = {
   metadataBase: BASE_URL,
   icons: getFavicons(),
+}
+
+// viewport-fit=cover lets the page extend under the iOS status bar / notch so
+// the fixed header's blur can reach the physical screen edge. Without it,
+// env(safe-area-inset-top) is always 0 and the notch strip shows unblurred
+// content when Safari minimises its bars.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 }
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
