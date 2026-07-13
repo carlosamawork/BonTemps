@@ -37,6 +37,21 @@
     // out in a gradient towards the bottom edge.
     backdrop-filter: blur(5px) saturate(140%);
     -webkit-backdrop-filter: blur(5px) saturate(140%);
+    // Mobile-only white wash on top of the blur. iOS Safari paints the status
+    // bar strip itself (the page cannot draw there — fixed elements and
+    // backdrop-filters never render in it) and overlays its own white scrim
+    // on the content bleeding behind it. Fading our header into white makes
+    // the viewport edge blend into that scrim, so the strip reads as a
+    // continuation of the header instead of a separate band. Verified on the
+    // iOS simulator; desktop keeps the pure-blur look.
+    @include mobile {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.65) 30%,
+        rgba(255, 255, 255, 0) 70%
+      );
+    }
     // Soft fade-out at the bottom edge per spec. Multiple stops aproximan
     // una curva ease-out: la zona sólida se mantiene corta pero el blur
     // decae progresivamente en lugar de cortarse en el último tramo.
@@ -58,26 +73,6 @@
       rgba(0, 0, 0, 0.35) 85%,
       transparent 100%
     );
-  }
-
-  // iOS Safari keeps the layout viewport below the status bar (safe-area
-  // env() is 0 in browser mode) but paints the page canvas as a "bleed"
-  // behind it when content scrolls under. This strip sits above the viewport
-  // so it only ever renders inside that bleed, blurring it with the exact
-  // same filter as ::before — the status bar area reads as a continuation of
-  // the header blur instead of showing sharp content. Off-screen (invisible)
-  // everywhere else, so no breakpoint is needed.
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -80px;
-    height: 80px;
-    z-index: -1;
-    pointer-events: none;
-    backdrop-filter: blur(5px) saturate(140%);
-    -webkit-backdrop-filter: blur(5px) saturate(140%);
   }
 }
 
