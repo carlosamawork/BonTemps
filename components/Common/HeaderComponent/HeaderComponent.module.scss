@@ -299,25 +299,22 @@
   align-items: center;
 }
 
-.mobilePanelBg {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: #f9f7f7;
-}
-
-// In-document cover for the status bar strip while the menu is open. The
-// bleed behind the status bar only renders document content — the fixed
-// panel can't paint there — so this element, portalled into <body> and
-// positioned just above the viewport, is what makes the strip match the
-// panel colour. Scroll is locked while open (body.menu-open), so a one-shot
-// position on mount is enough; it fades with the same timing as the panel.
+// The menu's ENTIRE background. In-document (portalled into <body>), not in
+// the fixed panel nor any of its children: some WebKit builds sample even
+// absolute children of fixed elements to tint the status bar, and on builds
+// with the stuck-tint bug that colour fossilises after unmount. In-document
+// content is invisible to the sampler by construction. Tall enough to cover
+// the bleed strip above the viewport (when scrolled) plus the full viewport;
+// scroll is locked while open (body.menu-open) so a one-shot position on
+// mount is enough. Fades with the same timing as the panel. The vh line is
+// the fallback for browsers without lvh.
 .menuStripCover {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 240px;
+  height: calc(100vh + 480px);
+  height: calc(100lvh + 480px);
   background: #f9f7f7;
   z-index: 60;
   pointer-events: none;

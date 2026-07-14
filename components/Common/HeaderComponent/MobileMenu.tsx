@@ -203,7 +203,6 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
           animate="open"
           exit="closed"
         >
-          <div className={styles.mobilePanelBg} aria-hidden />
           <nav aria-label="Mobile" className={styles.mobileNav}>
             <ul>
               {menuItems.map((it) =>
