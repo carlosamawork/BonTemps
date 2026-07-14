@@ -288,13 +288,43 @@
 .mobilePanel {
   position: fixed;
   inset: 0;
-  background: #f9f7f7;
+  // The colour lives on the absolute child below, NOT here. Safari 26
+  // samples the background-color of fixed elements to tint the status bar,
+  // and on some iOS builds (WebKit bug #300965) that tint STICKS after the
+  // panel unmounts — the strip stayed menu-coloured after closing. Absolute
+  // children are invisible to that sampler, so the fixed element itself
+  // must stay transparent.
+  background: transparent;
   z-index: 60;
   padding: 80px var(--margin-x) 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.mobilePanelBg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #f9f7f7;
+}
+
+// In-document cover for the status bar strip while the menu is open. The
+// bleed behind the status bar only renders document content — the fixed
+// panel can't paint there — so this element, portalled into <body> and
+// positioned just above the viewport, is what makes the strip match the
+// panel colour. Scroll is locked while open (body.menu-open), so a one-shot
+// position on mount is enough; it fades with the same timing as the panel.
+.menuStripCover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 240px;
+  background: #f9f7f7;
+  z-index: 60;
+  pointer-events: none;
 }
 
 .mobileNav {
