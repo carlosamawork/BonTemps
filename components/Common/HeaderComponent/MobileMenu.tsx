@@ -179,8 +179,14 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
           // The bleed strip sits above the viewport; scroll is locked while
           // the menu is open so reading scrollY at render time is stable.
           // 238 instead of 240 leaves a 2px overlap with the panel top so no
-          // seam can show between the two same-coloured surfaces.
-          style={{transform: `translate3d(0, ${Math.max(0, window.scrollY) - 238}px, 0)`}}
+          // seam can show between the two same-coloured surfaces. Clamped to
+          // the document origin: anything painted ABOVE it (the "negative
+          // canvas" Safari shows behind the status bar at scroll 0) is
+          // rasterised once and NEVER repainted after unmount — the strip
+          // stayed menu-coloured forever. Clamped, the cover sits inside the
+          // viewport at the top of the page, hidden under the same-coloured
+          // panel, and the strip shows the white body instead.
+          style={{transform: `translate3d(0, ${Math.max(window.scrollY - 238, 0)}px, 0)`}}
           variants={panelVariants}
           initial="hidden"
           animate="open"
