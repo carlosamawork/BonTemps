@@ -160,6 +160,16 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
       onExitComplete={() => {
         document.body.classList.remove('menu-open')
         document.body.classList.remove('menu-shown')
+        // Safari on some iOS builds keeps a stale status bar after the panel
+        // unmounts — either a stuck tint (WebKit #300965) or a stale raster
+        // of the bleed strip. Both refresh on real scroll, so emulate one:
+        // a 1px down-and-back nudge, imperceptible but enough to make Safari
+        // re-evaluate the bars and repaint the strip.
+        requestAnimationFrame(() => {
+          const y = window.scrollY
+          window.scrollTo(0, y + 1)
+          requestAnimationFrame(() => window.scrollTo(0, y))
+        })
       }}
     >
       {open && (
