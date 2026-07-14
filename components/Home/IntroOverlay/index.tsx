@@ -40,6 +40,7 @@ export default function IntroOverlay({claim}: Props) {
           aria-modal="true"
           aria-label="Intro"
         >
+          <div className={styles.overlayBg} aria-hidden />
           <IntroSequence claim={claim} />
         </motion.div>
       )}

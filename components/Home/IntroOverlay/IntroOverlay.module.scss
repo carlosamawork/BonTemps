@@ -4,12 +4,24 @@
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #000;
+  // The black lives on the absolute child below, NOT here. Safari iOS
+  // samples the background-color of fixed elements to tint the status bar,
+  // and on some builds (WebKit bug #300965) the tint sticks after the
+  // element unmounts — the intro left a dark veil on the strip for the rest
+  // of the session. Absolute children are invisible to that sampler.
+  background: transparent;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.overlayBg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #000;
 }
 
 // Vertical stack: claim line on top, monogram below. Centered on both
