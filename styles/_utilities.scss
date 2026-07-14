@@ -29,8 +29,18 @@
 // main, footer) so nothing flashes through. The React intro overlay
 // sits at z-index 100 and is unaffected. Without JS the @media
 // (scripting: none) rule keeps content visible.
-html.intro-pending,
-html.intro-pending body {
+// The black mask is a fixed PSEUDO-element, never a black html/body
+// background: Safari iOS samples the body background at initial render to
+// tint the status bar, and JS changes never re-trigger that sampling — a
+// black body here left a dark gradient veil on the status bar for the
+// whole session after the intro was gone. Pseudo-elements are invisible
+// to that sampler, so this paints the same solid black without poisoning
+// the bar. Sits at z-index 99, just under the React overlay (100).
+html.intro-pending body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 99;
   background: #000;
 }
 html.intro-pending main,
@@ -39,9 +49,8 @@ html.intro-pending footer {
   visibility: hidden;
 }
 @media (scripting: none) {
-  html.intro-pending,
-  html.intro-pending body {
-    background: var(--color-bg);
+  html.intro-pending body::before {
+    content: none;
   }
   html.intro-pending main,
   html.intro-pending header,
