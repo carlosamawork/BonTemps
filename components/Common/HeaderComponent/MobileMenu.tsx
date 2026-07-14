@@ -164,12 +164,30 @@ export default function MobileMenu({items, contactEmail, instagramUrl}: Props) {
     >
       {open && (
         <motion.div
+          key="stripCover"
+          className={styles.menuStripCover}
+          // The bleed strip sits above the viewport; scroll is locked while
+          // the menu is open so reading scrollY at render time is stable.
+          // 238 instead of 240 leaves a 2px overlap with the panel top so no
+          // seam can show between the two same-coloured surfaces.
+          style={{transform: `translate3d(0, ${Math.max(0, window.scrollY) - 238}px, 0)`}}
+          variants={panelVariants}
+          initial="hidden"
+          animate="open"
+          exit="closed"
+          aria-hidden
+        />
+      )}
+      {open && (
+        <motion.div
+          key="panel"
           className={styles.mobilePanel}
           variants={panelVariants}
           initial="hidden"
           animate="open"
           exit="closed"
         >
+          <div className={styles.mobilePanelBg} aria-hidden />
           <nav aria-label="Mobile" className={styles.mobileNav}>
             <ul>
               {menuItems.map((it) =>
